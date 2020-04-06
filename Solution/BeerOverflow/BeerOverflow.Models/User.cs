@@ -10,6 +10,8 @@ namespace BeerOverflow.Models
 
         public string Username { get; set; }
 
+        public int RoleId { get; set; }
+
         public DateTime CreatedOn { get; set; }
 
         public DateTime? DeletedOn { get; set; }
