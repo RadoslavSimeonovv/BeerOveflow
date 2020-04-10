@@ -10,13 +10,16 @@ namespace BeerOverflow.Data.Entities
 
         public string Username { get; set; }
 
-        public int RoleId { get; set; }
-
         public DateTime CreatedOn { get; set; }
 
         public DateTime? DeletedOn { get; set; }
 
         public bool IsDeleted { get; set; }
+
+
+        public ICollection<Review> Reviews { get; set; }
+
+        public ICollection<RateReview> RateReviews { get; set; }
 
     }
 }

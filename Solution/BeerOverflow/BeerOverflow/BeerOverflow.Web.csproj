@@ -11,6 +11,10 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BeerOverflow.Models\BeerOverflow.Data.csproj" />
+  </ItemGroup>
+
 
 
 </Project>

@@ -7,6 +7,11 @@ namespace BeerOverflow.Data.Entities
     public class Country
     {
         public int Id { get; set; }
-        public string _Country { get; set; }
+        public string Name { get; set; }
+
+        public ICollection<Beer> Beers { get; set; }
+
+        public ICollection<Brewery> Breweries { get; set; }
+
     }
 }
