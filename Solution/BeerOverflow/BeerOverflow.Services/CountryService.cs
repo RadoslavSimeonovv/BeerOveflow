@@ -93,6 +93,7 @@ namespace BeerOverflow.Services
                 Name = country.Name,
             };
 
+            _beerOverflowContext.Countries.Update(country);
             _beerOverflowContext.SaveChanges();
 
             return countryDTO;

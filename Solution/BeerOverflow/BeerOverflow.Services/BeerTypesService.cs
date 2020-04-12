@@ -81,6 +81,8 @@ namespace BeerOverflow.Services
             }
             beerType.Type = type;
             beerType.Description = description;
+
+            _beerOverflowContext.BeerTypes.Update(beerType);
             _beerOverflowContext.SaveChanges();
 
             return GetBeerType(id);

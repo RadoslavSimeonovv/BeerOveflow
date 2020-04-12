@@ -99,6 +99,7 @@ namespace BeerOverflow.Services
                 Username = user.Username,
             };
 
+            _beerOverflowContext.Users.Update(user);
             _beerOverflowContext.SaveChanges();
 
             return userDTO;

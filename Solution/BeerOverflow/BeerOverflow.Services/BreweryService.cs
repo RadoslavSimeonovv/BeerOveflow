@@ -105,6 +105,7 @@ namespace BeerOverflow.Services
                 Name = brewery.Name,
             };
 
+            _beerOverflowContext.Breweries.Update(brewery);
             _beerOverflowContext.SaveChanges();
 
             return breweryDTO;
