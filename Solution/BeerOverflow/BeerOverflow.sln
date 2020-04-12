@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeerOverflow.Web", "BeerOve
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeerOverflow.Data", "BeerOverflow.Models\BeerOverflow.Data.csproj", "{5EF96BDC-6024-4EA7-BC39-47902C81544D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeerOverflow.Services", "BeerOverflow.Services\BeerOverflow.Services.csproj", "{724C94A0-382E-449B-AF4C-064D3C311328}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{5EF96BDC-6024-4EA7-BC39-47902C81544D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EF96BDC-6024-4EA7-BC39-47902C81544D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5EF96BDC-6024-4EA7-BC39-47902C81544D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{724C94A0-382E-449B-AF4C-064D3C311328}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{724C94A0-382E-449B-AF4C-064D3C311328}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{724C94A0-382E-449B-AF4C-064D3C311328}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{724C94A0-382E-449B-AF4C-064D3C311328}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
