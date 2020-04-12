@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using BeerOverflow.Data;
 using BeerOverflow.Services;
 using BeerOverflow.Services.Contracts;
+using BeerOverflow.Services.Providers;
+using BeerOverflow.Services.Providers.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -29,9 +31,11 @@ namespace BeerOverflow
             services.AddControllersWithViews();
             services.AddDbContext<BeerOverflowContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddSingleton<IConfiguration>(Configuration);
+            services.AddScoped<IDateTimeProvider, DateTimeProvider>();
             services.AddScoped<ICountryService, CountryService>();
             services.AddScoped<IBreweryService, BreweryService>();
             services.AddScoped<IBeerTypeService, BeerTypesService>();
+            services.AddScoped<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
