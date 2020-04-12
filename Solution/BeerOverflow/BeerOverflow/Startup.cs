@@ -31,7 +31,7 @@ namespace BeerOverflow
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddScoped<ICountryService, CountryService>();
             services.AddScoped<IBreweryService, BreweryService>();
-
+            services.AddScoped<IBeerTypeService, BeerTypesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
