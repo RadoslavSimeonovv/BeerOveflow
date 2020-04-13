@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BeerOverflow.Data.Entities
 {
@@ -12,5 +10,6 @@ namespace BeerOverflow.Data.Entities
         public Role Role { get; set; }
         public int RoleId { get; set; }
 
+        public DateTime? DeletedOn { get; set; }
     }
 }

@@ -13,5 +13,6 @@ namespace BeerOverflow.Data.Entities
         public int BeerId { get; set; }
 
         public DateTime? DrankOn { get; set; }
+        public DateTime? DeletedOn { get; set; }
     }
 }

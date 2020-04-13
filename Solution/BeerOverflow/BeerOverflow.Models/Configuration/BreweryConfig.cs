@@ -12,7 +12,7 @@ namespace BeerOverflow.Data.Configuration
         public void Configure(EntityTypeBuilder<Brewery> builder)
         {
             builder.HasKey(b => b.Id);
-            builder.Property(b => b.Name).IsRequired();
+            builder.Property(b => b.Name).IsRequired().HasMaxLength(25);
             builder.Property(b => b.Description).IsRequired();
         }
     }

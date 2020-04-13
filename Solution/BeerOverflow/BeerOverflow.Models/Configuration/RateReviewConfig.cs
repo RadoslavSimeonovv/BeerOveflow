@@ -14,7 +14,6 @@ namespace BeerOverflow.Data.Configuration
             builder.HasKey(rr => rr.Id);
             builder.Property(rr => rr.LikeReview).IsRequired();
             builder.HasOne(rr => rr.User).WithMany(rr => rr.RateReviews).OnDelete(DeleteBehavior.Restrict);
- 
         }
     }
    

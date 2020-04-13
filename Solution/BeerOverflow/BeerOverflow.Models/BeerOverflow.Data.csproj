@@ -15,6 +15,8 @@
     <Compile Remove="Migrations\20200410143144_addedRateReviews.Designer.cs" />
     <Compile Remove="Migrations\20200410150251_addedRateReviews.cs" />
     <Compile Remove="Migrations\20200410150251_addedRateReviews.Designer.cs" />
+    <Compile Remove="Migrations\20200413105344_updatedEntitiesAndConfigurations.cs" />
+    <Compile Remove="Migrations\20200413105344_updatedEntitiesAndConfigurations.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

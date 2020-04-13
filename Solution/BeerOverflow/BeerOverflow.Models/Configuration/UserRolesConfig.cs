@@ -11,9 +11,7 @@ namespace BeerOverflow.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<UserRoles> builder)
         {
-            builder.HasKey(b => new { b.UserId, b.RoleId });
-           
-       
+            builder.HasKey(b => new { b.UserId, b.RoleId });  
         }
     }
 

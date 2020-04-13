@@ -12,9 +12,8 @@ namespace BeerOverflow.Data.Configuration
         public void Configure(EntityTypeBuilder<Country> builder)
         {
             builder.HasKey(c => c.Id);
-            builder.Property(c => c.Name).IsRequired();
-            builder.HasIndex(c => c.Name).IsUnique();
-      
+            builder.Property(c => c.Name).IsRequired().HasMaxLength(25);
+            builder.HasIndex(c => c.Name).IsUnique();    
         }  
     }
 }

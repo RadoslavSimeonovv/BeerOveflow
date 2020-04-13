@@ -10,6 +10,7 @@ namespace BeerOverflow.Data.Entities
         public int LikeReview { get; set; }
         public string Message { get; set; }
         public bool IsInapropriate { get; set; } = false;
+        public DateTime? DeletedOn { get; set; }
 
         public Review Review { get; set; }
         public int ReviewId { get; set; }
