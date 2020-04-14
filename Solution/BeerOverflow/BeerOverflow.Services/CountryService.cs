@@ -43,8 +43,9 @@ namespace BeerOverflow.Services
                 throw new ArgumentNullException();
             }
 
-            _beerOverflowContext.Countries.Remove(country);
-            _beerOverflowContext.SaveChanges();
+            //_beerOverflowContext.Countries.Remove(country);
+            //_beerOverflowContext.SaveChanges();
+            country.DeletedOn = DateTime.UtcNow;
 
             return true;
         }

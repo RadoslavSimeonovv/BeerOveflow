@@ -35,6 +35,7 @@ namespace BeerOverflow
             services.AddScoped<ICountryService, CountryService>();
             services.AddScoped<IBreweryService, BreweryService>();
             services.AddScoped<IBeerTypeService, BeerTypesService>();
+            services.AddScoped<IBeerService, BeerService>();
             services.AddScoped<IUserService, UserService>();
         }
 

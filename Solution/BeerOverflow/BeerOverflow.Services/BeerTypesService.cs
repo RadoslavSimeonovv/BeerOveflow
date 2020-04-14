@@ -55,15 +55,7 @@ namespace BeerOverflow.Services
                 };
                 _beerOverflowContext.BeerTypes.Add(beerType);
                 _beerOverflowContext.SaveChanges();
-                //beerType = _context.BeerTypes
-                //    .Last();
 
-                //var btDTO = new BeerTypeDTO
-                //{
-                //    Id = beerType.Id,
-                //    Type = beerType.Type,
-                //    Description = beerType.Description,
-                //};
                 return beerTypeDTO;
             }
             catch (Exception)
@@ -94,15 +86,8 @@ namespace BeerOverflow.Services
             {
                 throw new ArgumentNullException();
             }
-            _beerOverflowContext.BeerTypes.Remove(beerType);
-            if (_beerOverflowContext.SaveChanges() > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            beerType.DeletedOn = DateTime.UtcNow;
+            return true;
         }
     }
 }

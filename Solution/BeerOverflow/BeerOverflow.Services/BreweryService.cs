@@ -46,9 +46,10 @@ namespace BeerOverflow.Services
                 throw new ArgumentNullException();
             }
 
-            _beerOverflowContext.Breweries.Remove(brewery);
-            _beerOverflowContext.SaveChanges();
+            //_beerOverflowContext.Breweries.Remove(brewery);
+            //_beerOverflowContext.SaveChanges();
 
+            brewery.DeletedOn = DateTime.UtcNow;
             return true;
         }
 

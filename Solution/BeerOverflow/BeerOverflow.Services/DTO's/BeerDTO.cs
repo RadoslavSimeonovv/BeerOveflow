@@ -1,10 +1,11 @@
-﻿using System;
+﻿using BeerOverflow.Data.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BeerOverflow.Data.Entities
+namespace BeerOverflow.Services.DTO_s
 {
-    public class Beer
+    public class BeerDTO
     {
         public int Id { get; set; }
         public string BeerName { get; set; }
@@ -12,16 +13,13 @@ namespace BeerOverflow.Data.Entities
         public string Description { get; set; }
         public DateTime? DateUnlisted { get; set; }
 
-        public Country Country { get; set; }
+        public String Country { get; set; }
         public int CountryId { get; set; }
 
-        public BeerType BeerType { get; set; }
+        public String BeerType { get; set; }
         public int BeerTypeId { get; set; }
 
-        public Brewery Brewery { get; set; }
+        public String Brewery { get; set; }
         public int BreweryId { get; set; }
-
-        public ICollection<Review> Reviews { get; set; }
-
     }
 }
