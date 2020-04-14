@@ -35,6 +35,9 @@ namespace BeerOverflow.Web.ApiControllers
                 {
                     Id = userDTO.Id,
                     Username = userDTO.Username,
+                    FirstName = userDTO.FirstName,
+                    LastName = userDTO.LastName,
+                    Email = userDTO.Email,
                     CreatedOn = userDTO.CreatedOn
 
                 };
@@ -56,6 +59,9 @@ namespace BeerOverflow.Web.ApiControllers
                 {
                     Id = u.Id,
                     Username = u.Username,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Email = u.Email,
                     CreatedOn = u.CreatedOn
                 }).ToList();
 
@@ -75,6 +81,9 @@ namespace BeerOverflow.Web.ApiControllers
             {
                 Id = model.Id,
                 Username = model.Username,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Email = model.Email,
                 //CreatedOn = this.dateTimeProvider.GetDateTime()
             };
 

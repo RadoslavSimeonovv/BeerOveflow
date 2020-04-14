@@ -27,6 +27,9 @@ namespace BeerOverflow.Services
             {
                 Id = userDTO.Id,
                 Username = userDTO.Username,
+                FirstName = userDTO.FirstName,
+                LastName = userDTO.LastName,
+                Email = userDTO.Email,
                 CreatedOn = this.dateTimeProvider.GetDateTime()
             };
 
@@ -59,7 +62,11 @@ namespace BeerOverflow.Services
                {
                    Id = u.Id,
                    Username = u.Username,
+                   FirstName = u.FirstName,
+                   LastName = u.LastName,
+                   Email = u.Email,
                    CreatedOn = u.CreatedOn
+                   
 
                });
 
@@ -80,6 +87,9 @@ namespace BeerOverflow.Services
             {
                 Id = user.Id,
                 Username = user.Username,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
                 CreatedOn = user.CreatedOn
             };
 
