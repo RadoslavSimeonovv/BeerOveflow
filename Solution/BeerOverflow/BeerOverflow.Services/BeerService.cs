@@ -163,5 +163,62 @@ namespace BeerOverflow.Services
             return true;
 
         }
+        public IEnumerable<BeerDTO> FilterBeers(string filterString)
+        {
+
+            var searchFilter = _beerOverflowContext.Beers.FirstOrDefault(b => b.BeerType.Type == filterString);
+
+            if (searchFilter != null)
+            {
+                var beersDTO = _beerOverflowContext.Beers
+                  .Where(b => b.BeerType.Type == filterString)
+                  .Include(b => b.BeerType)
+                  .Include(b => b.Brewery)
+                  .Include(b => b.Country)
+                  .Select(b => new BeerDTO
+                  {
+                      Id = b.Id,
+                      BeerName = b.BeerName,
+                      BeerTypeId = b.BeerTypeId,
+                      BeerType = b.BeerType.Type,
+                      BreweryId = b.BreweryId,
+                      Brewery = b.Brewery.Name,
+                      CountryId = b.CountryId,
+                      Country = b.Country.Name,
+                      AlcByVol = b.AlcByVol,
+                      Description = b.Description,
+                  }).ToList();
+                return beersDTO;
+            }
+            else
+            {
+                searchFilter = _beerOverflowContext.Beers.FirstOrDefault(b => b.Country.Name == filterString);
+                if (searchFilter != null)
+                {
+                    var beersDTO = _beerOverflowContext.Beers
+                 .Where(b => b.Country.Name == filterString)
+                 .Include(b => b.BeerType)
+                 .Include(b => b.Brewery)
+                 .Include(b => b.Country)
+                 .Select(b => new BeerDTO
+                 {
+                     Id = b.Id,
+                     BeerName = b.BeerName,
+                     BeerTypeId = b.BeerTypeId,
+                     BeerType = b.BeerType.Type,
+                     BreweryId = b.BreweryId,
+                     Brewery = b.Brewery.Name,
+                     CountryId = b.CountryId,
+                     Country = b.Country.Name,
+                     AlcByVol = b.AlcByVol,
+                     Description = b.Description,
+                 }).ToList();
+                    return beersDTO;
+                }
+            }
+            return null;
+        }
+
+
     }
 }
