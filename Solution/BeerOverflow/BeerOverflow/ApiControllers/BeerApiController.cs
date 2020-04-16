@@ -125,11 +125,11 @@ namespace BeerOverflow.Web.ApiControllers
 
         [HttpGet]
         [Route("filter")]
-        public IActionResult Get([FromQuery] string country = null, [FromQuery] string type = null)
+        public IActionResult Get(string country = null, string type = null, string orderby = null)
         {
-            if (country != null)
-            {
-                var beers = this.beerService.FilterBeers(country)
+
+
+                var beers = this.beerService.FilterBeers(country,type,orderby)
                  .Select(b => new BeerViewModel
                  {
                      Id = b.Id,
@@ -147,29 +147,6 @@ namespace BeerOverflow.Web.ApiControllers
                  }).ToList();
 
                 return Ok(beers);
-
-            }
-            else if (type != null)
-            {
-                var beersType = beerService.FilterBeers(type)
-               .Select(b => new BeerViewModel
-               {
-                   Id = b.Id,
-                   BeerName = b.BeerName,
-                   AlcByVol = b.AlcByVol,
-                   Description = b.Description,
-                   //DateUnlisted = b.DateUnlisted,
-                   Country = b.Country,
-                   CountryId = b.CountryId,
-                   BeerType = b.BeerType,
-                   BeerTypeId = b.BeerTypeId,
-                   Brewery = b.Brewery,
-                   BreweryId = b.BreweryId,
-               }).ToList();
-
-                return Ok(beersType);
-            }       
-            return NotFound();
         }
     }
 }

@@ -163,60 +163,102 @@ namespace BeerOverflow.Services
             return true;
 
         }
-        public IEnumerable<BeerDTO> FilterBeers(string filterString)
+        public IEnumerable<BeerDTO> FilterBeers(string country, string type, string orderby)
         {
-
-            var searchFilter = _beerOverflowContext.Beers.FirstOrDefault(b => b.BeerType.Type == filterString);
-
-            if (searchFilter != null)
+            var qryBeers = (IQueryable<Beer>)_beerOverflowContext.Beers;
+            if (country != null)
             {
-                var beersDTO = _beerOverflowContext.Beers
-                  .Where(b => b.BeerType.Type == filterString)
-                  .Include(b => b.BeerType)
-                  .Include(b => b.Brewery)
-                  .Include(b => b.Country)
-                  .Select(b => new BeerDTO
-                  {
-                      Id = b.Id,
-                      BeerName = b.BeerName,
-                      BeerTypeId = b.BeerTypeId,
-                      BeerType = b.BeerType.Type,
-                      BreweryId = b.BreweryId,
-                      Brewery = b.Brewery.Name,
-                      CountryId = b.CountryId,
-                      Country = b.Country.Name,
-                      AlcByVol = b.AlcByVol,
-                      Description = b.Description,
-                  }).ToList();
-                return beersDTO;
-            }
-            else
-            {
-                searchFilter = _beerOverflowContext.Beers.FirstOrDefault(b => b.Country.Name == filterString);
-                if (searchFilter != null)
+                var ctry = _beerOverflowContext.Countries.FirstOrDefault(c => c.Name == country);
+                if (ctry != null)
                 {
-                    var beersDTO = _beerOverflowContext.Beers
-                 .Where(b => b.Country.Name == filterString)
-                 .Include(b => b.BeerType)
-                 .Include(b => b.Brewery)
-                 .Include(b => b.Country)
-                 .Select(b => new BeerDTO
-                 {
-                     Id = b.Id,
-                     BeerName = b.BeerName,
-                     BeerTypeId = b.BeerTypeId,
-                     BeerType = b.BeerType.Type,
-                     BreweryId = b.BreweryId,
-                     Brewery = b.Brewery.Name,
-                     CountryId = b.CountryId,
-                     Country = b.Country.Name,
-                     AlcByVol = b.AlcByVol,
-                     Description = b.Description,
-                 }).ToList();
-                    return beersDTO;
+                    qryBeers = qryBeers.Where(b => b.CountryId == ctry.Id);
                 }
             }
-            return null;
+
+            if (type != null)
+            {
+                var _type = _beerOverflowContext.BeerTypes.FirstOrDefault(t => t.Type == type);
+                if (_type != null)
+                {
+                    qryBeers = qryBeers.Where(b => b.BeerTypeId == _type.Id);
+                }
+            }
+
+            if (orderby != null)
+            {
+                var orderClauses = orderby.ToLower().Split(",");
+                for (int i = 0; i < orderClauses.Length; i++)
+                {
+                    var orderPropArr = orderClauses[i].Split(" ");
+                    var orderProp = orderPropArr[0].Trim();
+                    switch (orderProp)
+                    {
+                        case "name":
+                            if (!orderClauses[i].EndsWith(" desc"))
+                                qryBeers = i == 0 ? qryBeers.OrderBy(b => b.BeerName)
+                                    : ((IOrderedQueryable<Beer>)qryBeers).ThenBy(b => b.BeerName);
+                            else
+                            {
+                                qryBeers = i == 0 ? qryBeers.OrderByDescending(b => b.BeerName)
+                                    : ((IOrderedQueryable<Beer>)qryBeers).ThenByDescending(b => b.BeerName);
+                            }
+                            break;
+                        case "abv":
+                            if (!orderClauses[i].EndsWith(" desc"))
+                                qryBeers = i == 0 ? qryBeers.OrderBy(b => b.AlcByVol)
+                                    : ((IOrderedQueryable<Beer>)qryBeers).ThenBy(b => b.AlcByVol);
+                            else
+                            {
+                                qryBeers = i == 0 ? qryBeers.OrderByDescending(b => b.AlcByVol)
+                                    : ((IOrderedQueryable<Beer>)qryBeers).ThenByDescending(b => b.AlcByVol);
+                            }
+                            break;
+                        case "county":
+                            if (!orderClauses[i].EndsWith(" desc"))
+                                qryBeers = i == 0 ? qryBeers.OrderBy(b => b.Country)
+                                    : ((IOrderedQueryable<Beer>)qryBeers).ThenBy(b => b.Country);
+                            else
+                            {
+                                qryBeers = i == 0 ? qryBeers.OrderByDescending(b => b.Country)
+                                    : ((IOrderedQueryable<Beer>)qryBeers).ThenByDescending(b => b.Country);
+                            }
+                            break;
+                        case "brewery":
+                            if (!orderClauses[i].EndsWith(" desc"))
+                                qryBeers = i == 0 ? qryBeers.OrderBy(b => b.Brewery)
+                                    : ((IOrderedQueryable<Beer>)qryBeers).ThenBy(b => b.Brewery);
+                            else
+                            {
+                                qryBeers = i == 0 ? qryBeers.OrderByDescending(b => b.Brewery)
+                                    : ((IOrderedQueryable<Beer>)qryBeers).ThenByDescending(b => b.Brewery);
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+
+            var beersDTO = qryBeers
+                    .Select(b => new BeerDTO
+                    {
+                        Id = b.Id,
+                        BeerName = b.BeerName,
+                        BeerTypeId = b.BeerTypeId,
+                        BeerType = b.BeerType.Type,
+                        BreweryId = b.BreweryId,
+                        Brewery = b.Brewery.Name,
+                        CountryId = b.CountryId,
+                        Country = b.Country.Name,
+                        AlcByVol = b.AlcByVol,
+                        Description = b.Description,
+                    }).ToList();
+            return beersDTO;
+        }
+
+        public IEnumerable<BeerDTO> FilterBeersNew()
+        {
+            throw new NotImplementedException();
         }
 
 
