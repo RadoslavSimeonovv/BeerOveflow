@@ -12,14 +12,17 @@ namespace BeerOverflow.Web.ApiControllers
     public class BeerApiController : ControllerBase
     {
         private readonly IBeerService beerService;
-        public BeerApiController(IBeerService beerService)
+        private readonly IReviewService reviewService;
+        public BeerApiController(IBeerService beerService, IReviewService reviewService)
         {
             this.beerService = beerService;
+            this.reviewService = reviewService;
+
         }
 
         [HttpGet]
         [Route("")]
-        public IActionResult Get()
+        public IActionResult GetAllBeers()
         {
             var models = beerService.GetAllBeers()
                 .Select(b => new BeerViewModel
@@ -129,24 +132,53 @@ namespace BeerOverflow.Web.ApiControllers
         {
 
 
-                var beers = this.beerService.FilterBeers(country,type,orderby)
-                 .Select(b => new BeerViewModel
-                 {
-                     Id = b.Id,
-                     BeerName = b.BeerName,
-                     AlcByVol = b.AlcByVol,
-                     Description = b.Description,
+            var beers = this.beerService.FilterBeers(country, type, orderby)
+             .Select(b => new BeerViewModel
+             {
+                 Id = b.Id,
+                 BeerName = b.BeerName,
+                 AlcByVol = b.AlcByVol,
+                 Description = b.Description,
                      //DateUnlisted = b.DateUnlisted,
                      Country = b.Country,
-                     CountryId = b.CountryId,
-                     BeerType = b.BeerType,
-                     BeerTypeId = b.BeerTypeId,
-                     Brewery = b.Brewery,
-                     BreweryId = b.BreweryId,
+                 CountryId = b.CountryId,
+                 BeerType = b.BeerType,
+                 BeerTypeId = b.BeerTypeId,
+                 Brewery = b.Brewery,
+                 BreweryId = b.BreweryId,
 
-                 }).ToList();
+             }).ToList();
 
-                return Ok(beers);
+            return Ok(beers);
+        }
+
+
+        [HttpPost]
+        [Route("reviews")]
+        public IActionResult PostReview([FromBody] ReviewViewModel model)
+        {
+
+            try
+            {
+                var newReview = reviewService.AddReview(model.UserName, model.BeerName, model.Rating, model.RMessage);
+
+                var newReviewModel = new ReviewViewModel
+                {
+                    UserId = newReview.UserId,
+                    UserName = newReview.User,
+                    BeerId = newReview.BeerId,
+                    BeerName = newReview.Beer,
+                    Rating = newReview.Rating, 
+                    RMessage = newReview.RMessage,
+                    ReviewedOn = newReview.ReviewedOn
+                };
+                return Ok(newReviewModel);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
         }
     }
 }

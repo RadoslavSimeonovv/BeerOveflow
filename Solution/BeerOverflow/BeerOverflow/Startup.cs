@@ -37,6 +37,8 @@ namespace BeerOverflow
             services.AddScoped<IBeerTypeService, BeerTypesService>();
             services.AddScoped<IBeerService, BeerService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserBeersService, UserBeersService>();
+            services.AddScoped<IReviewService, ReviewService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
