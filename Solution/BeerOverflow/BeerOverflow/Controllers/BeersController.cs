@@ -9,6 +9,7 @@ using BeerOverflow.Data;
 using BeerOverflow.Data.Entities;
 using BeerOverflow.Services.Contracts;
 using BeerOverflow.Web.Models;
+using BeerOverflow.Services.DTO_s;
 
 namespace BeerOverflow.Web.Controllers
 {
@@ -49,24 +50,35 @@ namespace BeerOverflow.Web.Controllers
         }
 
         // GET: Beers/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var beer = await _context.Beers
-                .Include(b => b.BeerType)
-                .Include(b => b.Brewery)
-                .Include(b => b.Country)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (beer == null)
+            try
+            {
+                var beerDTO = beerService.GetBeer(id);
+                var model = new BeerViewModel
+                {
+                    Id = beerDTO.Id,
+                    BeerName = beerDTO.BeerName,
+                    AlcByVol = beerDTO.AlcByVol,
+                    Description = beerDTO.Description,
+                    //DateUnlisted = beerDTO.DateUnlisted,
+                    Country = beerDTO.Country,
+                    CountryId = beerDTO.CountryId,
+                    BeerType = beerDTO.BeerType,
+                    BeerTypeId = beerDTO.BeerTypeId,
+                    Brewery = beerDTO.Brewery,
+                    BreweryId = beerDTO.BreweryId,
+                };
+                return View(model);
+            }
+            catch (Exception)
             {
                 return NotFound();
             }
-
-            return View(beer);
         }
 
         // GET: Beers/Create
@@ -83,7 +95,7 @@ namespace BeerOverflow.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,BeerName,AlcByVol,Description,DateUnlisted,CountryId,BeerTypeId,BreweryId")] Beer beer)
+        public async Task<IActionResult> Create([Bind("BeerName,AlcByVol,Description,CountryId,BeerTypeId,BreweryId")] BeerDTO beer)
         {
             if (ModelState.IsValid)
             {
@@ -91,8 +103,8 @@ namespace BeerOverflow.Web.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BeerTypeId"] = new SelectList(_context.BeerTypes, "Id", "Description", beer.BeerTypeId);
-            ViewData["BreweryId"] = new SelectList(_context.Breweries, "Id", "Description", beer.BreweryId);
+            ViewData["BeerTypeId"] = new SelectList(_context.BeerTypes, "Id", "Type", beer.BeerTypeId);
+            ViewData["BreweryId"] = new SelectList(_context.Breweries, "Id", "Name", beer.BreweryId);
             ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Name", beer.CountryId);
             return View(beer);
         }

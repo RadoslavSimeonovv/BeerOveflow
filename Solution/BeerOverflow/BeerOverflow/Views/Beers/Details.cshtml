@@ -1,4 +1,4 @@
-﻿@model BeerOverflow.Data.Entities.Beer
+﻿@model BeerOverflow.Web.Models.BeerViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -30,28 +30,22 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateUnlisted)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateUnlisted)
-        </dd>
-        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Country)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Country.Name)
+            @Html.DisplayFor(model => model.Country)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.BeerType)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BeerType.Description)
+            @Html.DisplayFor(model => model.BeerType)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Brewery)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Brewery.Description)
+            @Html.DisplayFor(model => model.Brewery)
         </dd>
     </dl>
 </div>
