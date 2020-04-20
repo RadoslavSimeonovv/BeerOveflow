@@ -84,8 +84,8 @@ namespace BeerOverflow.Web.Controllers
         // GET: Beers/Create
         public IActionResult Create()
         {
-            ViewData["BeerTypeId"] = new SelectList(_context.BeerTypes, "Id", "Description");
-            ViewData["BreweryId"] = new SelectList(_context.Breweries, "Id", "Description");
+            ViewData["BeerTypeId"] = new SelectList(_context.BeerTypes, "Id", "Type");
+            ViewData["BreweryId"] = new SelectList(_context.Breweries, "Id", "Name");
             ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Name");
             return View();
         }
@@ -95,18 +95,28 @@ namespace BeerOverflow.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BeerName,AlcByVol,Description,CountryId,BeerTypeId,BreweryId")] BeerDTO beer)
+        public async Task<IActionResult> Create([Bind("BeerName,AlcByVol,Description,CountryId,BeerTypeId,BreweryId")] BeerViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(beer);
+                var beerDto = new BeerDTO
+                {
+                    BeerName = model.BeerName,
+                    AlcByVol = (double)model.AlcByVol,
+                    Description = model.Description,
+                    CountryId = model.CountryId,
+                    BeerTypeId = model.BeerTypeId,
+                    BreweryId = model.BreweryId,
+                };
+                var beer = beerService.CreateBeer(beerDto);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BeerTypeId"] = new SelectList(_context.BeerTypes, "Id", "Type", beer.BeerTypeId);
-            ViewData["BreweryId"] = new SelectList(_context.Breweries, "Id", "Name", beer.BreweryId);
-            ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Name", beer.CountryId);
-            return View(beer);
+            ViewData["BeerTypeId"] = new SelectList(_context.BeerTypes, "Id", "Type");
+            ViewData["BreweryId"] = new SelectList(_context.Breweries, "Id", "Name");
+            ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Name");
+
+            return View(model);
         }
 
         // GET: Beers/Edit/5
