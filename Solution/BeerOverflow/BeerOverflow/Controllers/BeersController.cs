@@ -132,20 +132,30 @@ namespace BeerOverflow.Web.Controllers
             {
                 return NotFound();
             }
-            ViewData["BeerTypeId"] = new SelectList(_context.BeerTypes, "Id", "Description", beer.BeerTypeId);
-            ViewData["BreweryId"] = new SelectList(_context.Breweries, "Id", "Description", beer.BreweryId);
-            ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Name", beer.CountryId);
+            ViewData["BeerTypeId"] = new SelectList(_context.BeerTypes, "Id", "Type");
+            ViewData["BreweryId"] = new SelectList(_context.Breweries, "Id", "Name");
+            ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Name");
             return View(beer);
         }
+        /*
+            var beerName = model.BeerName;
+            var alkByVol = model.AlcByVol;
+            var descr = model.Description;
+            int countryId = model.CountryId;
+            var beerTypeId = model.BeerTypeId;
+            var breweryId = model.BreweryId;
+            beerService.UpdateBeer(id, beerName, alkByVol, descr, countryId, beerTypeId, breweryId);
+            return Ok(); 
+         */
 
         // POST: Beers/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BeerName,AlcByVol,Description,DateUnlisted,CountryId,BeerTypeId,BreweryId")] Beer beer)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BeerName,AlcByVol,Description,DateUnlisted,CountryId,BeerTypeId,BreweryId")] BeerViewModel model)
         {
-            if (id != beer.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
@@ -154,12 +164,19 @@ namespace BeerOverflow.Web.Controllers
             {
                 try
                 {
-                    _context.Update(beer);
-                    await _context.SaveChangesAsync();
+                    var beerName = model.BeerName;
+                    var alkByVol = model.AlcByVol;
+                    var descr = model.Description;
+                    int countryId = model.CountryId;
+                    var beerTypeId = model.BeerTypeId;
+                    var breweryId = model.BreweryId;
+                    beerService.UpdateBeer(id, beerName, alkByVol, descr, countryId, beerTypeId, breweryId);
+                    //_context.Update(beer);
+                    //await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BeerExists(beer.Id))
+                    if (!BeerExists(model.Id))
                     {
                         return NotFound();
                     }
@@ -170,10 +187,10 @@ namespace BeerOverflow.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BeerTypeId"] = new SelectList(_context.BeerTypes, "Id", "Description", beer.BeerTypeId);
-            ViewData["BreweryId"] = new SelectList(_context.Breweries, "Id", "Description", beer.BreweryId);
-            ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Name", beer.CountryId);
-            return View(beer);
+            ViewData["BeerTypeId"] = new SelectList(_context.BeerTypes, "Id", "Type");
+            ViewData["BreweryId"] = new SelectList(_context.Breweries, "Id", "Name");
+            ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Name");
+            return View(model);
         }
 
         // GET: Beers/Delete/5
