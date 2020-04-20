@@ -84,6 +84,7 @@ namespace BeerOverflow.Web.ApiControllers
         [Route("{id}")]
         public IActionResult Delete(int id)
         {
+
             try
             {
                 beerTypeServices.DeleteBeerType(id);
