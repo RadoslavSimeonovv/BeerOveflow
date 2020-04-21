@@ -219,10 +219,16 @@ namespace BeerOverflow.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var beer = await _context.Beers.FindAsync(id);
-            _context.Beers.Remove(beer);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                beerService.DeleteBeer(id);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         private bool BeerExists(int id)

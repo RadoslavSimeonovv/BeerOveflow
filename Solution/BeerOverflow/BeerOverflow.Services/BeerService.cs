@@ -50,6 +50,7 @@ namespace BeerOverflow.Services
                 .Include(b => b.BeerType)
                 .Include(b => b.Brewery)
                 .Include(b => b.Country)
+                .Where(b => b.DateUnlisted == null)
                 .Select(b => new BeerDTO
                 {
                     Id = b.Id,
