@@ -157,8 +157,6 @@ namespace BeerOverflow.Services
                 throw new ArgumentNullException();
             }
             beer.DateUnlisted = DateTime.UtcNow;
-            //_beerOverflowContext.Beers.Remove(beer);
-            _beerOverflowContext.Update(beer);
             _beerOverflowContext.SaveChanges();
 
             return true;

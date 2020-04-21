@@ -46,10 +46,9 @@ namespace BeerOverflow.Services
                 throw new ArgumentNullException();
             }
 
-            //_beerOverflowContext.Breweries.Remove(brewery);
-            //_beerOverflowContext.SaveChanges();
-
             brewery.DeletedOn = DateTime.UtcNow;
+            _beerOverflowContext.SaveChanges();
+
             return true;
         }
 
@@ -57,6 +56,7 @@ namespace BeerOverflow.Services
         {
             var breweries = _beerOverflowContext.Breweries.
               Include(b => b.Country).
+              Where(b => b.DeletedOn == null).
               Select(b => new BreweryDTO
               {
                   Id = b.Id,

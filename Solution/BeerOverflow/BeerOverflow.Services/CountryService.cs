@@ -43,9 +43,8 @@ namespace BeerOverflow.Services
                 throw new ArgumentNullException();
             }
 
-            //_beerOverflowContext.Countries.Remove(country);
-            //_beerOverflowContext.SaveChanges();
             country.DeletedOn = DateTime.UtcNow;
+            _beerOverflowContext.Countries.Update(country);
 
             return true;
         }
@@ -53,6 +52,7 @@ namespace BeerOverflow.Services
         public IEnumerable<CountryDTO> GetAllCountries()
         {
             var countries = _beerOverflowContext.Countries
+               .Where(x => x.DeletedOn == null)
                .Select(x => new CountryDTO
                {
                    Id = x.Id,

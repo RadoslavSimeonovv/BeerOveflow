@@ -36,6 +36,7 @@ namespace BeerOverflow.Services
         public IEnumerable<BeerTypeDTO> GetAllBeerTypes()
         {
             List<BeerTypeDTO> beerTypeDTOs = _beerOverflowContext.BeerTypes
+                .Where(bt => bt.DeletedOn == null)
                 .Select(bt => new BeerTypeDTO
                 {
                     Id = bt.Id,
@@ -87,6 +88,8 @@ namespace BeerOverflow.Services
                 throw new ArgumentNullException();
             }
             beerType.DeletedOn = DateTime.UtcNow;
+            _beerOverflowContext.SaveChanges();
+
             return true;
         }
     }

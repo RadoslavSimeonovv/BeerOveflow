@@ -113,7 +113,7 @@ namespace BeerOverflow.Web.ApiControllers
                 return BadRequest();
             }
 
-            var country = this.breweryService.DeleteBrewery(id);
+            var brewery = this.breweryService.DeleteBrewery(id);
 
             return Ok();
         }
