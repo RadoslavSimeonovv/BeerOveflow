@@ -66,6 +66,68 @@ namespace BeerOverflow.Services
                 }).ToList();
             return beersDTO;
         }
+
+        public IQueryable<BeerDTO> GetBeers(string sortOrder, string currentFilter, string searchString)
+        {
+            var beersQry = (IQueryable<Beer>)_beerOverflowContext.Beers
+                .Include(b => b.BeerType)
+                .Include(b => b.Brewery)
+                .Include(b => b.Country);
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                beersQry = beersQry.Where(b => b.BeerName.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    beersQry = beersQry.OrderByDescending(b => b.BeerName);
+                    break;
+                case "abv":
+                    beersQry = beersQry.OrderBy(b => b.AlcByVol);
+                    break;
+                case "abv_desc":
+                    beersQry = beersQry.OrderByDescending(b => b.AlcByVol);
+                    break;
+                case "beertype":
+                    beersQry = beersQry.OrderBy(b => b.BeerType);
+                    break;
+                case "beertype_desc":
+                    beersQry = beersQry.OrderByDescending(b => b.BeerType);
+                    break;
+                case "country":
+                    beersQry = beersQry.OrderBy(b => b.Country);
+                    break;
+                case "country_desc":
+                    beersQry = beersQry.OrderByDescending(b => b.Country);
+                    break;
+                case "brewery":
+                    beersQry = beersQry.OrderBy(b => b.Brewery);
+                    break;
+                case "brewery_desc":
+                    beersQry = beersQry.OrderByDescending(b => b.Brewery);
+                    break;
+                default:
+                    beersQry = beersQry.OrderBy(b => b.BeerName);
+                    break;
+            }
+
+            var beerDTOs = beersQry.Select(b => new BeerDTO
+            {
+                Id = b.Id,
+                BeerName = b.BeerName,
+                BeerTypeId = b.BeerTypeId,
+                BeerType = b.BeerType.Type,
+                BreweryId = b.BreweryId,
+                Brewery = b.Brewery.Name,
+                CountryId = b.CountryId,
+                Country = b.Country.Name,
+                AlcByVol = b.AlcByVol,
+                Description = b.Description,
+            });
+
+            return beerDTOs;
+        }
         public BeerDTO CreateBeer(BeerDTO beerDTO)
         {
             try

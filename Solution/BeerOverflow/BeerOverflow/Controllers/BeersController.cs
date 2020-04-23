@@ -10,6 +10,7 @@ using BeerOverflow.Data.Entities;
 using BeerOverflow.Services.Contracts;
 using BeerOverflow.Web.Models;
 using BeerOverflow.Services.DTO_s;
+using X.PagedList;
 
 namespace BeerOverflow.Web.Controllers
 {
@@ -28,25 +29,42 @@ namespace BeerOverflow.Web.Controllers
         }
 
         // GET: Beers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            //var beerOverflowContext = _context.Beers.Include(b => b.BeerType).Include(b => b.Brewery).Include(b => b.Country);
-            var models = beerService.GetAllBeers()
-    .Select(b => new BeerViewModel
-    {
-        Id = b.Id,
-        BeerName = b.BeerName,
-        AlcByVol = b.AlcByVol,
-        Description = b.Description,
-        //DateUnlisted = b.DateUnlisted,
-        Country = b.Country,
-        CountryId = b.CountryId,
-        BeerType = b.BeerType,
-        BeerTypeId = b.BeerTypeId,
-        Brewery = b.Brewery,
-        BreweryId = b.BreweryId,
-    }).ToList();
-            return View(models);
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.AbvSortParm = sortOrder == "abv" ? "abv_desc" : "abv";
+            ViewBag.BeerTypeSortParm = sortOrder == "beertype" ? "beertype_desc" : "beertype";
+            ViewBag.CountrySortParm = sortOrder == "country" ? "country_desc" : "country";
+            ViewBag.BrewerySortParm = sortOrder == "brewery" ? "brewery_desc" : "brewery";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+            var models = beerService.GetBeers(sortOrder, currentFilter, searchString)
+                .Select(b => new BeerViewModel
+                {
+                    Id = b.Id,
+                    BeerName = b.BeerName,
+                    AlcByVol = b.AlcByVol,
+                    Description = b.Description,
+                    Country = b.Country,
+                    CountryId = b.CountryId,
+                    BeerType = b.BeerType,
+                    BeerTypeId = b.BeerTypeId,
+                    Brewery = b.Brewery,
+                    BreweryId = b.BreweryId,
+                });
+            int pageSize = 5;
+            int pageNumber = (page ?? 1);
+            return View(models.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Beers/Details/5
