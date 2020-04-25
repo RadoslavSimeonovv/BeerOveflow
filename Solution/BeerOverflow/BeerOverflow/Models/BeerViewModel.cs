@@ -8,6 +8,10 @@ namespace BeerOverflow.Web.Models
 {
     public class BeerViewModel
     {
+        public BeerViewModel()
+        {
+
+        }
         public BeerViewModel(int id, string beerName, double abv, string description, string beerType, int beerTypeId,string brewery, int breweryId)
         {
             this.Id = id;

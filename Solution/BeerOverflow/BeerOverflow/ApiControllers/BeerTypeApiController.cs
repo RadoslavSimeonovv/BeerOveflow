@@ -23,12 +23,7 @@ namespace BeerOverflow.Web.ApiControllers
         public IActionResult Get()
         {
             var models = beerTypeServices.GetAllBeerTypes()
-                .Select(bt => new BeerTypeViewModel
-                {
-                    Id = bt.Id,
-                    Type = bt.Type,
-                    Description = bt.Description,
-                }).ToList();
+                .Select(bt => new BeerTypeViewModel(bt.Id, bt.Type, bt.Description)).ToList();
             return Ok(models);
         }
         [HttpGet]
@@ -38,12 +33,7 @@ namespace BeerOverflow.Web.ApiControllers
             try
             {
                 var beerTypeDTO = beerTypeServices.GetBeerType(id);
-                var model = new BeerTypeViewModel
-                {
-                    Id = beerTypeDTO.Id,
-                    Type = beerTypeDTO.Type,
-                    Description = beerTypeDTO.Description,
-                };
+                var model = new BeerTypeViewModel(beerTypeDTO.Id, beerTypeDTO.Type, beerTypeDTO.Description);
                 return Ok(model);
             }
             catch (Exception)
@@ -58,11 +48,7 @@ namespace BeerOverflow.Web.ApiControllers
         {
             try
             {
-                var beerTypeDto = new BeerTypeDTO
-                {
-                    Type = model.Type,
-                    Description = model.Description,
-                };
+                var beerTypeDto = new BeerTypeDTO(model.Type, model.Description);
                 var beerType = beerTypeServices.CreateBeerType(beerTypeDto);
                 return Created("Post", beerType);
             }

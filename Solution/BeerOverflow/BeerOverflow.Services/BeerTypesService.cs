@@ -5,7 +5,6 @@ using BeerOverflow.Services.DTO_s;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace BeerOverflow.Services
 {
@@ -25,24 +24,14 @@ namespace BeerOverflow.Services
             {
                 throw new ArgumentNullException();
             }
-            var beerTypeDTO = new BeerTypeDTO
-            {
-                Id = beerType.Id,
-                Type = beerType.Type,
-                Description = beerType.Description,
-            };
+            var beerTypeDTO = new BeerTypeDTO(beerType.Id, beerType.Type, beerType.Description);
             return beerTypeDTO;
         }
         public IEnumerable<BeerTypeDTO> GetAllBeerTypes()
         {
             List<BeerTypeDTO> beerTypeDTOs = _beerOverflowContext.BeerTypes
                 .Where(bt => bt.DeletedOn == null)
-                .Select(bt => new BeerTypeDTO
-                {
-                    Id = bt.Id,
-                    Type = bt.Type,
-                    Description = bt.Description,
-                }).ToList();
+                .Select(bt => new BeerTypeDTO(bt.Id, bt.Type, bt.Description)).ToList();
             return beerTypeDTOs;
         }
         public BeerTypeDTO CreateBeerType(BeerTypeDTO beerTypeDTO)

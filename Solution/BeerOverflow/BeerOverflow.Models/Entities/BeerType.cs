@@ -6,6 +6,7 @@ namespace BeerOverflow.Data.Entities
 {
     public class BeerType
     {
+
         public int Id { get; set; }
         public string Type { get; set; }
         public string Description { get; set; }
