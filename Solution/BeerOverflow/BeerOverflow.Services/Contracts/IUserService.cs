@@ -10,7 +10,7 @@ namespace BeerOverflow.Services.Contracts
         UserDTO GetUserById(int id);
         IEnumerable<UserDTO> GetAllUsers();
         UserDTO CreateUser(UserDTO userDTO);
-        UserDTO UpdateUser(int id, string newName);
+        UserDTO UpdateUser(int id, string newUsername, string newFirstName, string newLastName, string newEmail);
         bool DeleteUser(int id);
 
     }

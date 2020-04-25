@@ -58,18 +58,9 @@ namespace BeerOverflow.Services
         public IEnumerable<UserDTO> GetAllUsers()
         {
             var users = _beerOverflowContext.Users
-               .Select(u => new UserDTO
-               {
-                   Id = u.Id,
-                   Username = u.Username,
-                   FirstName = u.FirstName,
-                   LastName = u.LastName,
-                   Email = u.Email,
-                   CreatedOn = u.CreatedOn
-                   
-
-               });
-
+               .Select(u => new UserDTO(u.Id, u.Username, u.FirstName,
+               u.LastName, u.Email, u.CreatedOn));
+            
             return users;
         }
 
@@ -83,31 +74,24 @@ namespace BeerOverflow.Services
                 throw new ArgumentNullException();
             }
 
-            var userDTO = new UserDTO
-            {
-                Id = user.Id,
-                Username = user.Username,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                CreatedOn = user.CreatedOn
-            };
-
+            var userDTO = new UserDTO(user.Id, user.Username, user.FirstName,
+               user.LastName, user.Email, user.CreatedOn);
+                    
             return userDTO;
         }
 
-        public UserDTO UpdateUser(int id, string newName)
+        public UserDTO UpdateUser(int id, string newUsername, string newFirstName, string newLastName, string newEmail )
         {
             var user = _beerOverflowContext.Users
                 .FirstOrDefault(user => user.Id == id);
 
-            user.Username = newName;
+            user.Username = newUsername;
+            user.FirstName = newFirstName;
+            user.LastName = newLastName;
+            user.Email = newEmail;
 
-            var userDTO = new UserDTO
-            {
-                Id = user.Id,
-                Username = user.Username,
-            };
+
+            var userDTO = new UserDTO(user.Id, user.Username, user.FirstName, user.LastName, user.Email);
 
             _beerOverflowContext.Users.Update(user);
             _beerOverflowContext.SaveChanges();

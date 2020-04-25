@@ -29,15 +29,9 @@ namespace BeerOverflow.Web.ApiControllers
             {
                 var breweryDTO = this.breweryService.GetBreweryById(id);
 
-                var model = new BreweryViewModel
-                {
-                    Id = breweryDTO.Id,
-                    Name = breweryDTO.Name,
-                    Description = breweryDTO.Description,
-                    CountryId = breweryDTO.CountryId,
-                    Country = breweryDTO.Country
-                };
-
+                var model = new BreweryViewModel(breweryDTO.Id, breweryDTO.Name,
+                    breweryDTO.Description, breweryDTO.CountryId, breweryDTO.Country);
+               
                 return Ok(model);
             }
             catch (Exception)
@@ -52,15 +46,8 @@ namespace BeerOverflow.Web.ApiControllers
         public IActionResult Get()
         {
             var breweries = this.breweryService.GetAllBreweries()
-                .Select(b => new BreweryViewModel
-                {
-                    Id = b.Id,
-                    Name = b.Name,
-                    Description = b.Description,
-                    CountryId = b.CountryId,
-                    Country = b.Country
-
-                }).ToList();
+                .Select(b => new BreweryViewModel(b.Id, b.Name, b.Description, b.CountryId, b.Country))
+                .ToList();
 
             return Ok(breweries);
         }
@@ -75,13 +62,8 @@ namespace BeerOverflow.Web.ApiControllers
                 return BadRequest();
             }
 
-            var breweryDTO = new BreweryDTO
-            {
-                Id = model.Id,
-                Name = model.Name,
-                Description = model.Description,
-                CountryId = model.CountryId,
-            };
+            var breweryDTO = new BreweryDTO(model.Id, model.Name, model.Description, model.CountryId);
+
 
             var newBrewery = this.breweryService.CreateBrewery(breweryDTO);
 
@@ -97,8 +79,7 @@ namespace BeerOverflow.Web.ApiControllers
             {
                 return BadRequest();
             }
-
-            var brewery = this.breweryService.UpdateBrewery(id, model.Name);
+            var brewery = this.breweryService.UpdateBrewery(id, model.Name, model.Description, model.CountryId);
 
             return Ok();
         }

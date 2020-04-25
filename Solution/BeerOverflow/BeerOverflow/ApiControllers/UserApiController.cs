@@ -20,7 +20,7 @@ namespace BeerOverflow.Web.ApiControllers
         public UserApiController(IUserService userService)
         {
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
- 
+
         }
 
         [HttpGet]
@@ -31,16 +31,8 @@ namespace BeerOverflow.Web.ApiControllers
             {
                 var userDTO = this.userService.GetUserById(id);
 
-                var model = new UserViewModel
-                {
-                    Id = userDTO.Id,
-                    Username = userDTO.Username,
-                    FirstName = userDTO.FirstName,
-                    LastName = userDTO.LastName,
-                    Email = userDTO.Email,
-                    CreatedOn = userDTO.CreatedOn
-
-                };
+                var model = new UserViewModel(userDTO.Id, userDTO.Username,
+                    userDTO.FirstName, userDTO.LastName, userDTO.Email, userDTO.CreatedOn);
 
                 return Ok(model);
             }
@@ -55,15 +47,8 @@ namespace BeerOverflow.Web.ApiControllers
         public IActionResult Get()
         {
             var users = this.userService.GetAllUsers()
-                .Select(u => new UserViewModel
-                {
-                    Id = u.Id,
-                    Username = u.Username,
-                    FirstName = u.FirstName,
-                    LastName = u.LastName,
-                    Email = u.Email,
-                    CreatedOn = u.CreatedOn
-                }).ToList();
+                .Select(u => new UserViewModel(u.Id, u.Username, u.FirstName, u.LastName, u.Email, u.CreatedOn))
+                .ToList();
 
             return Ok(users);
         }
@@ -77,15 +62,8 @@ namespace BeerOverflow.Web.ApiControllers
                 return BadRequest();
             }
 
-            var userDTO = new UserDTO
-            {
-                Id = model.Id,
-                Username = model.Username,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Email = model.Email,
-                //CreatedOn = this.dateTimeProvider.GetDateTime()
-            };
+            var userDTO = new UserDTO(model.Id, model.Username,
+                model.FirstName, model.LastName, model.Email);
 
             var newUser = this.userService.CreateUser(userDTO);
 
@@ -100,8 +78,8 @@ namespace BeerOverflow.Web.ApiControllers
             {
                 return BadRequest();
             }
-
-            var user = this.userService.UpdateUser(id, model.Username);
+            var user = this.userService.UpdateUser(id, model.Username, 
+                model.FirstName, model.LastName, model.Email);
 
             return Ok();
         }

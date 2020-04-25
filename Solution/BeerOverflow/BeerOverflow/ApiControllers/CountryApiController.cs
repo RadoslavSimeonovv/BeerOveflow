@@ -28,12 +28,8 @@ namespace BeerOverflow.Web.ApiControllers
             {
                 var countryDTO = this.countryService.GetCountryById(id);
 
-                var model = new CountryViewModel
-                {
-                    Id = countryDTO.Id,
-                    Name = countryDTO.Name
-                };
-
+                var model = new CountryViewModel(countryDTO.Id, countryDTO.Name);
+    
                 return Ok(model);
             }
             catch (Exception)
@@ -47,11 +43,7 @@ namespace BeerOverflow.Web.ApiControllers
         public IActionResult Get()
         {
             var countries = this.countryService.GetAllCountries()
-                .Select(x => new CountryViewModel
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                }).ToList();
+                .Select(x => new CountryViewModel(x.Id, x.Name));
 
             return Ok(countries);
         }
@@ -65,11 +57,7 @@ namespace BeerOverflow.Web.ApiControllers
                 return BadRequest();
             }
 
-            var countryDTO = new CountryDTO
-            {
-                Id = model.Id,
-                Name = model.Name,
-            };
+            var countryDTO = new CountryDTO(model.Id, model.Name);
 
             var newCountry = this.countryService.CreateCountry(countryDTO);
 

@@ -45,6 +45,7 @@ namespace BeerOverflow.Services
 
             country.DeletedOn = DateTime.UtcNow;
             _beerOverflowContext.Countries.Update(country);
+            _beerOverflowContext.SaveChanges();
 
             return true;
         }
@@ -53,11 +54,8 @@ namespace BeerOverflow.Services
         {
             var countries = _beerOverflowContext.Countries
                .Where(x => x.DeletedOn == null)
-               .Select(x => new CountryDTO
-               {
-                   Id = x.Id,
-                   Name = x.Name,
-               });
+               .Select(x => new CountryDTO(x.Id, x.Name));
+
 
             return countries;
         }
@@ -72,11 +70,7 @@ namespace BeerOverflow.Services
                 throw new ArgumentNullException();
             }
 
-            var countryDTO = new CountryDTO
-            {
-                Id = country.Id,
-                Name = country.Name,
-            };
+            var countryDTO = new CountryDTO(country.Id, country.Name);
 
             return countryDTO;
         }
@@ -88,11 +82,8 @@ namespace BeerOverflow.Services
 
             country.Name = newName;
 
-            var countryDTO = new CountryDTO
-            {
-                Id = country.Id,
-                Name = country.Name,
-            };
+            var countryDTO = new CountryDTO(country.Id, country.Name);
+
 
             _beerOverflowContext.Countries.Update(country);
             _beerOverflowContext.SaveChanges();

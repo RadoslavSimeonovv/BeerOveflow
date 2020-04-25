@@ -47,6 +47,8 @@ namespace BeerOverflow.Services
             }
 
             brewery.DeletedOn = DateTime.UtcNow;
+
+            _beerOverflowContext.Breweries.Update(brewery);
             _beerOverflowContext.SaveChanges();
 
             return true;
@@ -57,14 +59,8 @@ namespace BeerOverflow.Services
             var breweries = _beerOverflowContext.Breweries.
               Include(b => b.Country).
               Where(b => b.DeletedOn == null).
-              Select(b => new BreweryDTO
-              {
-                  Id = b.Id,
-                  Name = b.Name,
-                  Description = b.Description,
-                  CountryId = b.CountryId,
-                  Country = b.Country.Name
-              });
+              Select(b => new BreweryDTO(b.Id, b.Name, 
+              b.Description, b.CountryId, b.Country.Name));
 
             return breweries;
         }
@@ -81,30 +77,23 @@ namespace BeerOverflow.Services
                 throw new ArgumentNullException();
             }
 
-            var breweryDTO = new BreweryDTO
-            {
-                Id = brewery.Id,
-                Name = brewery.Name,
-                Description = brewery.Description,
-                CountryId = brewery.CountryId,
-                Country = brewery.Country.Name
-            };
+            var breweryDTO = new BreweryDTO(brewery.Id, brewery.Name, 
+                brewery.Description, brewery.CountryId, brewery.Country.Name);
 
             return breweryDTO;
         }
 
-        public BreweryDTO UpdateBrewery(int id, string newName)
+        public BreweryDTO UpdateBrewery(int id, string newName, string newDescrip, int newCountryId)
         {
             var brewery = _beerOverflowContext.Breweries
                .FirstOrDefault(brewery => brewery.Id == id);
 
             brewery.Name = newName;
+            brewery.Description = newDescrip;
+            brewery.CountryId = newCountryId;
 
-            var breweryDTO = new BreweryDTO
-            {
-                Id = brewery.Id,
-                Name = brewery.Name,
-            };
+            var breweryDTO = new BreweryDTO(brewery.Id, brewery.Name, 
+                brewery.Description, brewery.CountryId);
 
             _beerOverflowContext.Breweries.Update(brewery);
             _beerOverflowContext.SaveChanges();
