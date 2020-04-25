@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+
 
 namespace BeerOverflow.Services
 {
@@ -28,17 +28,8 @@ namespace BeerOverflow.Services
             {
                 throw new ArgumentNullException();
             }
-            var beerDto = new BeerDTO
-            {
-                Id = beer.Id,
-                BeerName = beer.BeerName,
-                BeerTypeId = beer.BeerTypeId,
-                BeerType = beer.BeerType.Type,
-                BreweryId = beer.BreweryId,
-                Brewery = beer.Brewery.Name,
-                AlcByVol = beer.AlcByVol,
-                Description = beer.Description,
-            };
+            var beerDto = new BeerDTO(beer.Id, beer.BeerName, beer.BeerTypeId, beer.BeerType.Type, beer.BreweryId, beer.Brewery.Name, beer.AlcByVol, beer.Description);
+
             return beerDto;
         }
         public IEnumerable<BeerDTO> GetAllBeers()
@@ -47,18 +38,8 @@ namespace BeerOverflow.Services
                 .Include(b => b.BeerType)
                 .Include(b => b.Brewery)
                 .Where(b => b.DateUnlisted == null)
-                .Select(b => new BeerDTO
-                {
-                    Id = b.Id,
-                    BeerName = b.BeerName,
-                    BeerTypeId = b.BeerTypeId,
-                    BeerType = b.BeerType.Type,
-                    BreweryId = b.BreweryId,
-                    Brewery = b.Brewery.Name,
+                .Select(b => new BeerDTO(b.Id, b.BeerName, b.BeerTypeId, b.BeerType.Type, b.BreweryId, b.Brewery.Name, b.AlcByVol, b.Description)).ToList();
 
-                    AlcByVol = b.AlcByVol,
-                    Description = b.Description,
-                }).ToList();
             return beersDTO;
         }
 
@@ -100,17 +81,7 @@ namespace BeerOverflow.Services
                     break;
             }
 
-            var beerDTOs = beersQry.Select(b => new BeerDTO
-            {
-                Id = b.Id,
-                BeerName = b.BeerName,
-                BeerTypeId = b.BeerTypeId,
-                BeerType = b.BeerType.Type,
-                BreweryId = b.BreweryId,
-                Brewery = b.Brewery.Name,
-                AlcByVol = b.AlcByVol,
-                Description = b.Description,
-            });
+            var beerDTOs = beersQry.Select(b => new BeerDTO(b.Id, b.BeerName,b.BeerTypeId, b.BeerType.Type, b.BreweryId, b.Brewery.Name, b.AlcByVol, b.Description));
 
             return beerDTOs;
         }
@@ -118,16 +89,8 @@ namespace BeerOverflow.Services
         {
             try
             {
-                var beer = new Beer
-                {
-                    BeerName = beerDTO.BeerName,
-                    BeerTypeId = beerDTO.BeerTypeId,
-                    BreweryId = beerDTO.BreweryId,
-                    AlcByVol = beerDTO.AlcByVol,
-                    Description = beerDTO.Description,
-                };
+                var beer = new Beer(beerDTO.BeerName, beerDTO.BeerTypeId, beerDTO.BreweryId, beerDTO.AlcByVol, beerDTO.Description);
                 _beerOverflowContext.Beers.Add(beer);
-                //_beerOverflowContext.Update(beer);
                 _beerOverflowContext.SaveChanges();
                 return beerDTO;
             }
@@ -140,9 +103,6 @@ namespace BeerOverflow.Services
         {
 
             var beer = _beerOverflowContext.Beers
-                //.Include(b => b.BeerType)
-                //.Include(b => b.Brewery)
-                //.Include(b => b.Country)
                 .Where(b => b.DateUnlisted == null)
                 .FirstOrDefault(b => b.Id == id);
             if (beer == null)
@@ -162,7 +122,6 @@ namespace BeerOverflow.Services
             if (breweryId != 0)
             {
                 var _brewery = _beerOverflowContext.Breweries.Find(breweryId);
-                //.FirstOrDefault(br => br.Name == brewery);
                 if (_brewery == null)
                 {
                     throw new ArgumentException("Provided brewery is not within the list of breweries");
@@ -173,7 +132,6 @@ namespace BeerOverflow.Services
             if (beerTypeId != 0)
             {
                 var _beerType = _beerOverflowContext.BeerTypes.Find(beerTypeId);
-                //.FirstOrDefault(br => br.Type == beerType);
                 if (_beerType == null)
                 {
                     throw new ArgumentException("Provided beer type is not within the list of beer types");
@@ -259,17 +217,8 @@ namespace BeerOverflow.Services
             }
 
             var beersDTO = qryBeers
-                    .Select(b => new BeerDTO
-                    {
-                        Id = b.Id,
-                        BeerName = b.BeerName,
-                        BeerTypeId = b.BeerTypeId,
-                        BeerType = b.BeerType.Type,
-                        BreweryId = b.BreweryId,
-                        Brewery = b.Brewery.Name,
-                        AlcByVol = b.AlcByVol,
-                        Description = b.Description,
-                    }).ToList();
+                    .Select(b => new BeerDTO(b.Id, b.BeerName, b.BeerTypeId, b.BeerType.Type, b.BreweryId, b.Brewery.Name, b.AlcByVol, b.Description)).ToList();
+
             return beersDTO;
         }
 

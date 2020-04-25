@@ -245,11 +245,6 @@ namespace BeerOverflow.Data
                 CountryId = 1
             });
 
-
-
-
-
-
             modelBuilder.Entity<Beer>().HasData(
           new Beer
           {

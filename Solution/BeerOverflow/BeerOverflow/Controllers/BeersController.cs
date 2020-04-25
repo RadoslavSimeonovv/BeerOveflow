@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BeerOverflow.Data;
-using BeerOverflow.Data.Entities;
 using BeerOverflow.Services.Contracts;
 using BeerOverflow.Web.Models;
 using BeerOverflow.Services.DTO_s;
@@ -49,17 +47,7 @@ namespace BeerOverflow.Web.Controllers
 
             ViewBag.CurrentFilter = searchString;
             var models = beerService.GetBeers(sortOrder, currentFilter, searchString)
-                .Select(b => new BeerViewModel
-                {
-                    Id = b.Id,
-                    BeerName = b.BeerName,
-                    AlcByVol = b.AlcByVol,
-                    Description = b.Description,
-                    BeerType = b.BeerType,
-                    BeerTypeId = b.BeerTypeId,
-                    Brewery = b.Brewery,
-                    BreweryId = b.BreweryId,
-                });
+                .Select(b => new BeerViewModel(b.Id, b.BeerName, b.AlcByVol, b.Description, b.BeerType, b.BeerTypeId, b.Brewery, b.BreweryId));
             int pageSize = 5;
             int pageNumber = (page ?? 1);
             return View(models.ToPagedList(pageNumber, pageSize));
@@ -75,18 +63,7 @@ namespace BeerOverflow.Web.Controllers
             try
             {
                 var beerDTO = beerService.GetBeer(id);
-                var model = new BeerViewModel
-                {
-                    Id = beerDTO.Id,
-                    BeerName = beerDTO.BeerName,
-                    AlcByVol = beerDTO.AlcByVol,
-                    Description = beerDTO.Description,
-                    //DateUnlisted = beerDTO.DateUnlisted,
-                    BeerType = beerDTO.BeerType,
-                    BeerTypeId = beerDTO.BeerTypeId,
-                    Brewery = beerDTO.Brewery,
-                    BreweryId = beerDTO.BreweryId,
-                };
+                var model = new BeerViewModel(beerDTO.Id, beerDTO.BeerName, beerDTO.AlcByVol, beerDTO.Description, beerDTO.BeerType, beerDTO.BeerTypeId, beerDTO.Brewery, beerDTO.BreweryId);
                 return View(model);
             }
             catch (Exception)
@@ -113,14 +90,7 @@ namespace BeerOverflow.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var beerDto = new BeerDTO
-                {
-                    BeerName = model.BeerName,
-                    AlcByVol = (double)model.AlcByVol,
-                    Description = model.Description,
-                    BeerTypeId = model.BeerTypeId,
-                    BreweryId = model.BreweryId,
-                };
+                var beerDto = new BeerDTO(model.BeerName, model.BeerTypeId, model.BreweryId, (double)model.AlcByVol, model.Description);
                 var beer = beerService.CreateBeer(beerDto);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -150,16 +120,6 @@ namespace BeerOverflow.Web.Controllers
             ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Name");
             return View(beer);
         }
-        /*
-            var beerName = model.BeerName;
-            var alkByVol = model.AlcByVol;
-            var descr = model.Description;
-            int countryId = model.CountryId;
-            var beerTypeId = model.BeerTypeId;
-            var breweryId = model.BreweryId;
-            beerService.UpdateBeer(id, beerName, alkByVol, descr, countryId, beerTypeId, breweryId);
-            return Ok(); 
-         */
 
         // POST: Beers/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -177,14 +137,13 @@ namespace BeerOverflow.Web.Controllers
             {
                 try
                 {
+                    //TODO is it possible to be model
                     var beerName = model.BeerName;
                     var alkByVol = model.AlcByVol;
                     var descr = model.Description;
                     var beerTypeId = model.BeerTypeId;
                     var breweryId = model.BreweryId;
                     beerService.UpdateBeer(id, beerName, alkByVol, descr, beerTypeId, breweryId);
-                    //_context.Update(beer);
-                    //await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {

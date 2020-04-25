@@ -6,6 +6,18 @@ namespace BeerOverflow.Data.Entities
 {
     public class Beer
     {
+        public Beer()
+        {
+
+        }
+        public Beer(string beerName, int beerTypeId,int breweryId, double abv, string description)
+        {
+            this.BeerName = beerName;
+            this.BeerTypeId = beerTypeId;
+            this.BreweryId = breweryId;
+            this.AlcByVol = abv;
+            this.Description = description;
+        }
         public int Id { get; set; }
         public string BeerName { get; set; }
         public double AlcByVol { get; set; }

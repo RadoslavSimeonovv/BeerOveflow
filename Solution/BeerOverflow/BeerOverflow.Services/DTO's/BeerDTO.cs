@@ -7,6 +7,26 @@ namespace BeerOverflow.Services.DTO_s
 {
     public class BeerDTO
     {
+        public BeerDTO(string beerName, int beerTypeId, int breweryId, double abv, string description)
+        {
+            this.BeerName = beerName;
+            this.BeerTypeId = beerTypeId;
+            this.BreweryId = breweryId;
+            this.AlcByVol = abv;
+            this.Description = description;
+        }
+        public BeerDTO(int id, string beerName, int beerTypeId, string beerType, int breweryId, string breweryName, double abv, string description)
+        {
+            this.Id = id;
+            this.BeerName = beerName;
+            this.BeerTypeId = beerTypeId;
+            this.BeerType = beerType;
+            this.BreweryId = breweryId;
+            this.Brewery = breweryName;
+            this.AlcByVol = abv;
+            this.Description = description;
+        }
+
         public int Id { get; set; }
         public string BeerName { get; set; }
         public double AlcByVol { get; set; }

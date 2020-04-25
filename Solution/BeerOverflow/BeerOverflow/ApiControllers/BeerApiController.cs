@@ -25,18 +25,7 @@ namespace BeerOverflow.Web.ApiControllers
         public IActionResult GetAllBeers()
         {
             var models = beerService.GetAllBeers()
-                .Select(b => new BeerViewModel
-                {
-                    Id = b.Id,
-                    BeerName = b.BeerName,
-                    AlcByVol = b.AlcByVol,
-                    Description = b.Description,
-                    //DateUnlisted = b.DateUnlisted,
-                    BeerType = b.BeerType,
-                    BeerTypeId = b.BeerTypeId,
-                    Brewery = b.Brewery,
-                    BreweryId = b.BreweryId,
-                }).ToList();
+                .Select(b => new BeerViewModel(b.Id, b.BeerName, b.AlcByVol, b.Description, b.BeerType, b.BeerTypeId, b.Brewery, b.BreweryId)).ToList();
             return Ok(models);
         }
         [HttpGet]
@@ -46,18 +35,7 @@ namespace BeerOverflow.Web.ApiControllers
             try
             {
                 var beerDTO = beerService.GetBeer(id);
-                var model = new BeerViewModel
-                {
-                    Id = beerDTO.Id,
-                    BeerName = beerDTO.BeerName,
-                    AlcByVol = beerDTO.AlcByVol,
-                    Description = beerDTO.Description,
-                    //DateUnlisted = beerDTO.DateUnlisted,
-                    BeerType = beerDTO.BeerType,
-                    BeerTypeId = beerDTO.BeerTypeId,
-                    Brewery = beerDTO.Brewery,
-                    BreweryId = beerDTO.BreweryId,
-                };
+                var model = new BeerViewModel(beerDTO.Id, beerDTO.BeerName, beerDTO.AlcByVol, beerDTO.Description, beerDTO.BeerType, beerDTO.BeerTypeId, beerDTO.Brewery, beerDTO.BreweryId);
                 return Ok(model);
             }
             catch (Exception)
@@ -71,18 +49,7 @@ namespace BeerOverflow.Web.ApiControllers
         {
             try
             {
-                var beerDto = new BeerDTO
-                {
-                    BeerName = model.BeerName,
-                    AlcByVol = (double)model.AlcByVol,
-                    Description = model.Description,
-                    //DateUnlisted = model.DateUnlisted,
-                    //Country = model.Country,
-                    //BeerType = model.BeerType,
-                    BeerTypeId = model.BeerTypeId,
-                    //Brewery = model.Brewery,
-                    BreweryId = model.BreweryId,
-                };
+                var beerDto = new BeerDTO(model.BeerName, model.BeerTypeId, model.BreweryId, (double)model.AlcByVol, model.Description);
                 var beer = beerService.CreateBeer(beerDto);
                 return Created("Post", beer);
             }
@@ -102,7 +69,6 @@ namespace BeerOverflow.Web.ApiControllers
             var breweryId = model.BreweryId;
             beerService.UpdateBeer(id, beerName, alkByVol, descr, beerTypeId, breweryId);
             return Ok();
-            //UpdateBeer(int id, string beerName, double? abv, string description, string country, string beerType, string brewery)
         }
         [HttpDelete]
         [Route("{id}")]
@@ -127,20 +93,7 @@ namespace BeerOverflow.Web.ApiControllers
 
 
             var beers = this.beerService.FilterBeers(type, orderby)
-             .Select(b => new BeerViewModel
-             {
-                 Id = b.Id,
-                 BeerName = b.BeerName,
-                 AlcByVol = b.AlcByVol,
-                 Description = b.Description,
-                     //DateUnlisted = b.DateUnlisted,
-                 BeerType = b.BeerType,
-                 BeerTypeId = b.BeerTypeId,
-                 Brewery = b.Brewery,
-                 BreweryId = b.BreweryId,
-
-             }).ToList();
-
+             .Select(b => new BeerViewModel(b.Id, b.BeerName, b.AlcByVol, b.Description, b.BeerType, b.BeerTypeId, b.Brewery, b.BreweryId)).ToList();
             return Ok(beers);
         }
 
