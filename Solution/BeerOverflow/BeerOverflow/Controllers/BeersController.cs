@@ -55,8 +55,6 @@ namespace BeerOverflow.Web.Controllers
                     BeerName = b.BeerName,
                     AlcByVol = b.AlcByVol,
                     Description = b.Description,
-                    Country = b.Country,
-                    CountryId = b.CountryId,
                     BeerType = b.BeerType,
                     BeerTypeId = b.BeerTypeId,
                     Brewery = b.Brewery,
@@ -84,8 +82,6 @@ namespace BeerOverflow.Web.Controllers
                     AlcByVol = beerDTO.AlcByVol,
                     Description = beerDTO.Description,
                     //DateUnlisted = beerDTO.DateUnlisted,
-                    Country = beerDTO.Country,
-                    CountryId = beerDTO.CountryId,
                     BeerType = beerDTO.BeerType,
                     BeerTypeId = beerDTO.BeerTypeId,
                     Brewery = beerDTO.Brewery,
@@ -113,7 +109,7 @@ namespace BeerOverflow.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BeerName,AlcByVol,Description,CountryId,BeerTypeId,BreweryId")] BeerViewModel model)
+        public async Task<IActionResult> Create([Bind("BeerName,AlcByVol,Description,BeerTypeId,BreweryId")] BeerViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -122,7 +118,6 @@ namespace BeerOverflow.Web.Controllers
                     BeerName = model.BeerName,
                     AlcByVol = (double)model.AlcByVol,
                     Description = model.Description,
-                    CountryId = model.CountryId,
                     BeerTypeId = model.BeerTypeId,
                     BreweryId = model.BreweryId,
                 };
@@ -185,10 +180,9 @@ namespace BeerOverflow.Web.Controllers
                     var beerName = model.BeerName;
                     var alkByVol = model.AlcByVol;
                     var descr = model.Description;
-                    int countryId = model.CountryId;
                     var beerTypeId = model.BeerTypeId;
                     var breweryId = model.BreweryId;
-                    beerService.UpdateBeer(id, beerName, alkByVol, descr, countryId, beerTypeId, breweryId);
+                    beerService.UpdateBeer(id, beerName, alkByVol, descr, beerTypeId, breweryId);
                     //_context.Update(beer);
                     //await _context.SaveChangesAsync();
                 }
@@ -222,7 +216,6 @@ namespace BeerOverflow.Web.Controllers
             var beer = await _context.Beers
                 .Include(b => b.BeerType)
                 .Include(b => b.Brewery)
-                .Include(b => b.Country)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (beer == null)
             {

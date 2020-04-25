@@ -13,9 +13,6 @@ namespace BeerOverflow.Services.DTO_s
         public string Description { get; set; }
         public DateTime? DateUnlisted { get; set; }
 
-        public String Country { get; set; }
-        public int CountryId { get; set; }
-
         public String BeerType { get; set; }
         public int BeerTypeId { get; set; }
 

@@ -10,8 +10,6 @@ namespace BeerOverflow.Data.Entities
         public string Name { get; set; }
         public DateTime? DeletedOn { get; set; }
 
-        public ICollection<Beer> Beers { get; set; }
-
         public ICollection<Brewery> Breweries { get; set; }
 
     }

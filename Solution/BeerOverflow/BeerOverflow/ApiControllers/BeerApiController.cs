@@ -32,8 +32,6 @@ namespace BeerOverflow.Web.ApiControllers
                     AlcByVol = b.AlcByVol,
                     Description = b.Description,
                     //DateUnlisted = b.DateUnlisted,
-                    Country = b.Country,
-                    CountryId = b.CountryId,
                     BeerType = b.BeerType,
                     BeerTypeId = b.BeerTypeId,
                     Brewery = b.Brewery,
@@ -55,8 +53,6 @@ namespace BeerOverflow.Web.ApiControllers
                     AlcByVol = beerDTO.AlcByVol,
                     Description = beerDTO.Description,
                     //DateUnlisted = beerDTO.DateUnlisted,
-                    Country = beerDTO.Country,
-                    CountryId = beerDTO.CountryId,
                     BeerType = beerDTO.BeerType,
                     BeerTypeId = beerDTO.BeerTypeId,
                     Brewery = beerDTO.Brewery,
@@ -82,7 +78,6 @@ namespace BeerOverflow.Web.ApiControllers
                     Description = model.Description,
                     //DateUnlisted = model.DateUnlisted,
                     //Country = model.Country,
-                    CountryId = model.CountryId,
                     //BeerType = model.BeerType,
                     BeerTypeId = model.BeerTypeId,
                     //Brewery = model.Brewery,
@@ -103,10 +98,9 @@ namespace BeerOverflow.Web.ApiControllers
             var beerName = model.BeerName;
             var alkByVol = model.AlcByVol;
             var descr = model.Description;
-            int countryId = model.CountryId;
             var beerTypeId = model.BeerTypeId;
             var breweryId = model.BreweryId;
-            beerService.UpdateBeer(id, beerName, alkByVol, descr, countryId, beerTypeId, breweryId);
+            beerService.UpdateBeer(id, beerName, alkByVol, descr, beerTypeId, breweryId);
             return Ok();
             //UpdateBeer(int id, string beerName, double? abv, string description, string country, string beerType, string brewery)
         }
@@ -128,11 +122,11 @@ namespace BeerOverflow.Web.ApiControllers
 
         [HttpGet]
         [Route("filter")]
-        public IActionResult Get(string country = null, string type = null, string orderby = null)
+        public IActionResult Get(string type = null, string orderby = null)
         {
 
 
-            var beers = this.beerService.FilterBeers(country, type, orderby)
+            var beers = this.beerService.FilterBeers(type, orderby)
              .Select(b => new BeerViewModel
              {
                  Id = b.Id,
@@ -140,8 +134,6 @@ namespace BeerOverflow.Web.ApiControllers
                  AlcByVol = b.AlcByVol,
                  Description = b.Description,
                      //DateUnlisted = b.DateUnlisted,
-                     Country = b.Country,
-                 CountryId = b.CountryId,
                  BeerType = b.BeerType,
                  BeerTypeId = b.BeerTypeId,
                  Brewery = b.Brewery,

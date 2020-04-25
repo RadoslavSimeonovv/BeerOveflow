@@ -22,7 +22,6 @@ namespace BeerOverflow.Services
             var beer = _beerOverflowContext.Beers
                 .Include(b => b.BeerType)
                 .Include(b => b.Brewery)
-                .Include(b => b.Country)
                 .Where(b => b.DateUnlisted == null)
                 .FirstOrDefault(b => b.Id == id);
             if (beer == null)
@@ -37,8 +36,6 @@ namespace BeerOverflow.Services
                 BeerType = beer.BeerType.Type,
                 BreweryId = beer.BreweryId,
                 Brewery = beer.Brewery.Name,
-                CountryId = beer.CountryId,
-                Country = beer.Country.Name,
                 AlcByVol = beer.AlcByVol,
                 Description = beer.Description,
             };
@@ -49,7 +46,6 @@ namespace BeerOverflow.Services
             var beersDTO = _beerOverflowContext.Beers
                 .Include(b => b.BeerType)
                 .Include(b => b.Brewery)
-                .Include(b => b.Country)
                 .Where(b => b.DateUnlisted == null)
                 .Select(b => new BeerDTO
                 {
@@ -59,8 +55,7 @@ namespace BeerOverflow.Services
                     BeerType = b.BeerType.Type,
                     BreweryId = b.BreweryId,
                     Brewery = b.Brewery.Name,
-                    CountryId = b.CountryId,
-                    Country = b.Country.Name,
+
                     AlcByVol = b.AlcByVol,
                     Description = b.Description,
                 }).ToList();
@@ -71,8 +66,7 @@ namespace BeerOverflow.Services
         {
             var beersQry = (IQueryable<Beer>)_beerOverflowContext.Beers
                 .Include(b => b.BeerType)
-                .Include(b => b.Brewery)
-                .Include(b => b.Country);
+                .Include(b => b.Brewery);
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -95,12 +89,6 @@ namespace BeerOverflow.Services
                 case "beertype_desc":
                     beersQry = beersQry.OrderByDescending(b => b.BeerType);
                     break;
-                case "country":
-                    beersQry = beersQry.OrderBy(b => b.Country);
-                    break;
-                case "country_desc":
-                    beersQry = beersQry.OrderByDescending(b => b.Country);
-                    break;
                 case "brewery":
                     beersQry = beersQry.OrderBy(b => b.Brewery);
                     break;
@@ -120,8 +108,6 @@ namespace BeerOverflow.Services
                 BeerType = b.BeerType.Type,
                 BreweryId = b.BreweryId,
                 Brewery = b.Brewery.Name,
-                CountryId = b.CountryId,
-                Country = b.Country.Name,
                 AlcByVol = b.AlcByVol,
                 Description = b.Description,
             });
@@ -137,7 +123,6 @@ namespace BeerOverflow.Services
                     BeerName = beerDTO.BeerName,
                     BeerTypeId = beerDTO.BeerTypeId,
                     BreweryId = beerDTO.BreweryId,
-                    CountryId = beerDTO.CountryId,
                     AlcByVol = beerDTO.AlcByVol,
                     Description = beerDTO.Description,
                 };
@@ -151,7 +136,7 @@ namespace BeerOverflow.Services
                 throw;
             }
         }
-        public BeerDTO UpdateBeer(int id, string beerName, double? abv, string description, int countryId, int beerTypeId, int breweryId)
+        public BeerDTO UpdateBeer(int id, string beerName, double? abv, string description, int beerTypeId, int breweryId)
         {
 
             var beer = _beerOverflowContext.Beers
@@ -173,16 +158,6 @@ namespace BeerOverflow.Services
 
             if (description != null)
                 beer.Description = description;
-
-            if (countryId != 0)
-            {
-                var ctry = _beerOverflowContext.Countries.Find(countryId);
-                if (ctry == null)
-                {
-                    throw new ArgumentException("Provided country is not within the list of countries");
-                }
-                beer.CountryId = ctry.Id;
-            }
 
             if (breweryId != 0)
             {
@@ -224,17 +199,9 @@ namespace BeerOverflow.Services
             return true;
 
         }
-        public IEnumerable<BeerDTO> FilterBeers(string country, string type, string orderby)
+        public IEnumerable<BeerDTO> FilterBeers(string type, string orderby)
         {
             var qryBeers = (IQueryable<Beer>)_beerOverflowContext.Beers;
-            if (country != null)
-            {
-                var ctry = _beerOverflowContext.Countries.FirstOrDefault(c => c.Name == country);
-                if (ctry != null)
-                {
-                    qryBeers = qryBeers.Where(b => b.CountryId == ctry.Id);
-                }
-            }
 
             if (type != null)
             {
@@ -274,16 +241,7 @@ namespace BeerOverflow.Services
                                     : ((IOrderedQueryable<Beer>)qryBeers).ThenByDescending(b => b.AlcByVol);
                             }
                             break;
-                        case "county":
-                            if (!orderClauses[i].EndsWith(" desc"))
-                                qryBeers = i == 0 ? qryBeers.OrderBy(b => b.Country)
-                                    : ((IOrderedQueryable<Beer>)qryBeers).ThenBy(b => b.Country);
-                            else
-                            {
-                                qryBeers = i == 0 ? qryBeers.OrderByDescending(b => b.Country)
-                                    : ((IOrderedQueryable<Beer>)qryBeers).ThenByDescending(b => b.Country);
-                            }
-                            break;
+ 
                         case "brewery":
                             if (!orderClauses[i].EndsWith(" desc"))
                                 qryBeers = i == 0 ? qryBeers.OrderBy(b => b.Brewery)
@@ -309,8 +267,6 @@ namespace BeerOverflow.Services
                         BeerType = b.BeerType.Type,
                         BreweryId = b.BreweryId,
                         Brewery = b.Brewery.Name,
-                        CountryId = b.CountryId,
-                        Country = b.Country.Name,
                         AlcByVol = b.AlcByVol,
                         Description = b.Description,
                     }).ToList();

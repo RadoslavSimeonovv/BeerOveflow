@@ -16,7 +16,7 @@ namespace BeerOverflow.Data.Configuration
             builder.HasIndex(b => b.BeerName).IsUnique();
             builder.Property(b => b.AlcByVol).IsRequired();
             builder.Property(b => b.Description).IsRequired();
-            builder.HasOne(b => b.Country).WithMany(b => b.Beers).OnDelete(DeleteBehavior.Restrict);
+ 
         }
     }
 }

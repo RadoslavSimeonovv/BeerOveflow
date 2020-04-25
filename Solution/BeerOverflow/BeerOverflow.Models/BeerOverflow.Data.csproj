@@ -21,6 +21,14 @@
     <Compile Remove="Migrations\20200414091811_UpdatedBeerCtry_Id.Designer.cs" />
     <Compile Remove="Migrations\20200414092022_UpdatedBeerCtry_Id.cs" />
     <Compile Remove="Migrations\20200414092022_UpdatedBeerCtry_Id.Designer.cs" />
+    <Compile Remove="Migrations\20200425110404_addedSeeder.cs" />
+    <Compile Remove="Migrations\20200425110404_addedSeeder.Designer.cs" />
+    <Compile Remove="Migrations\20200425111745_addedBeerSeeder.cs" />
+    <Compile Remove="Migrations\20200425111745_addedBeerSeeder.Designer.cs" />
+    <Compile Remove="Migrations\20200425112702_addedBeerSeeder.cs" />
+    <Compile Remove="Migrations\20200425112702_addedBeerSeeder.Designer.cs" />
+    <Compile Remove="Migrations\20200425121849_addedSeeder.cs" />
+    <Compile Remove="Migrations\20200425121849_addedSeeder.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
