@@ -22,13 +22,14 @@ namespace BeerOverflow.Services
             var beer = _beerOverflowContext.Beers
                 .Include(b => b.BeerType)
                 .Include(b => b.Brewery)
+                .Include(b=>b.Reviews)
                 .Where(b => b.DateUnlisted == null)
                 .FirstOrDefault(b => b.Id == id);
             if (beer == null)
             {
                 throw new ArgumentNullException();
             }
-            var beerDto = new BeerDTO(beer.Id, beer.BeerName, beer.BeerTypeId, beer.BeerType.Type, beer.BreweryId, beer.Brewery.Name, beer.AlcByVol, beer.Description);
+            var beerDto = new BeerDTO(beer.Id, beer.BeerName, beer.BeerTypeId, beer.BeerType.Type, beer.BreweryId, beer.Brewery.Name, beer.AlcByVol, beer.Description,beer.Reviews);
 
             return beerDto;
         }
