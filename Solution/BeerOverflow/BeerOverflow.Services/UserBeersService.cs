@@ -61,14 +61,8 @@ namespace BeerOverflow.Services
                 }
             }
 
-            var userBeerDTO = new UserBeersDTO
-            {
-                UserId = user.Id,
-                BeerId = beer.Id,
-                User = user.Username,
-                Beer = beer.BeerName,
-                DrankOn = userBeer.DrankOn
-            };
+            var userBeerDTO = new UserBeersDTO(user.Username, user.Id, 
+                beer.BeerName, beer.Id,  userBeer.DrankOn);
 
             return userBeerDTO;
 
@@ -104,14 +98,9 @@ namespace BeerOverflow.Services
                 throw new InvalidOperationException("Cannot add into database!");
             }
 
-            var userBeerDTO = new UserBeersDTO
-            {
-                UserId = user.Id,
-                BeerId = beer.Id,
-                User = user.Username,
-                Beer = beer.BeerName
-            };
-
+            var userBeerDTO = new UserBeersDTO(user.Username, user.Id, 
+                beer.BeerName, beer.Id);
+ 
             return userBeerDTO;
         }
 
@@ -129,14 +118,8 @@ namespace BeerOverflow.Services
                .Where(ub => ub.DrankOn != null)
                //.Include(u => u.User)
                //.Include(b => b.Beer)
-               .Select(ub => new UserBeersDTO
-               {
-                   UserId = ub.UserId,
-                   BeerId = ub.BeerId,
-                   User = ub.User.Username,
-                   Beer = ub.Beer.BeerName,
-                   DrankOn = ub.DrankOn
-               });
+               .Select(ub => new UserBeersDTO(ub.User.Username, ub.UserId, 
+               ub.Beer.BeerName, ub.BeerId, ub.DrankOn));
 
             return userBeers;
         }
@@ -155,13 +138,8 @@ namespace BeerOverflow.Services
                 .Where(ub => ub.DrankOn == null)
                 .Include(u => u.User)
                 .Include(b => b.Beer)
-                .Select(ub => new UserBeersDTO
-                {
-                    UserId = ub.UserId,
-                    BeerId = ub.BeerId,
-                    User = ub.User.Username,
-                    Beer = ub.Beer.BeerName,
-                });
+                .Select(ub => new UserBeersDTO(ub.User.Username, ub.UserId,
+                ub.Beer.BeerName, ub.BeerId));
 
             return userBeers;
         }

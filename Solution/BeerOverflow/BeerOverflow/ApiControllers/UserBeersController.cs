@@ -28,13 +28,8 @@ namespace BeerOverflow.Web.ApiControllers
             {
                 var userBeers = userBeersService.AddBeerToWishList(model.User, model.Beer);
 
-                var userBeersModel = new UserBeersViewModel
-                {
-                    User = userBeers.User,
-                    UserId = userBeers.UserId,
-                    Beer = userBeers.Beer,
-                    BeerId = userBeers.BeerId
-                };
+                var userBeersModel = new UserBeersViewModel(userBeers.User, userBeers.UserId,
+                    userBeers.Beer, userBeers.BeerId);
 
                 return Ok(userBeersModel);
             }
@@ -57,15 +52,8 @@ namespace BeerOverflow.Web.ApiControllers
             {
                 var userBeers = userBeersService.AddBeerToDrankList(model.User, model.Beer);
 
-                var userBeersModel = new UserBeersViewModel
-                {
-                    User = userBeers.User,
-                    UserId = userBeers.UserId,
-                    Beer = userBeers.Beer,
-                    BeerId = userBeers.BeerId,
-                    DrankOn = userBeers.DrankOn
-
-                };
+                var userBeersModel = new UserBeersViewModel(userBeers.User, userBeers.UserId,
+                    userBeers.Beer, userBeers.BeerId, userBeers.DrankOn);
 
                 return Ok(userBeersModel);
             }
@@ -83,13 +71,8 @@ namespace BeerOverflow.Web.ApiControllers
             {
                 var userBeersDTO = userBeersService.GetUserWishList(userName);
                 var modelUserBeers = userBeersDTO
-                    .Select(ub => new UserBeersViewModel
-                    {
-                        UserId = ub.UserId,
-                        User = ub.User,
-                        BeerId = ub.BeerId,
-                        Beer = ub.Beer
-                    });
+                    .Select(ub => new UserBeersViewModel(ub.User, ub.UserId,
+                     ub.Beer, ub.BeerId));
 
                 return Ok(modelUserBeers);
             }
@@ -108,15 +91,8 @@ namespace BeerOverflow.Web.ApiControllers
             {
                 var userBeersDTO = userBeersService.GetUserDrankList(userName);
                 var modelUserBeers = userBeersDTO
-                    .Select(ub => new UserBeersViewModel
-                    {
-                        UserId = ub.UserId,
-                        User = ub.User,
-                        BeerId = ub.BeerId,
-                        Beer = ub.Beer,
-                        DrankOn = ub.DrankOn
-                        
-                    });
+                    .Select(ub => new UserBeersViewModel(ub.User, ub.UserId,
+                     ub.Beer, ub.BeerId, ub.DrankOn));
 
                 return Ok(modelUserBeers);
             }
