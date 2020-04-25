@@ -8,6 +8,17 @@ namespace BeerOverflow.Web.Models
 {
     public class ReviewViewModel
     {
+        public ReviewViewModel( string rMessage, int rating, string user,
+         int userId, string beer, int beerId, DateTime? reviewedOn)
+        {
+            this.RMessage = rMessage;
+            this.Rating = rating;
+            this.UserName = user;
+            this.UserId = userId;
+            this.BeerName = beer;
+            this.BeerId = beerId;
+            this.ReviewedOn = reviewedOn;
+        }
         public string RMessage { get; set; }
         public int Rating { get; set; }
         public DateTime? ReviewedOn { get; set; }

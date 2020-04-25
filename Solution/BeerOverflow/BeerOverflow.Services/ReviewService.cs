@@ -58,16 +58,9 @@ namespace BeerOverflow.Services
             {
                 throw new InvalidOperationException("Cannot add into database!");
             }
-            var userReviewDTO = new ReviewDTO
-            {
-                UserId = userReview.UserId,
-                BeerId = userReview.BeerId,
-                User = userReview.User.Username,
-                Beer = userReview.Beer.BeerName,
-                Rating = userReview.Rating,
-                RMessage = userReview.RMessage,
-                ReviewedOn = userReview.ReviewedOn
-            };
+            var userReviewDTO = new ReviewDTO(userReview.Id, userReview.RMessage, userReview.Rating,
+                userReview.User.Username, userReview.UserId, userReview.Beer.BeerName,
+                userReview.BeerId, userReview.ReviewedOn);
 
             return userReviewDTO;
         }

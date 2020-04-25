@@ -27,7 +27,7 @@ namespace BeerOverflow.Services
                 .FirstOrDefault(b => b.Id == id);
             if (beer == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Beer is null!");
             }
             var beerDto = new BeerDTO(beer.Id, beer.BeerName, beer.BeerTypeId, beer.BeerType.Type, beer.BreweryId, beer.Brewery.Name, beer.AlcByVol, beer.Description,beer.Reviews);
 
@@ -108,7 +108,7 @@ namespace BeerOverflow.Services
                 .FirstOrDefault(b => b.Id == id);
             if (beer == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Beer is null!");
             }
 
             if (beerName != null)
@@ -150,7 +150,7 @@ namespace BeerOverflow.Services
             var beer = _beerOverflowContext.Beers.Find(id);
             if (id == 0 || beer == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Beer is null!");
             }
             beer.DateUnlisted = DateTime.UtcNow;
             _beerOverflowContext.SaveChanges();

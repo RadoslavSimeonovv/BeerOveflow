@@ -25,13 +25,13 @@ namespace BeerOverflow.Services
             
             if(user == null)
             {
-                throw new ArgumentNullException("User does not exist!");
+                throw new ArgumentNullException("User is null!");
             }
             var beer = _beerOverflowContext.Beers.FirstOrDefault(b => b.BeerName == beerName);
 
             if (beer == null)
             {
-                throw new ArgumentNullException("Beer does not exist!");
+                throw new ArgumentNullException("Beer is null!");
             }
             var userBeer = _beerOverflowContext.UserBeers
                 .Where(ub => ub.UserId == user.Id)

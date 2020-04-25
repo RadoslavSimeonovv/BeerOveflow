@@ -25,7 +25,10 @@ namespace BeerOverflow.Web.ApiControllers
         public IActionResult GetAllBeers()
         {
             var models = beerService.GetAllBeers()
-                .Select(b => new BeerViewModel(b.Id, b.BeerName, b.AlcByVol, b.Description, b.BeerType, b.BeerTypeId, b.Brewery, b.BreweryId)).ToList();
+                .Select(b => new BeerViewModel(b.Id, b.BeerName, b.AlcByVol, 
+                b.Description, b.BeerType, b.BeerTypeId, 
+                b.Brewery, b.BreweryId)).ToList();
+
             return Ok(models);
         }
         [HttpGet]
@@ -35,7 +38,10 @@ namespace BeerOverflow.Web.ApiControllers
             try
             {
                 var beerDTO = beerService.GetBeer(id);
-                var model = new BeerViewModel(beerDTO.Id, beerDTO.BeerName, beerDTO.AlcByVol, beerDTO.Description, beerDTO.BeerType, beerDTO.BeerTypeId, beerDTO.Brewery, beerDTO.BreweryId);
+                var model = new BeerViewModel(beerDTO.Id, beerDTO.BeerName, 
+                    beerDTO.AlcByVol, beerDTO.Description, beerDTO.BeerType,
+                    beerDTO.BeerTypeId, beerDTO.Brewery, beerDTO.BreweryId);
+
                 return Ok(model);
             }
             catch (Exception)
@@ -49,8 +55,10 @@ namespace BeerOverflow.Web.ApiControllers
         {
             try
             {
-                var beerDto = new BeerDTO(model.BeerName, model.BeerTypeId, model.BreweryId, (double)model.AlcByVol, model.Description);
+                var beerDto = new BeerDTO(model.BeerName, model.BeerTypeId, 
+                    model.BreweryId, (double)model.AlcByVol, model.Description);
                 var beer = beerService.CreateBeer(beerDto);
+
                 return Created("Post", beer);
             }
             catch (Exception)
@@ -68,6 +76,7 @@ namespace BeerOverflow.Web.ApiControllers
             var beerTypeId = model.BeerTypeId;
             var breweryId = model.BreweryId;
             beerService.UpdateBeer(id, beerName, alkByVol, descr, beerTypeId, breweryId);
+
             return Ok();
         }
         [HttpDelete]
@@ -90,10 +99,11 @@ namespace BeerOverflow.Web.ApiControllers
         [Route("filter")]
         public IActionResult Get(string type = null, string orderby = null)
         {
-
-
             var beers = this.beerService.FilterBeers(type, orderby)
-             .Select(b => new BeerViewModel(b.Id, b.BeerName, b.AlcByVol, b.Description, b.BeerType, b.BeerTypeId, b.Brewery, b.BreweryId)).ToList();
+             .Select(b => new BeerViewModel(b.Id, b.BeerName, b.AlcByVol, b.Description,
+             b.BeerType, b.BeerTypeId, b.Brewery, b.BreweryId))
+             .ToList();
+
             return Ok(beers);
         }
 
@@ -102,21 +112,15 @@ namespace BeerOverflow.Web.ApiControllers
         [Route("reviews")]
         public IActionResult PostReview([FromBody] ReviewViewModel model)
         {
-
             try
             {
-                var newReview = reviewService.AddReview(model.UserName, model.BeerName, model.Rating, model.RMessage);
+                var newReview = reviewService.AddReview(model.UserName, model.BeerName, 
+                    model.Rating, model.RMessage);
 
-                var newReviewModel = new ReviewViewModel
-                {
-                    UserId = newReview.UserId,
-                    UserName = newReview.User,
-                    BeerId = newReview.BeerId,
-                    BeerName = newReview.Beer,
-                    Rating = newReview.Rating, 
-                    RMessage = newReview.RMessage,
-                    ReviewedOn = newReview.ReviewedOn
-                };
+                var newReviewModel = new ReviewViewModel(newReview.RMessage, newReview.Rating,
+                    newReview.User, newReview.UserId, newReview.Beer, 
+                    newReview.BeerId, newReview.ReviewedOn);
+
                 return Ok(newReviewModel);
             }
             catch (Exception e)
