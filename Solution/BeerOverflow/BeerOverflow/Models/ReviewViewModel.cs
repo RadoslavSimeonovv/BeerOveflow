@@ -8,6 +8,10 @@ namespace BeerOverflow.Web.Models
 {
     public class ReviewViewModel
     {
+        public ReviewViewModel()
+        {
+
+        }
         public ReviewViewModel( string rMessage, int rating, string user,
          int userId, string beer, int beerId, DateTime? reviewedOn)
         {

@@ -29,7 +29,9 @@ namespace BeerOverflow.Services
             {
                 throw new ArgumentNullException("Beer is null!");
             }
-            var beerDto = new BeerDTO(beer.Id, beer.BeerName, beer.BeerTypeId, beer.BeerType.Type, beer.BreweryId, beer.Brewery.Name, beer.AlcByVol, beer.Description,beer.Reviews);
+            var beerDto = new BeerDTO(beer.Id, beer.BeerName, beer.BeerTypeId, 
+                beer.BeerType.Type, beer.BreweryId, beer.Brewery.Name, 
+                beer.AlcByVol, beer.Description,beer.Reviews);
 
             return beerDto;
         }
@@ -39,7 +41,9 @@ namespace BeerOverflow.Services
                 .Include(b => b.BeerType)
                 .Include(b => b.Brewery)
                 .Where(b => b.DateUnlisted == null)
-                .Select(b => new BeerDTO(b.Id, b.BeerName, b.BeerTypeId, b.BeerType.Type, b.BreweryId, b.Brewery.Name, b.AlcByVol, b.Description)).ToList();
+                .Select(b => new BeerDTO(b.Id, b.BeerName, b.BeerTypeId, 
+                b.BeerType.Type, b.BreweryId, b.Brewery.Name, 
+                b.AlcByVol, b.Description)).ToList();
 
             return beersDTO;
         }
@@ -82,7 +86,9 @@ namespace BeerOverflow.Services
                     break;
             }
 
-            var beerDTOs = beersQry.Select(b => new BeerDTO(b.Id, b.BeerName,b.BeerTypeId, b.BeerType.Type, b.BreweryId, b.Brewery.Name, b.AlcByVol, b.Description));
+            var beerDTOs = beersQry.Select(b => new BeerDTO(b.Id, b.BeerName,b.BeerTypeId, 
+                b.BeerType.Type, b.BreweryId, b.Brewery.Name,
+                b.AlcByVol, b.Description));
 
             return beerDTOs;
         }
@@ -90,7 +96,8 @@ namespace BeerOverflow.Services
         {
             try
             {
-                var beer = new Beer(beerDTO.BeerName, beerDTO.BeerTypeId, beerDTO.BreweryId, beerDTO.AlcByVol, beerDTO.Description);
+                var beer = new Beer(beerDTO.BeerName, beerDTO.BeerTypeId, beerDTO.BreweryId,
+                    beerDTO.AlcByVol, beerDTO.Description);
                 _beerOverflowContext.Beers.Add(beer);
                 _beerOverflowContext.SaveChanges();
                 return beerDTO;
@@ -218,7 +225,9 @@ namespace BeerOverflow.Services
             }
 
             var beersDTO = qryBeers
-                    .Select(b => new BeerDTO(b.Id, b.BeerName, b.BeerTypeId, b.BeerType.Type, b.BreweryId, b.Brewery.Name, b.AlcByVol, b.Description)).ToList();
+                    .Select(b => new BeerDTO(b.Id, b.BeerName, b.BeerTypeId, 
+                    b.BeerType.Type, b.BreweryId, b.Brewery.Name,
+                    b.AlcByVol, b.Description)).ToList();
 
             return beersDTO;
         }
