@@ -1,6 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using BeerOverflow.Data;
+using BeerOverflow.Services;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace BeerOverflow.Tests.BeerServiceTests
@@ -11,6 +14,17 @@ namespace BeerOverflow.Tests.BeerServiceTests
         [TestMethod]
         public void FilterBeers_CorrectFilter()
         {
+            var options = Utils.GetOptions(nameof(FilterBeers_CorrectFilter));
+
+            using (var arrangeContext = Utils.GetContextWithData(nameof(FilterBeers_CorrectFilter)))
+            {
+                string type = "Lager";
+                var sut = new BeerService(arrangeContext);
+                var result = sut.FilterBeers(type, null).First();
+
+                Assert.AreEqual(type, result.BeerType);
+
+            }
 
         }
     }

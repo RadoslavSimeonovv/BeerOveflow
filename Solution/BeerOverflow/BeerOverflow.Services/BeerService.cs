@@ -174,6 +174,7 @@ namespace BeerOverflow.Services
         {
             var qryBeers = (IQueryable<Beer>)_beerOverflowContext.Beers;
 
+
             if (type != null)
             {
                 var _type = _beerOverflowContext.BeerTypes.FirstOrDefault(t => t.Type == type);
@@ -242,7 +243,7 @@ namespace BeerOverflow.Services
             var beersDTO = qryBeers
                     .Select(b => new BeerDTO(b.Id, b.BeerName, b.BeerTypeId,
                     b.BeerType.Type, b.BreweryId, b.Brewery.Name,
-                    b.AlcByVol, b.Description, b.Reviews.Average(r => r.Rating))).ToList();
+                    b.AlcByVol, b.Description/*, b.Reviews.Average(r => r.Rating)*/)).ToList();
 
             return beersDTO;
         }
