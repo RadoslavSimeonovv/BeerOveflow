@@ -31,7 +31,9 @@ namespace BeerOverflow.Services
         {
             List<BeerTypeDTO> beerTypeDTOs = _beerOverflowContext.BeerTypes
                 .Where(bt => bt.DeletedOn == null)
-                .Select(bt => new BeerTypeDTO(bt.Id, bt.Type, bt.Description)).ToList();
+                .Select(bt => new BeerTypeDTO(bt.Id, bt.Type, bt.Description))
+                .ToList();
+
             return beerTypeDTOs;
         }
         public BeerTypeDTO CreateBeerType(BeerTypeDTO beerTypeDTO)

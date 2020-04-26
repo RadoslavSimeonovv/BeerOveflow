@@ -32,9 +32,9 @@ namespace BeerOverflow.Tests.BeerTypeTests
             var newType = "Lageerr";
             var newDescr = "Updated";
 
-            using (var arrangeContext = new BeerOverflowContext(options))
+            using (var assertContext = new BeerOverflowContext(options))
             {
-                var sut = new BeerTypesService(arrangeContext);
+                var sut = new BeerTypesService(assertContext);
 
                 var result = sut.UpdateBeerType(beerType.Id, newType, newDescr);
 
@@ -56,9 +56,6 @@ namespace BeerOverflow.Tests.BeerTypeTests
                 Assert.ThrowsException<ArgumentNullException>(() => sut.GetBeerType(1));
             }
         }
-
-
-
 
     }
 }

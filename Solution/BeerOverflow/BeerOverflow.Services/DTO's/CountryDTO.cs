@@ -14,5 +14,6 @@ namespace BeerOverflow.Services.DTO_s
         public int Id { get; set; }
         public string Name { get; set; }
 
+
     }
 }

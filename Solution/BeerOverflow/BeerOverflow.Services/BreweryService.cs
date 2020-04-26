@@ -60,7 +60,8 @@ namespace BeerOverflow.Services
               Include(b => b.Country).
               Where(b => b.DeletedOn == null).
               Select(b => new BreweryDTO(b.Id, b.Name, 
-              b.Description, b.CountryId, b.Country.Name));
+              b.Description, b.CountryId, b.Country.Name))
+              .ToList();
 
             return breweries;
         }
@@ -87,6 +88,11 @@ namespace BeerOverflow.Services
         {
             var brewery = _beerOverflowContext.Breweries
                .FirstOrDefault(brewery => brewery.Id == id);
+
+            if(brewery == null)
+            {
+                throw new ArgumentNullException();
+            }
 
             brewery.Name = newName;
             brewery.Description = newDescrip;
