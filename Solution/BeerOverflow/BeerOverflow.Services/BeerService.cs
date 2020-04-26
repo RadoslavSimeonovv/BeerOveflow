@@ -246,12 +246,5 @@ namespace BeerOverflow.Services
 
             return beersDTO;
         }
-
-        public IEnumerable<BeerDTO> FilterBeersNew()
-        {
-            throw new NotImplementedException();
-        }
-
-
     }
 }

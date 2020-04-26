@@ -24,7 +24,6 @@ namespace BeerOverflow.Services
             {
                 Id = countryDTO.Id,
                 Name = countryDTO.Name,
-
             };
 
             _beerOverflowContext.Countries.Add(country);
