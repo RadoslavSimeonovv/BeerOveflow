@@ -85,6 +85,11 @@ namespace BeerOverflow.Services
             var user = _beerOverflowContext.Users
                 .FirstOrDefault(user => user.Id == id);
 
+            if(user == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             user.Username = newUsername;
             user.FirstName = newFirstName;
             user.LastName = newLastName;
