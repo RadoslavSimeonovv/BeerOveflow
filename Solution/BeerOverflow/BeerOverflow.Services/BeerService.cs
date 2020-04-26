@@ -22,16 +22,17 @@ namespace BeerOverflow.Services
             var beer = _beerOverflowContext.Beers
                 .Include(b => b.BeerType)
                 .Include(b => b.Brewery)
-                .Include(b=>b.Reviews)
+                .Include(b => b.Reviews)
                 .Where(b => b.DateUnlisted == null)
                 .FirstOrDefault(b => b.Id == id);
             if (beer == null)
             {
                 throw new ArgumentNullException("Beer is null!");
             }
-            var beerDto = new BeerDTO(beer.Id, beer.BeerName, beer.BeerTypeId, 
-                beer.BeerType.Type, beer.BreweryId, beer.Brewery.Name, 
-                beer.AlcByVol, beer.Description,beer.Reviews);
+
+            var beerDto = new BeerDTO(beer.Id, beer.BeerName, beer.BeerTypeId,
+                beer.BeerType.Type, beer.BreweryId, beer.Brewery.Name,
+                beer.AlcByVol, beer.Description, beer.Reviews, beer.Reviews.Average(r => r.Rating));
 
             return beerDto;
         }
@@ -41,9 +42,9 @@ namespace BeerOverflow.Services
                 .Include(b => b.BeerType)
                 .Include(b => b.Brewery)
                 .Where(b => b.DateUnlisted == null)
-                .Select(b => new BeerDTO(b.Id, b.BeerName, b.BeerTypeId, 
-                b.BeerType.Type, b.BreweryId, b.Brewery.Name, 
-                b.AlcByVol, b.Description)).ToList();
+                .Select(b => new BeerDTO(b.Id, b.BeerName, b.BeerTypeId,
+                b.BeerType.Type, b.BreweryId, b.Brewery.Name,
+                b.AlcByVol, b.Description, b.Reviews.Average(r => r.Rating))).ToList();
 
             return beersDTO;
         }
@@ -52,7 +53,8 @@ namespace BeerOverflow.Services
         {
             var beersQry = (IQueryable<Beer>)_beerOverflowContext.Beers
                 .Include(b => b.BeerType)
-                .Include(b => b.Brewery);
+                .Include(b => b.Brewery)
+                .Include(b => b.Reviews);
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -81,14 +83,17 @@ namespace BeerOverflow.Services
                 case "brewery_desc":
                     beersQry = beersQry.OrderByDescending(b => b.Brewery);
                     break;
+                case "rating":
+                    beersQry = beersQry.OrderBy(b => b.Reviews.Average(r=>r.Rating));
+                    break;
                 default:
                     beersQry = beersQry.OrderBy(b => b.BeerName);
                     break;
             }
 
-            var beerDTOs = beersQry.Select(b => new BeerDTO(b.Id, b.BeerName,b.BeerTypeId, 
+            var beerDTOs = beersQry.Select(b => new BeerDTO(b.Id, b.BeerName, b.BeerTypeId,
                 b.BeerType.Type, b.BreweryId, b.Brewery.Name,
-                b.AlcByVol, b.Description));
+                b.AlcByVol, b.Description,b.Reviews.Average(r => r.Rating)));
 
             return beerDTOs;
         }
@@ -207,7 +212,7 @@ namespace BeerOverflow.Services
                                     : ((IOrderedQueryable<Beer>)qryBeers).ThenByDescending(b => b.AlcByVol);
                             }
                             break;
- 
+
                         case "brewery":
                             if (!orderClauses[i].EndsWith(" desc"))
                                 qryBeers = i == 0 ? qryBeers.OrderBy(b => b.Brewery)
@@ -218,6 +223,16 @@ namespace BeerOverflow.Services
                                     : ((IOrderedQueryable<Beer>)qryBeers).ThenByDescending(b => b.Brewery);
                             }
                             break;
+                        case "rating":
+                            if (!orderClauses[i].EndsWith(" desc"))
+                                qryBeers = i == 0 ? qryBeers.OrderBy(b => b.Reviews.Average(r=>r.Rating))
+                                    : ((IOrderedQueryable<Beer>)qryBeers).ThenBy(b => b.Reviews.Average(r => r.Rating));
+                            else
+                            {
+                                qryBeers = i == 0 ? qryBeers.OrderByDescending(b => b.Reviews.Average(r => r.Rating))
+                                    : ((IOrderedQueryable<Beer>)qryBeers).ThenByDescending(b => b.Reviews.Average(r => r.Rating));
+                            }
+                            break;
                         default:
                             break;
                     }
@@ -225,9 +240,9 @@ namespace BeerOverflow.Services
             }
 
             var beersDTO = qryBeers
-                    .Select(b => new BeerDTO(b.Id, b.BeerName, b.BeerTypeId, 
+                    .Select(b => new BeerDTO(b.Id, b.BeerName, b.BeerTypeId,
                     b.BeerType.Type, b.BreweryId, b.Brewery.Name,
-                    b.AlcByVol, b.Description)).ToList();
+                    b.AlcByVol, b.Description, b.Reviews.Average(r => r.Rating))).ToList();
 
             return beersDTO;
         }

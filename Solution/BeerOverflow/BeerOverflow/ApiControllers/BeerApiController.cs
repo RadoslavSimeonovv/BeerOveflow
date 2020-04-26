@@ -27,7 +27,7 @@ namespace BeerOverflow.Web.ApiControllers
             var models = beerService.GetAllBeers()
                 .Select(b => new BeerViewModel(b.Id, b.BeerName, b.AlcByVol, 
                 b.Description, b.BeerType, b.BeerTypeId, 
-                b.Brewery, b.BreweryId)).ToList();
+                b.Brewery, b.BreweryId,b.AvgRating)).ToList();
 
             return Ok(models);
         }
@@ -101,7 +101,7 @@ namespace BeerOverflow.Web.ApiControllers
         {
             var beers = this.beerService.FilterBeers(type, orderby)
              .Select(b => new BeerViewModel(b.Id, b.BeerName, b.AlcByVol, b.Description,
-             b.BeerType, b.BeerTypeId, b.Brewery, b.BreweryId))
+             b.BeerType, b.BeerTypeId, b.Brewery, b.BreweryId,b.AvgRating))
              .ToList();
 
             return Ok(beers);
