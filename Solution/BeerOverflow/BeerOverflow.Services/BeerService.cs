@@ -32,7 +32,8 @@ namespace BeerOverflow.Services
 
             var beerDto = new BeerDTO(beer.Id, beer.BeerName, beer.BeerTypeId,
                 beer.BeerType.Type, beer.BreweryId, beer.Brewery.Name,
-                beer.AlcByVol, beer.Description, beer.Reviews, beer.Reviews.Average(r => r.Rating));
+                beer.AlcByVol, beer.Description, beer.Reviews,
+                beer.Reviews.Count == 0 ? 0 : beer.Reviews.Average(r => r.Rating));
 
             return beerDto;
         }
@@ -44,7 +45,8 @@ namespace BeerOverflow.Services
                 .Where(b => b.DateUnlisted == null)
                 .Select(b => new BeerDTO(b.Id, b.BeerName, b.BeerTypeId,
                 b.BeerType.Type, b.BreweryId, b.Brewery.Name,
-                b.AlcByVol, b.Description, b.Reviews.Average(r => r.Rating))).ToList();
+                b.AlcByVol, b.Description,
+                b.Reviews.Count == 0 ? 0 : b.Reviews.Average(r => r.Rating))).ToList();
 
             return beersDTO;
         }
@@ -93,7 +95,8 @@ namespace BeerOverflow.Services
 
             var beerDTOs = beersQry.Select(b => new BeerDTO(b.Id, b.BeerName, b.BeerTypeId,
                 b.BeerType.Type, b.BreweryId, b.Brewery.Name,
-                b.AlcByVol, b.Description,b.Reviews.Average(r => r.Rating)));
+                b.AlcByVol, b.Description,
+                b.Reviews.Count == 0 ? 0 : b.Reviews.Average(r => r.Rating)));
 
             return beerDTOs;
         }
@@ -168,7 +171,6 @@ namespace BeerOverflow.Services
             _beerOverflowContext.SaveChanges();
 
             return true;
-
         }
         public IEnumerable<BeerDTO> FilterBeers(string type, string orderby)
         {
@@ -243,7 +245,8 @@ namespace BeerOverflow.Services
             var beersDTO = qryBeers
                     .Select(b => new BeerDTO(b.Id, b.BeerName, b.BeerTypeId,
                     b.BeerType.Type, b.BreweryId, b.Brewery.Name,
-                    b.AlcByVol, b.Description/*, b.Reviews.Average(r => r.Rating)*/)).ToList();
+                    b.AlcByVol, b.Description,
+                    b.Reviews.Count == 0 ? 0 : b.Reviews.Average(r => r.Rating))).ToList();
 
             return beersDTO;
         }
