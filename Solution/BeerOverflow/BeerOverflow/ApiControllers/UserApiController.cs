@@ -25,7 +25,7 @@ namespace BeerOverflow.Web.ApiControllers
 
         [HttpGet]
         [Route("{id}")]
-        public IActionResult Get(Guid id)
+        public IActionResult Get(int id)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace BeerOverflow.Web.ApiControllers
 
         [HttpPut]
         [Route("{id}")]
-        public IActionResult Put(Guid id, [FromBody] UserViewModel model)
+        public IActionResult Put(int id, [FromBody] UserViewModel model)
         {
             if (model == null)
             {
@@ -87,7 +87,7 @@ namespace BeerOverflow.Web.ApiControllers
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult Delete(Guid id)
+        public IActionResult Delete(int id)
         {
             if (id == null)
             {

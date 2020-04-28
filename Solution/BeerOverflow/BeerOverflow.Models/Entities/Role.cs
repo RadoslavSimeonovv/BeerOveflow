@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BeerOverflow.Data.Entities
 {
-    public class Role : IdentityRole<Guid>
+    public class Role : IdentityRole<int>
     {
         public string Description { get; set; }
     }

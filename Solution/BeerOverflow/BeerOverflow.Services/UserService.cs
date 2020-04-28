@@ -39,7 +39,7 @@ namespace BeerOverflow.Services
             return userDTO;
         }
 
-        public bool DeleteUser(Guid id)
+        public bool DeleteUser(int id)
         {
             var user = _beerOverflowContext.Users
             .FirstOrDefault(user => user.Id == id);
@@ -64,7 +64,7 @@ namespace BeerOverflow.Services
             return users;
         }
 
-        public UserDTO GetUserById(Guid id)
+        public UserDTO GetUserById(int id)
         {
             var user = _beerOverflowContext.Users.
                 FirstOrDefault(u => u.Id == id);
@@ -80,7 +80,7 @@ namespace BeerOverflow.Services
             return userDTO;
         }
 
-        public UserDTO UpdateUser(Guid id, string newUsername, string newFirstName, string newLastName, string newEmail )
+        public UserDTO UpdateUser(int id, string newUsername, string newFirstName, string newLastName, string newEmail )
         {
             var user = _beerOverflowContext.Users
                 .FirstOrDefault(user => user.Id == id);

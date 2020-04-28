@@ -16,7 +16,7 @@ namespace BeerOverflow.Data.Entities
         public int BeerId { get; set; }
 
         public User User { get; set; }
-        public Guid UserId { get; set; }
+        public int UserId { get; set; }
 
         public ICollection<RateReview> RateReviews { get; set; }
     }

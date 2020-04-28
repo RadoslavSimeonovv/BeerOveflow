@@ -8,7 +8,7 @@ namespace BeerOverflow.Services.DTO_s
     public class ReviewDTO
     {
         public ReviewDTO(int id, string rMessage, int rating, string user,
-            Guid userId, string beer, int beerId, DateTime? reviewedOn)
+            int userId, string beer, int beerId, DateTime? reviewedOn)
         {
             this.Id = id;
             this.RMessage = rMessage;
@@ -30,6 +30,6 @@ namespace BeerOverflow.Services.DTO_s
         public int BeerId { get; set; }
 
         public String User { get; set; }
-        public Guid UserId { get; set; }
+        public int UserId { get; set; }
     }
 }

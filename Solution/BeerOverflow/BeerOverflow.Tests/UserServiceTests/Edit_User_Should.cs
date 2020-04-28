@@ -20,7 +20,7 @@ namespace BeerOverflow.Tests.UserServiceTests
 
             var user = new User
             {
-                Id = new Guid("62FA647C-AD54-4BCC-A860-E5A2664B019D"),
+                Id = 1,
                 UserName = "Boyanski",
                 FirstName = "Boyan",
                 LastName = "Vuchev",
@@ -33,7 +33,7 @@ namespace BeerOverflow.Tests.UserServiceTests
 
             var username = "BoYanski";
             var newEmail = "bvuchev@gmail.com";
-            var guid = new Guid("62FA647C-AD54-4BCC-A860-E5A2664B019D");
+
 
             using (var arrangeContext = new BeerOverflowContext(options))
             {
@@ -62,7 +62,7 @@ namespace BeerOverflow.Tests.UserServiceTests
 
             var user = new User
             {
-                Id = new Guid("62FA647C-AD54-4BCC-A860-E5A2664B019D"),
+                Id = 1,
                 UserName = "Boyanski",
                 FirstName = "Boyan",
                 LastName = "Vuchev",
@@ -71,13 +71,11 @@ namespace BeerOverflow.Tests.UserServiceTests
 
             };
 
-            var guid = new Guid("62FA647C-AD54-4BCC-A860-E5A2664B019D");
-
             using (var assertContext = new BeerOverflowContext(options))
             {
                 var sut = new UserService(assertContext, mockArtistMapper.Object);
 
-                Assert.ThrowsException<ArgumentNullException>(() => sut.UpdateUser(guid, 
+                Assert.ThrowsException<ArgumentNullException>(() => sut.UpdateUser(2, 
                     user.UserName, user.FirstName, user.LastName, user.Email));
             }
         }

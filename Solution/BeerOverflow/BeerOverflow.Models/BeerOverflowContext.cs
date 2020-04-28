@@ -8,7 +8,7 @@ using System.Text;
 
 namespace BeerOverflow.Data
 {
-    public class BeerOverflowContext : IdentityDbContext<User, Role, Guid>
+    public class BeerOverflowContext : IdentityDbContext<User, Role, int>
     {
         public BeerOverflowContext(DbContextOptions<BeerOverflowContext> options)
             : base(options)

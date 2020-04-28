@@ -6,7 +6,7 @@ namespace BeerOverflow.Services.DTO_s
 {
     public class UserDTO
     {
-        public UserDTO(Guid id, string username, string firstName, string lastName, string email)
+        public UserDTO(int id, string username, string firstName, string lastName, string email)
         {
             this.Id = id;
             this.Username = username;
@@ -15,7 +15,7 @@ namespace BeerOverflow.Services.DTO_s
             this.Email = email;
         }
 
-        public UserDTO(Guid id, string username, string firstName, string lastName, string email, DateTime createdOn)
+        public UserDTO(int id, string username, string firstName, string lastName, string email, DateTime createdOn)
         {
             this.Id = id;
             this.Username = username;
@@ -25,7 +25,7 @@ namespace BeerOverflow.Services.DTO_s
             this.CreatedOn = createdOn;
         }
 
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string Username { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

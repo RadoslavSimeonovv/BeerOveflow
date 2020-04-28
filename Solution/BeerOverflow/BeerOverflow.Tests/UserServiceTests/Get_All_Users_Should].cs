@@ -21,7 +21,7 @@ namespace BeerOverflow.Tests.UserServiceTests
 
             var user = new User
             {
-                Id = new Guid("62FA647C-AD54-4BCC-A860-E5A2664B019D"),
+                Id = 1,
                 UserName = "Boyanski",
                 FirstName = "Boyan",
                 LastName = "Vuchev",
@@ -32,7 +32,7 @@ namespace BeerOverflow.Tests.UserServiceTests
 
             var user2 = new User
             {
-                Id = new Guid("7C9E6679-7425-40DE-944B-E07fC1f90AE7"),
+                Id = 2,
                 UserName = "RSimeonov",
                 FirstName = "Radoslav",
                 LastName = "Simeonov",
