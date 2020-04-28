@@ -7,10 +7,10 @@ namespace BeerOverflow.Services.DTO_s
 {
     public class BeerDTO
     {
-        //public BeerDTO()
-        //{
-        //    this.Reviews = new ICollection<Review>();
-        //}
+        public BeerDTO()
+        {
+
+        }
         public BeerDTO(string beerName, int beerTypeId, int breweryId, double abv, string description)
         {
             this.BeerName = beerName;

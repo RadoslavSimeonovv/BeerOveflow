@@ -35,7 +35,7 @@ namespace BeerOverflow.Web.Controllers
             ViewBag.BeerTypeSortParm = sortOrder == "beertype" ? "beertype_desc" : "beertype";
             ViewBag.CountrySortParm = sortOrder == "country" ? "country_desc" : "country";
             ViewBag.BrewerySortParm = sortOrder == "brewery" ? "brewery_desc" : "brewery";
-
+            ViewBag.RatingSortParm = sortOrder == "rating" ? "rating_desc" : "rating";
             if (searchString != null)
             {
                 page = 1;
