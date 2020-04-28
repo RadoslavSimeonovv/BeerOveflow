@@ -91,34 +91,34 @@ namespace BeerOverflow.Tests
                 },
             };
 
-            var users = new User[]
-            {
-                new User
-                {
-                    Id = 1,
-                    Username = "Boyanski",
-                    FirstName = "Boyan",
-                    LastName = "Vuchev",
-                    Email = "bvuchev@abv.bg",
-                    CreatedOn = DateTime.UtcNow
-                },
+            //var users = new User[]
+            //{
+            //    new User
+            //    {
+            //        Id = 1,
+            //        UserName = "Boyanski",
+            //        FirstName = "Boyan",
+            //        LastName = "Vuchev",
+            //        Email = "bvuchev@abv.bg",
+            //        CreatedOn = DateTime.UtcNow
+            //    },
 
-                new User
-                {
-                    Id = 2,
-                    Username = "RSimeonov",
-                    FirstName = "Radoslav",
-                    LastName = "Simeonov",
-                    Email = "rsimeonovv@abv.bg",
-                    CreatedOn = DateTime.UtcNow
-                }
-            };
+            //    new User
+            //    {
+            //        Id = 2,
+            //        UserName = "RSimeonov",
+            //        FirstName = "Radoslav",
+            //        LastName = "Simeonov",
+            //        Email = "rsimeonovv@abv.bg",
+            //        CreatedOn = DateTime.UtcNow
+            //    }
+            //};
                
             var options = GetOptions(testName);
             var BfContext = new BeerOverflowContext(options);
 
             BfContext.Beers.AddRange(beers);
-            BfContext.Users.AddRange(users);
+            //BfContext.Users.AddRange(users);
             BfContext.BeerTypes.AddRange(beerTypes);
             BfContext.Countries.AddRange(countries);
             BfContext.Breweries.AddRange(breweries);

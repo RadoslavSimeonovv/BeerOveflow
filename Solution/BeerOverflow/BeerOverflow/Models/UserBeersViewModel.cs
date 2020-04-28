@@ -7,7 +7,7 @@ namespace BeerOverflow.Web.Models
 {
     public class UserBeersViewModel
     {
-        public UserBeersViewModel(string user, int userId, string beer, int beerId)
+        public UserBeersViewModel(string user, Guid userId, string beer, int beerId)
         {
             this.User = user;
             this.UserId = userId;
@@ -15,7 +15,7 @@ namespace BeerOverflow.Web.Models
             this.BeerId = beerId;
         }
 
-        public UserBeersViewModel(string user, int userId, string beer, int beerId, DateTime? drankOn)
+        public UserBeersViewModel(string user, Guid userId, string beer, int beerId, DateTime? drankOn)
         {
             this.User = user;
             this.UserId = userId;
@@ -25,7 +25,7 @@ namespace BeerOverflow.Web.Models
         }
 
         public String User { get; set; }
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
 
         public String Beer { get; set; }
         public int BeerId { get; set; }

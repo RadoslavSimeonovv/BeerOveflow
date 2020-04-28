@@ -20,8 +20,8 @@ namespace BeerOverflow.Tests.UserServiceTests
 
             var user = new User
             {
-                Id = 1,
-                Username = "Boyanski",
+                Id = new Guid("62FA647C-AD54-4BCC-A860-E5A2664B019D"),
+                UserName = "Boyanski",
                 FirstName = "Boyan",
                 LastName = "Vuchev",
                 Email = "bvuchev@abv.bg",
@@ -33,7 +33,7 @@ namespace BeerOverflow.Tests.UserServiceTests
 
             var username = "BoYanski";
             var newEmail = "bvuchev@gmail.com";
-
+            var guid = new Guid("62FA647C-AD54-4BCC-A860-E5A2664B019D");
 
             using (var arrangeContext = new BeerOverflowContext(options))
             {
@@ -62,8 +62,8 @@ namespace BeerOverflow.Tests.UserServiceTests
 
             var user = new User
             {
-                Id = 1,
-                Username = "Boyanski",
+                Id = new Guid("62FA647C-AD54-4BCC-A860-E5A2664B019D"),
+                UserName = "Boyanski",
                 FirstName = "Boyan",
                 LastName = "Vuchev",
                 Email = "bvuchev@abv.bg",
@@ -71,12 +71,14 @@ namespace BeerOverflow.Tests.UserServiceTests
 
             };
 
+            var guid = new Guid("62FA647C-AD54-4BCC-A860-E5A2664B019D");
+
             using (var assertContext = new BeerOverflowContext(options))
             {
                 var sut = new UserService(assertContext, mockArtistMapper.Object);
 
-                Assert.ThrowsException<ArgumentNullException>(() => sut.UpdateUser(2, 
-                    user.Username, user.FirstName, user.LastName, user.Email));
+                Assert.ThrowsException<ArgumentNullException>(() => sut.UpdateUser(guid, 
+                    user.UserName, user.FirstName, user.LastName, user.Email));
             }
         }
     }

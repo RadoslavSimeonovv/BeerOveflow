@@ -7,7 +7,7 @@ namespace BeerOverflow.Data.Entities
     public class UserBeers
     {
         public User User { get; set; }
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
 
         public Beer Beer { get; set; }
         public int BeerId { get; set; }

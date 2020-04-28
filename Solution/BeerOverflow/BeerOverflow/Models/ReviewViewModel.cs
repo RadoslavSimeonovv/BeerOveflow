@@ -13,7 +13,7 @@ namespace BeerOverflow.Web.Models
 
         }
         public ReviewViewModel( string rMessage, int rating, string user,
-         int userId, string beer, int beerId, DateTime? reviewedOn)
+         Guid userId, string beer, int beerId, DateTime? reviewedOn)
         {
             this.RMessage = rMessage;
             this.Rating = rating;
@@ -32,6 +32,6 @@ namespace BeerOverflow.Web.Models
         public int BeerId { get; set; }
 
         public String UserName { get; set; }
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
     }
 }

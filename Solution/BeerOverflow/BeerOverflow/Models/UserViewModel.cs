@@ -11,7 +11,7 @@ namespace BeerOverflow.Web.Models
         {
 
         }
-        public UserViewModel(int id, string username, string firstName, string lastName, string email)
+        public UserViewModel(Guid id, string username, string firstName, string lastName, string email)
         {
             this.Id = id;
             this.Username = username;
@@ -20,7 +20,7 @@ namespace BeerOverflow.Web.Models
             this.Email = email;
         }
 
-        public UserViewModel(int id, string username, string firstName, string lastName, string email, DateTime createdOn)
+        public UserViewModel(Guid id, string username, string firstName, string lastName, string email, DateTime createdOn)
         {
             this.Id = id;
             this.Username = username;
@@ -30,7 +30,7 @@ namespace BeerOverflow.Web.Models
             this.CreatedOn = createdOn;
         }
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Username { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

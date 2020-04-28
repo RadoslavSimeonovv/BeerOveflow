@@ -22,8 +22,8 @@ namespace BeerOverflow.Tests.UserServiceTests
 
             var user = new User
             {
-                Id = 1,
-                Username = "Boyanski",
+                Id = new Guid("62FA647C-AD54-4BCC-A860-E5A2664B019D"),
+                UserName = "Boyanski",
                 FirstName = "Boyan",
                 LastName = "Vuchev",
                 Email = "bvuchev@abv.bg",
@@ -31,17 +31,18 @@ namespace BeerOverflow.Tests.UserServiceTests
 
             };
 
+            //var guid = new Guid("62FA647C-AD54-4BCC-A860-E5A2664B019D");
             var mockArtistMapper = new Mock<IDateTimeProvider>();
 
             using (var arrangeContext = new BeerOverflowContext(options))
             {
                 var sut = new UserService(arrangeContext, mockArtistMapper.Object);
-                var userDTO = new UserDTO(user.Id, user.Username, user.FirstName,
+                var userDTO = new UserDTO(user.Id, user.UserName, user.FirstName,
                     user.LastName, user.Email, user.CreatedOn);
                 var result = sut.CreateUser(userDTO);
 
                 Assert.AreEqual(user.Id, result.Id);
-                Assert.AreEqual(user.Username, result.Username);
+                Assert.AreEqual(user.UserName, result.Username);
                 Assert.AreEqual(user.FirstName, result.FirstName);
                 Assert.AreEqual(user.LastName, result.LastName);
                 Assert.AreEqual(user.Email, result.Email);

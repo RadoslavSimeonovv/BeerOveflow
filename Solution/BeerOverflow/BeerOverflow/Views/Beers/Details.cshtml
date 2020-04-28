@@ -112,7 +112,7 @@ else
                     @Html.DisplayNameFor(model => model.Reviews.FirstOrDefault().RMessage)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Reviews.FirstOrDefault().User.Username)
+                    @Html.DisplayNameFor(model => model.Reviews.FirstOrDefault().User.UserName)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Reviews.FirstOrDefault().ReviewedOn)
@@ -137,7 +137,7 @@ else
                         @Html.DisplayFor(model => review.RMessage)
                     </td>
                     <td>
-                        @Html.DisplayFor(model => review.User.Username)
+                        @Html.DisplayFor(model => review.User.UserName)
                     </td>
                     <td>
                         @Html.DisplayFor(model => review.ReviewedOn)

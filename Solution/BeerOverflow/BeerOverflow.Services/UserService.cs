@@ -26,7 +26,7 @@ namespace BeerOverflow.Services
             var user = new User
             {
                 Id = userDTO.Id,
-                Username = userDTO.Username,
+                UserName = userDTO.Username,
                 FirstName = userDTO.FirstName,
                 LastName = userDTO.LastName,
                 Email = userDTO.Email,
@@ -39,12 +39,12 @@ namespace BeerOverflow.Services
             return userDTO;
         }
 
-        public bool DeleteUser(int id)
+        public bool DeleteUser(Guid id)
         {
             var user = _beerOverflowContext.Users
             .FirstOrDefault(user => user.Id == id);
 
-            if (id == 0 || user == null)
+            if (user == null)
             {
                 throw new ArgumentNullException();
             }
@@ -58,13 +58,13 @@ namespace BeerOverflow.Services
         public IEnumerable<UserDTO> GetAllUsers()
         {
             var users = _beerOverflowContext.Users
-               .Select(u => new UserDTO(u.Id, u.Username, u.FirstName,
+               .Select(u => new UserDTO(u.Id, u.UserName, u.FirstName,
                u.LastName, u.Email, u.CreatedOn));
             
             return users;
         }
 
-        public UserDTO GetUserById(int id)
+        public UserDTO GetUserById(Guid id)
         {
             var user = _beerOverflowContext.Users.
                 FirstOrDefault(u => u.Id == id);
@@ -74,13 +74,13 @@ namespace BeerOverflow.Services
                 throw new ArgumentNullException();
             }
 
-            var userDTO = new UserDTO(user.Id, user.Username, user.FirstName,
+            var userDTO = new UserDTO(user.Id, user.UserName, user.FirstName,
                user.LastName, user.Email, user.CreatedOn);
                     
             return userDTO;
         }
 
-        public UserDTO UpdateUser(int id, string newUsername, string newFirstName, string newLastName, string newEmail )
+        public UserDTO UpdateUser(Guid id, string newUsername, string newFirstName, string newLastName, string newEmail )
         {
             var user = _beerOverflowContext.Users
                 .FirstOrDefault(user => user.Id == id);
@@ -90,13 +90,13 @@ namespace BeerOverflow.Services
                 throw new ArgumentNullException();
             }
 
-            user.Username = newUsername;
+            user.UserName = newUsername;
             user.FirstName = newFirstName;
             user.LastName = newLastName;
             user.Email = newEmail;
 
 
-            var userDTO = new UserDTO(user.Id, user.Username, user.FirstName, user.LastName, user.Email);
+            var userDTO = new UserDTO(user.Id, user.UserName, user.FirstName, user.LastName, user.Email);
 
             _beerOverflowContext.Users.Update(user);
             _beerOverflowContext.SaveChanges();

@@ -21,8 +21,8 @@ namespace BeerOverflow.Tests.UserServiceTests
 
             var user = new User
             {
-                Id = 1,
-                Username = "Boyanski",
+                Id = new Guid("62FA647C-AD54-4BCC-A860-E5A2664B019D"),
+                UserName = "Boyanski",
                 FirstName = "Boyan",
                 LastName = "Vuchev",
                 Email = "bvuchev@abv.bg",
@@ -32,8 +32,8 @@ namespace BeerOverflow.Tests.UserServiceTests
 
             var user2 = new User
             {
-                Id = 2,
-                Username = "RSimeonov",
+                Id = new Guid("7C9E6679-7425-40DE-944B-E07fC1f90AE7"),
+                UserName = "RSimeonov",
                 FirstName = "Radoslav",
                 LastName = "Simeonov",
                 Email = "rsimeonovv@abv.bg",
@@ -55,7 +55,7 @@ namespace BeerOverflow.Tests.UserServiceTests
                 var result = sut.GetAllUsers().First();
 
                 Assert.AreEqual(user.Id, result.Id);
-                Assert.AreEqual(user.Username, result.Username);
+                Assert.AreEqual(user.UserName, result.Username);
                 Assert.AreEqual(user.FirstName, result.FirstName);
                 Assert.AreEqual(user.LastName, result.LastName);
                 Assert.AreEqual(user.Email, result.Email);

@@ -402,11 +402,14 @@ namespace BeerOverflow.Data.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("UserId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ReviewId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId1");
 
                     b.ToTable("RateReviews");
                 });
@@ -434,8 +437,8 @@ namespace BeerOverflow.Data.Migrations
                     b.Property<DateTime?>("ReviewedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -445,115 +448,17 @@ namespace BeerOverflow.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Reviews");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            BeerId = 1,
-                            RMessage = "Cool beer!",
-                            Rating = 5,
-                            ReviewedOn = new DateTime(2020, 4, 25, 12, 23, 50, 555, DateTimeKind.Utc).AddTicks(3726),
-                            UserId = 4
-                        },
-                        new
-                        {
-                            Id = 2,
-                            BeerId = 7,
-                            RMessage = "Very fresh, would buy again!",
-                            Rating = 4,
-                            ReviewedOn = new DateTime(2020, 4, 25, 12, 23, 50, 555, DateTimeKind.Utc).AddTicks(4743),
-                            UserId = 3
-                        },
-                        new
-                        {
-                            Id = 3,
-                            BeerId = 8,
-                            RMessage = "I don't recommend it!",
-                            Rating = 1,
-                            ReviewedOn = new DateTime(2020, 4, 25, 12, 23, 50, 555, DateTimeKind.Utc).AddTicks(4788),
-                            UserId = 6
-                        },
-                        new
-                        {
-                            Id = 4,
-                            BeerId = 8,
-                            RMessage = "Top class!",
-                            Rating = 5,
-                            ReviewedOn = new DateTime(2020, 4, 25, 12, 23, 50, 555, DateTimeKind.Utc).AddTicks(4811),
-                            UserId = 5
-                        },
-                        new
-                        {
-                            Id = 5,
-                            BeerId = 2,
-                            RMessage = "Not great, not terrible.",
-                            Rating = 3,
-                            ReviewedOn = new DateTime(2020, 4, 25, 12, 23, 50, 555, DateTimeKind.Utc).AddTicks(4831),
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 6,
-                            BeerId = 5,
-                            RMessage = "Not my taste.",
-                            Rating = 2,
-                            ReviewedOn = new DateTime(2020, 4, 25, 12, 23, 50, 555, DateTimeKind.Utc).AddTicks(4854),
-                            UserId = 4
-                        },
-                        new
-                        {
-                            Id = 7,
-                            BeerId = 2,
-                            RMessage = "Rip off!",
-                            Rating = 1,
-                            ReviewedOn = new DateTime(2020, 4, 25, 12, 23, 50, 555, DateTimeKind.Utc).AddTicks(4874),
-                            UserId = 4
-                        },
-                        new
-                        {
-                            Id = 8,
-                            BeerId = 4,
-                            RMessage = "I already bought another 10 of those!",
-                            Rating = 5,
-                            ReviewedOn = new DateTime(2020, 4, 25, 12, 23, 50, 555, DateTimeKind.Utc).AddTicks(4957),
-                            UserId = 6
-                        },
-                        new
-                        {
-                            Id = 9,
-                            BeerId = 3,
-                            RMessage = "Decent taste and price!",
-                            Rating = 4,
-                            ReviewedOn = new DateTime(2020, 4, 25, 12, 23, 50, 555, DateTimeKind.Utc).AddTicks(4981),
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 10,
-                            BeerId = 10,
-                            RMessage = "My friend lied to me, its not that good.",
-                            Rating = 3,
-                            ReviewedOn = new DateTime(2020, 4, 25, 12, 23, 50, 555, DateTimeKind.Utc).AddTicks(5003),
-                            UserId = 3
-                        },
-                        new
-                        {
-                            Id = 11,
-                            BeerId = 7,
-                            RMessage = "Excellent!",
-                            Rating = 5,
-                            ReviewedOn = new DateTime(2020, 4, 25, 12, 23, 50, 555, DateTimeKind.Utc).AddTicks(5023),
-                            UserId = 2
-                        });
                 });
 
             modelBuilder.Entity("BeerOverflow.Data.Entities.Role", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -561,23 +466,38 @@ namespace BeerOverflow.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(25)")
-                        .HasMaxLength(25);
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("NormalizedName")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
 
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Roles");
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles");
                 });
 
             modelBuilder.Entity("BeerOverflow.Data.Entities.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -587,8 +507,11 @@ namespace BeerOverflow.Data.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(25)")
-                        .HasMaxLength(25);
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -600,79 +523,60 @@ namespace BeerOverflow.Data.Migrations
                         .HasColumnType("nvarchar(25)")
                         .HasMaxLength(25);
 
-                    b.Property<string>("Username")
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Username")
+                    b.HasIndex("NormalizedEmail")
+                        .HasName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("UserName")
                         .IsUnique();
 
-                    b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedOn = new DateTime(2020, 4, 25, 12, 23, 50, 554, DateTimeKind.Utc).AddTicks(9464),
-                            Email = "bvuchev@abv.bg",
-                            FirstName = "Boyan",
-                            LastName = "Vuchev",
-                            Username = "Boyanski"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedOn = new DateTime(2020, 4, 25, 12, 23, 50, 555, DateTimeKind.Utc).AddTicks(357),
-                            Email = "rsimeonovv@abv.bg",
-                            FirstName = "Radoslav",
-                            LastName = "Simeonov",
-                            Username = "RSimeonov"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedOn = new DateTime(2020, 4, 25, 12, 23, 50, 555, DateTimeKind.Utc).AddTicks(401),
-                            Email = "peshop@gmail.com",
-                            FirstName = "Petur",
-                            LastName = "Petrov",
-                            Username = "PeturPetrof"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedOn = new DateTime(2020, 4, 25, 12, 23, 50, 555, DateTimeKind.Utc).AddTicks(424),
-                            Email = "vankatas@gmail.com",
-                            FirstName = "Ivan",
-                            LastName = "Stoyanov",
-                            Username = "VankataV"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreatedOn = new DateTime(2020, 4, 25, 12, 23, 50, 555, DateTimeKind.Utc).AddTicks(444),
-                            Email = "geriflow@gmail.com",
-                            FirstName = "Gergana",
-                            LastName = "Ivanova",
-                            Username = "GeritoIv"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CreatedOn = new DateTime(2020, 4, 25, 12, 23, 50, 555, DateTimeKind.Utc).AddTicks(467),
-                            Email = "mimiang@gmail.com",
-                            FirstName = "Mariya",
-                            LastName = "Angelova",
-                            Username = "MimiG"
-                        });
+                    b.ToTable("AspNetUsers");
                 });
 
             modelBuilder.Entity("BeerOverflow.Data.Entities.UserBeers", b =>
                 {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("BeerId")
                         .HasColumnType("int");
@@ -688,125 +592,107 @@ namespace BeerOverflow.Data.Migrations
                     b.HasIndex("BeerId");
 
                     b.ToTable("UserBeers");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = 2,
-                            BeerId = 7,
-                            DrankOn = new DateTime(2020, 4, 25, 12, 23, 50, 555, DateTimeKind.Utc).AddTicks(6737)
-                        },
-                        new
-                        {
-                            UserId = 3,
-                            BeerId = 7,
-                            DrankOn = new DateTime(2020, 4, 25, 12, 23, 50, 555, DateTimeKind.Utc).AddTicks(7618)
-                        },
-                        new
-                        {
-                            UserId = 3,
-                            BeerId = 5
-                        },
-                        new
-                        {
-                            UserId = 3,
-                            BeerId = 10
-                        },
-                        new
-                        {
-                            UserId = 1,
-                            BeerId = 3,
-                            DrankOn = new DateTime(2020, 4, 25, 12, 23, 50, 555, DateTimeKind.Utc).AddTicks(7699)
-                        },
-                        new
-                        {
-                            UserId = 4,
-                            BeerId = 2,
-                            DrankOn = new DateTime(2020, 4, 25, 12, 23, 50, 555, DateTimeKind.Utc).AddTicks(7722)
-                        },
-                        new
-                        {
-                            UserId = 4,
-                            BeerId = 1,
-                            DrankOn = new DateTime(2020, 4, 25, 12, 23, 50, 555, DateTimeKind.Utc).AddTicks(7742)
-                        },
-                        new
-                        {
-                            UserId = 4,
-                            BeerId = 5,
-                            DrankOn = new DateTime(2020, 4, 25, 12, 23, 50, 555, DateTimeKind.Utc).AddTicks(7762)
-                        },
-                        new
-                        {
-                            UserId = 6,
-                            BeerId = 1
-                        },
-                        new
-                        {
-                            UserId = 6,
-                            BeerId = 3
-                        },
-                        new
-                        {
-                            UserId = 6,
-                            BeerId = 4
-                        },
-                        new
-                        {
-                            UserId = 2,
-                            BeerId = 1
-                        },
-                        new
-                        {
-                            UserId = 2,
-                            BeerId = 4
-                        },
-                        new
-                        {
-                            UserId = 3,
-                            BeerId = 3
-                        },
-                        new
-                        {
-                            UserId = 4,
-                            BeerId = 7
-                        },
-                        new
-                        {
-                            UserId = 5,
-                            BeerId = 8,
-                            DrankOn = new DateTime(2020, 4, 25, 12, 23, 50, 555, DateTimeKind.Utc).AddTicks(7909)
-                        },
-                        new
-                        {
-                            UserId = 6,
-                            BeerId = 8,
-                            DrankOn = new DateTime(2020, 4, 25, 12, 23, 50, 555, DateTimeKind.Utc).AddTicks(7928)
-                        },
-                        new
-                        {
-                            UserId = 1,
-                            BeerId = 2,
-                            DrankOn = new DateTime(2020, 4, 25, 12, 23, 50, 555, DateTimeKind.Utc).AddTicks(7949)
-                        });
                 });
 
-            modelBuilder.Entity("BeerOverflow.Data.Entities.UserRoles", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("UserRoles");
+                    b.ToTable("AspNetUserRoles");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens");
                 });
 
             modelBuilder.Entity("BeerOverflow.Data.Entities.Beer", b =>
@@ -843,9 +729,8 @@ namespace BeerOverflow.Data.Migrations
 
                     b.HasOne("BeerOverflow.Data.Entities.User", "User")
                         .WithMany("RateReviews")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("UserId1")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("BeerOverflow.Data.Entities.Review", b =>
@@ -878,15 +763,51 @@ namespace BeerOverflow.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BeerOverflow.Data.Entities.UserRoles", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("BeerOverflow.Data.Entities.Role", "Role")
+                    b.HasOne("BeerOverflow.Data.Entities.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+                {
+                    b.HasOne("BeerOverflow.Data.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+                {
+                    b.HasOne("BeerOverflow.Data.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+                {
+                    b.HasOne("BeerOverflow.Data.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BeerOverflow.Data.Entities.User", "User")
+                    b.HasOne("BeerOverflow.Data.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+                {
+                    b.HasOne("BeerOverflow.Data.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

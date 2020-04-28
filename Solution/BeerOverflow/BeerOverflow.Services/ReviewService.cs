@@ -19,7 +19,7 @@ namespace BeerOverflow.Services
 
         public ReviewDTO AddReview(string userName, string beerName, int rating, string rMessage)
         {
-            var user = _beerOverflowContext.Users.FirstOrDefault(u => u.Username == userName);
+            var user = _beerOverflowContext.Users.FirstOrDefault(u => u.UserName == userName);
 
             if (user == null)
             {
@@ -59,7 +59,7 @@ namespace BeerOverflow.Services
                 throw new InvalidOperationException("Cannot add into database!");
             }
             var userReviewDTO = new ReviewDTO(userReview.Id, userReview.RMessage, userReview.Rating,
-                userReview.User.Username, userReview.UserId, userReview.Beer.BeerName,
+                userReview.User.UserName, userReview.UserId, userReview.Beer.BeerName,
                 userReview.BeerId, userReview.ReviewedOn);
 
             return userReviewDTO;

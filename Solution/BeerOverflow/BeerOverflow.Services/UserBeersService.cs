@@ -21,7 +21,7 @@ namespace BeerOverflow.Services
 
         public UserBeersDTO AddBeerToDrankList(string userName, string beerName)
         {
-            var user = _beerOverflowContext.Users.FirstOrDefault(u => u.Username == userName);
+            var user = _beerOverflowContext.Users.FirstOrDefault(u => u.UserName == userName);
             
             if(user == null)
             {
@@ -61,7 +61,7 @@ namespace BeerOverflow.Services
                 }
             }
 
-            var userBeerDTO = new UserBeersDTO(user.Username, user.Id, 
+            var userBeerDTO = new UserBeersDTO(user.UserName, user.Id, 
                 beer.BeerName, beer.Id,  userBeer.DrankOn);
 
             return userBeerDTO;
@@ -70,7 +70,7 @@ namespace BeerOverflow.Services
 
         public UserBeersDTO AddBeerToWishList(string userName, string beerName)
         {
-            var user = _beerOverflowContext.Users.FirstOrDefault(u => u.Username == userName);
+            var user = _beerOverflowContext.Users.FirstOrDefault(u => u.UserName == userName);
             
             if(user == null)
             {
@@ -98,7 +98,7 @@ namespace BeerOverflow.Services
                 throw new InvalidOperationException("Cannot add into database!");
             }
 
-            var userBeerDTO = new UserBeersDTO(user.Username, user.Id, 
+            var userBeerDTO = new UserBeersDTO(user.UserName, user.Id, 
                 beer.BeerName, beer.Id);
  
             return userBeerDTO;
@@ -106,7 +106,7 @@ namespace BeerOverflow.Services
 
         public IEnumerable<UserBeersDTO> GetUserDrankList(string userName)
         {
-            var user = _beerOverflowContext.Users.FirstOrDefault(u => u.Username == userName);
+            var user = _beerOverflowContext.Users.FirstOrDefault(u => u.UserName == userName);
 
             if (user == null)
             {
@@ -118,7 +118,7 @@ namespace BeerOverflow.Services
                .Where(ub => ub.DrankOn != null)
                //.Include(u => u.User)
                //.Include(b => b.Beer)
-               .Select(ub => new UserBeersDTO(ub.User.Username, ub.UserId, 
+               .Select(ub => new UserBeersDTO(ub.User.UserName, ub.UserId, 
                ub.Beer.BeerName, ub.BeerId, ub.DrankOn));
 
             return userBeers;
@@ -126,7 +126,7 @@ namespace BeerOverflow.Services
 
         public IEnumerable<UserBeersDTO> GetUserWishList(string userName)
         {
-            var user = _beerOverflowContext.Users.FirstOrDefault(u => u.Username == userName);
+            var user = _beerOverflowContext.Users.FirstOrDefault(u => u.UserName == userName);
 
             if (user == null)
             {
@@ -138,7 +138,7 @@ namespace BeerOverflow.Services
                 .Where(ub => ub.DrankOn == null)
                 .Include(u => u.User)
                 .Include(b => b.Beer)
-                .Select(ub => new UserBeersDTO(ub.User.Username, ub.UserId,
+                .Select(ub => new UserBeersDTO(ub.User.UserName, ub.UserId,
                 ub.Beer.BeerName, ub.BeerId));
 
             return userBeers;

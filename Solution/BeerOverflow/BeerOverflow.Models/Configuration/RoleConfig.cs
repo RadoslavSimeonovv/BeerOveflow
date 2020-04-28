@@ -11,7 +11,7 @@ namespace BeerOverflow.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<Role> builder)
         {
-            builder.HasKey(r => r.Id);
+            //builder.HasKey(r => r.Id);
             builder.Property(r => r.Name).IsRequired().HasMaxLength(25);
             builder.HasIndex(r => r.Name).IsUnique();
             builder.Property(r => r.Description).IsRequired();

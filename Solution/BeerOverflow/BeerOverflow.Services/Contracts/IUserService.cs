@@ -7,11 +7,11 @@ namespace BeerOverflow.Services.Contracts
 {
     public interface IUserService
     {
-        UserDTO GetUserById(int id);
+        UserDTO GetUserById(Guid id);
         IEnumerable<UserDTO> GetAllUsers();
         UserDTO CreateUser(UserDTO userDTO);
-        UserDTO UpdateUser(int id, string newUsername, string newFirstName, string newLastName, string newEmail);
-        bool DeleteUser(int id);
+        UserDTO UpdateUser(Guid id, string newUsername, string newFirstName, string newLastName, string newEmail);
+        bool DeleteUser(Guid id);
 
     }
 }
