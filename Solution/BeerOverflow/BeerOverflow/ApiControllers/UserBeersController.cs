@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BeerOverflow.Services.Contracts;
-using BeerOverflow.Services.DTO_s;
 using BeerOverflow.Web.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BeerOverflow.Web.ApiControllers
@@ -22,11 +19,11 @@ namespace BeerOverflow.Web.ApiControllers
 
         [HttpPost]
         [Route("wishlist")]
-        public IActionResult PostWishList([FromBody] UserBeersViewModel model)
+        public async Task<IActionResult> PostWishList([FromBody] UserBeersViewModel model)
         {
             try
             {
-                var userBeers = userBeersService.AddBeerToWishList(model.User, model.Beer);
+                var userBeers = await userBeersService.AddBeerToWishListAsync(model.User, model.Beer);
 
                 var userBeersModel = new UserBeersViewModel(userBeers.User, userBeers.UserId,
                     userBeers.Beer, userBeers.BeerId);
@@ -37,7 +34,7 @@ namespace BeerOverflow.Web.ApiControllers
             {
                 return BadRequest(e.Message);
             }
-            catch(InvalidOperationException e)
+            catch (InvalidOperationException e)
             {
                 return BadRequest(e.Message);
             }
@@ -46,11 +43,11 @@ namespace BeerOverflow.Web.ApiControllers
 
         [HttpPost]
         [Route("dranklist")]
-        public IActionResult PostDrankList([FromBody] UserBeersViewModel model)
+        public async Task<IActionResult> PostDrankList([FromBody] UserBeersViewModel model)
         {
             try
             {
-                var userBeers = userBeersService.AddBeerToDrankList(model.User, model.Beer);
+                var userBeers = await userBeersService.AddBeerToDrankListAsync(model.User, model.Beer);
 
                 var userBeersModel = new UserBeersViewModel(userBeers.User, userBeers.UserId,
                     userBeers.Beer, userBeers.BeerId, userBeers.DrankOn);
@@ -65,31 +62,30 @@ namespace BeerOverflow.Web.ApiControllers
 
         [HttpGet]
         [Route("wishlist/{userName}")]
-        public IActionResult GetWishList(string userName)
+        public async Task<IActionResult> GetWishList(string userName)
         {
             try
             {
-                var userBeersDTO = userBeersService.GetUserWishList(userName);
+                var userBeersDTO = await userBeersService.GetUserWishListAsync(userName);
                 var modelUserBeers = userBeersDTO
                     .Select(ub => new UserBeersViewModel(ub.User, ub.UserId,
                      ub.Beer, ub.BeerId));
 
                 return Ok(modelUserBeers);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return BadRequest();
             }
-
         }
 
         [HttpGet]
         [Route("dranklist/{userName}")]
-        public IActionResult GetDrankList(string userName)
+        public async Task<IActionResult> GetDrankList(string userName)
         {
             try
             {
-                var userBeersDTO = userBeersService.GetUserDrankList(userName);
+                var userBeersDTO = await userBeersService.GetUserDrankListAsync(userName);
                 var modelUserBeers = userBeersDTO
                     .Select(ub => new UserBeersViewModel(ub.User, ub.UserId,
                      ub.Beer, ub.BeerId, ub.DrankOn));
@@ -100,8 +96,6 @@ namespace BeerOverflow.Web.ApiControllers
             {
                 return BadRequest();
             }
-
         }
-
     }
 }

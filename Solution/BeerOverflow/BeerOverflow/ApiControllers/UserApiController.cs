@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BeerOverflow.Services.Contracts;
 using BeerOverflow.Services.DTO_s;
-using BeerOverflow.Services.Providers.Contracts;
 using BeerOverflow.Web.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BeerOverflow.Web.ApiControllers
@@ -25,11 +22,11 @@ namespace BeerOverflow.Web.ApiControllers
 
         [HttpGet]
         [Route("{id}")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
             try
             {
-                var userDTO = this.userService.GetUserById(id);
+                var userDTO = await this.userService.GetUserByIdAsync(id);
 
                 var model = new UserViewModel(userDTO.Id, userDTO.Username,
                     userDTO.FirstName, userDTO.LastName, userDTO.Email, userDTO.CreatedOn);
@@ -44,10 +41,10 @@ namespace BeerOverflow.Web.ApiControllers
 
         [HttpGet]
         [Route("")]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var users = this.userService.GetAllUsers()
-                .Select(u => new UserViewModel(u.Id, u.Username, u.FirstName, u.LastName, u.Email, u.CreatedOn))
+            var users = await this.userService.GetAllUsersAsync();
+            var usersVM = users.Select(u => new UserViewModel(u.Id, u.Username, u.FirstName, u.LastName, u.Email, u.CreatedOn))
                 .ToList();
 
             return Ok(users);
@@ -55,7 +52,7 @@ namespace BeerOverflow.Web.ApiControllers
 
         [HttpPost]
         [Route("")]
-        public IActionResult Post([FromBody] UserViewModel model)
+        public async Task<IActionResult> Post([FromBody] UserViewModel model)
         {
             if (model == null)
             {
@@ -65,20 +62,20 @@ namespace BeerOverflow.Web.ApiControllers
             var userDTO = new UserDTO(model.Id, model.Username,
                 model.FirstName, model.LastName, model.Email);
 
-            var newUser = this.userService.CreateUser(userDTO);
+            var newUser = await this.userService.CreateUserAsync(userDTO);
 
             return Created("Post", newUser);
         }
 
         [HttpPut]
         [Route("{id}")]
-        public IActionResult Put(int id, [FromBody] UserViewModel model)
+        public async Task<IActionResult> Put(int id, [FromBody] UserViewModel model)
         {
             if (model == null)
             {
                 return BadRequest();
             }
-            var user = this.userService.UpdateUser(id, model.Username, 
+            var user = await this.userService.UpdateUserAsync(id, model.Username,
                 model.FirstName, model.LastName, model.Email);
 
             return Ok();
@@ -87,14 +84,14 @@ namespace BeerOverflow.Web.ApiControllers
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (id == null)
             {
                 return BadRequest();
             }
 
-            var user = this.userService.DeleteUser(id);
+            var user = await this.userService.DeleteUserAsync(id);
 
             return Ok();
         }
