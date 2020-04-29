@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace BeerOverflow.Services
 {
@@ -18,7 +18,6 @@ namespace BeerOverflow.Services
         {
             this._beerOverflowContext = beerOverflowContext;
         }
-
 
         public BreweryDTO CreateBrewery(BreweryDTO breweryDTO)
         {
@@ -32,6 +31,21 @@ namespace BeerOverflow.Services
 
             _beerOverflowContext.Breweries.Add(brewery);
             _beerOverflowContext.SaveChanges();
+
+            return breweryDTO;
+        }
+        public async Task<BreweryDTO> CreateBreweryAsync(BreweryDTO breweryDTO)
+        {
+            var brewery = new Brewery
+            {
+                Id = breweryDTO.Id,
+                Name = breweryDTO.Name,
+                Description = breweryDTO.Description,
+                CountryId = breweryDTO.CountryId,
+            };
+
+            _beerOverflowContext.Breweries.Add(brewery);
+            await _beerOverflowContext.SaveChangesAsync();
 
             return breweryDTO;
         }
@@ -53,6 +67,23 @@ namespace BeerOverflow.Services
 
             return true;
         }
+        public async Task<bool> DeleteBreweryAsync(int id)
+        {
+            var brewery = await _beerOverflowContext.Breweries
+               .FirstOrDefaultAsync(brewery => brewery.Id == id);
+
+            if (id == 0 || brewery == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            brewery.DeletedOn = DateTime.UtcNow;
+
+            _beerOverflowContext.Breweries.Update(brewery);
+            await _beerOverflowContext.SaveChangesAsync();
+
+            return true;
+        }
 
         public IEnumerable<BreweryDTO> GetAllBreweries()
         {
@@ -62,6 +93,17 @@ namespace BeerOverflow.Services
               Select(b => new BreweryDTO(b.Id, b.Name, 
               b.Description, b.CountryId, b.Country.Name))
               .ToList();
+
+            return breweries;
+        }
+        public async Task<IEnumerable<BreweryDTO>> GetAllBreweriesAsync()
+        {
+            var breweries = await _beerOverflowContext.Breweries
+              .Include(b => b.Country)
+              .Where(b => b.DeletedOn == null)
+              .Select(b => new BreweryDTO(b.Id, b.Name,
+                      b.Description, b.CountryId, b.Country.Name))
+              .ToListAsync();
 
             return breweries;
         }
@@ -79,6 +121,23 @@ namespace BeerOverflow.Services
             }
 
             var breweryDTO = new BreweryDTO(brewery.Id, brewery.Name, 
+                brewery.Description, brewery.CountryId, brewery.Country.Name);
+
+            return breweryDTO;
+        }
+        public async Task<BreweryDTO> GetBreweryByIdAsync(int id)
+        {
+            var brewery = await _beerOverflowContext.Breweries.
+               Where(b => b.Id == id).
+               Include(b => b.Country).
+               FirstOrDefaultAsync();
+
+            if (brewery == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            var breweryDTO = new BreweryDTO(brewery.Id, brewery.Name,
                 brewery.Description, brewery.CountryId, brewery.Country.Name);
 
             return breweryDTO;
@@ -103,6 +162,28 @@ namespace BeerOverflow.Services
 
             _beerOverflowContext.Breweries.Update(brewery);
             _beerOverflowContext.SaveChanges();
+
+            return breweryDTO;
+        }
+        public async Task<BreweryDTO> UpdateBreweryAsync(int id, string newName, string newDescrip, int newCountryId)
+        {
+            var brewery = await _beerOverflowContext.Breweries
+               .FirstOrDefaultAsync(brewery => brewery.Id == id);
+
+            if (brewery == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            brewery.Name = newName;
+            brewery.Description = newDescrip;
+            brewery.CountryId = newCountryId;
+
+            var breweryDTO = new BreweryDTO(brewery.Id, brewery.Name,
+                brewery.Description, brewery.CountryId);
+
+            _beerOverflowContext.Breweries.Update(brewery);
+            await _beerOverflowContext.SaveChangesAsync();
 
             return breweryDTO;
         }

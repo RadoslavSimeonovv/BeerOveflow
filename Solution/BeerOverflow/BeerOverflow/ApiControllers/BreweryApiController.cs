@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BeerOverflow.Services.Contracts;
 using BeerOverflow.Services.DTO_s;
 using BeerOverflow.Web.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BeerOverflow.Web.ApiControllers
@@ -23,15 +21,15 @@ namespace BeerOverflow.Web.ApiControllers
 
         [HttpGet]
         [Route("{id}")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
             try
             {
-                var breweryDTO = this.breweryService.GetBreweryById(id);
+                var breweryDTO = await this.breweryService.GetBreweryByIdAsync(id);
 
                 var model = new BreweryViewModel(breweryDTO.Id, breweryDTO.Name,
                     breweryDTO.Description, breweryDTO.CountryId, breweryDTO.Country);
-               
+
                 return Ok(model);
             }
             catch (Exception)
@@ -43,19 +41,19 @@ namespace BeerOverflow.Web.ApiControllers
 
         [HttpGet]
         [Route("")]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var breweries = this.breweryService.GetAllBreweries()
-                .Select(b => new BreweryViewModel(b.Id, b.Name, b.Description, b.CountryId, b.Country))
+            var breweries = await this.breweryService.GetAllBreweriesAsync();
+            var breweriesVM = breweries.Select(b => new BreweryViewModel(b.Id, b.Name, b.Description, b.CountryId, b.Country))
                 .ToList();
 
-            return Ok(breweries);
+            return Ok(breweriesVM);
         }
 
 
         [HttpPost]
         [Route("")]
-        public IActionResult Post([FromBody] BreweryViewModel model)
+        public async Task<IActionResult> Post([FromBody] BreweryViewModel model)
         {
             if (model == null)
             {
@@ -65,7 +63,7 @@ namespace BeerOverflow.Web.ApiControllers
             var breweryDTO = new BreweryDTO(model.Id, model.Name, model.Description, model.CountryId);
 
 
-            var newBrewery = this.breweryService.CreateBrewery(breweryDTO);
+            var newBrewery = this.breweryService.CreateBreweryAsync(breweryDTO);
 
             return Created("Post", newBrewery);
         }
@@ -73,13 +71,13 @@ namespace BeerOverflow.Web.ApiControllers
 
         [HttpPut]
         [Route("{id}")]
-        public IActionResult Put(int id, [FromBody] BreweryViewModel model)
+        public async Task<IActionResult> Put(int id, [FromBody] BreweryViewModel model)
         {
             if (id == 0 || model == null)
             {
                 return BadRequest();
             }
-            var brewery = this.breweryService.UpdateBrewery(id, model.Name, model.Description, model.CountryId);
+            var brewery = this.breweryService.UpdateBreweryAsync(id, model.Name, model.Description, model.CountryId);
 
             return Ok();
         }
@@ -87,14 +85,14 @@ namespace BeerOverflow.Web.ApiControllers
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (id == 0)
             {
                 return BadRequest();
             }
 
-            var brewery = this.breweryService.DeleteBrewery(id);
+            var brewery = this.breweryService.DeleteBreweryAsync(id);
 
             return Ok();
         }
