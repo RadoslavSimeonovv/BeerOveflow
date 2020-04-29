@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using BeerOverflow.Services.Contracts;
 using BeerOverflow.Services.DTO_s;
 using BeerOverflow.Web.Models;
@@ -22,22 +23,23 @@ namespace BeerOverflow.Web.ApiControllers
 
         [HttpGet]
         [Route("")]
-        public IActionResult GetAllBeers()
+        public async Task<IActionResult> GetAllBeers()
         {
-            var models = beerService.GetAllBeers()
+            var beers = await this.beerService.GetAllBeersAsync();
+            var beersVM = beers
                 .Select(b => new BeerViewModel(b.Id, b.BeerName, b.AlcByVol, 
                 b.Description, b.BeerType, b.BeerTypeId, 
                 b.Brewery, b.BreweryId,b.AvgRating)).ToList();
 
-            return Ok(models);
+            return Ok(beersVM);
         }
         [HttpGet]
         [Route("{id}")]
-        public IActionResult Get(int id)
+        public async Task <IActionResult> Get(int id)
         {
             try
             {
-                var beerDTO = beerService.GetBeer(id);
+                var beerDTO = await beerService.GetBeerAsync(id);
                 var model = new BeerViewModel(beerDTO.Id, beerDTO.BeerName, 
                     beerDTO.AlcByVol, beerDTO.Description, beerDTO.BeerType,
                     beerDTO.BeerTypeId, beerDTO.Brewery, beerDTO.BreweryId);
@@ -51,13 +53,13 @@ namespace BeerOverflow.Web.ApiControllers
         }
         [HttpPost]
         [Route("")]
-        public IActionResult Post([FromBody] BeerViewModel model)
+        public async Task<IActionResult> Create([FromBody] BeerViewModel model)
         {
             try
             {
                 var beerDto = new BeerDTO(model.BeerName, model.BeerTypeId, 
                     model.BreweryId, (double)model.AlcByVol, model.Description);
-                var beer = beerService.CreateBeer(beerDto);
+                var beer = await this.beerService.CreateBeerAsync(beerDto);
 
                 return Created("Post", beer);
             }
@@ -68,24 +70,24 @@ namespace BeerOverflow.Web.ApiControllers
         }
         [HttpPut]
         [Route("{id}")]
-        public IActionResult Put(int id, [FromBody] BeerViewModel model)
+        public async Task<IActionResult> Put(int id, [FromBody] BeerViewModel model)
         {
             var beerName = model.BeerName;
             var alkByVol = model.AlcByVol;
             var descr = model.Description;
             var beerTypeId = model.BeerTypeId;
             var breweryId = model.BreweryId;
-            beerService.UpdateBeer(id, beerName, alkByVol, descr, beerTypeId, breweryId);
+            await this.beerService.UpdateBeerAsync(id, beerName, alkByVol, descr, beerTypeId, breweryId);
 
             return Ok();
         }
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                beerService.DeleteBeer(id);
+                await this.beerService.DeleteBeerAsync(id);
                 return Ok();
             }
             catch (Exception)
@@ -97,10 +99,10 @@ namespace BeerOverflow.Web.ApiControllers
 
         [HttpGet]
         [Route("filter")]
-        public IActionResult Get(string type = null, string orderby = null)
+        public async Task<IActionResult> Get(string type = null, string orderby = null)
         {
-            var beers = this.beerService.FilterBeers(type, orderby)
-             .Select(b => new BeerViewModel(b.Id, b.BeerName, b.AlcByVol, b.Description,
+            var beers = await this.beerService.FilterBeersAsync(type, orderby);
+            var beersVM = beers.Select(b => new BeerViewModel(b.Id, b.BeerName, b.AlcByVol, b.Description,
              b.BeerType, b.BeerTypeId, b.Brewery, b.BreweryId,b.AvgRating))
              .ToList();
 

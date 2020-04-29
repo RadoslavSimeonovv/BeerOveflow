@@ -18,21 +18,28 @@ namespace BeerOverflow.Web.ApiControllers
         {
             this.beerTypeServices = beerTypeServices;
         }
+
+
         [HttpGet]
         [Route("")]
-        public IActionResult Get()
+        public async Task<IActionResult> GetBeerTypes()
         {
-            var models = beerTypeServices.GetAllBeerTypes()
-                .Select(bt => new BeerTypeViewModel(bt.Id, bt.Type, bt.Description)).ToList();
-            return Ok(models);
+            var beerTypes = await this.beerTypeServices.GetAllBeerTypesAsync();
+            var beerTypesVM = beerTypes
+                .Select(bt => new BeerTypeViewModel(bt.Id, bt.Type, bt.Description))
+                .ToList();
+
+            return Ok(beerTypesVM);
         }
+
+
         [HttpGet]
         [Route("{id}")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
             try
             {
-                var beerTypeDTO = beerTypeServices.GetBeerType(id);
+                var beerTypeDTO = await this.beerTypeServices.GetBeerTypeAsync(id);
                 var model = new BeerTypeViewModel(beerTypeDTO.Id, beerTypeDTO.Type, beerTypeDTO.Description);
                 return Ok(model);
             }
@@ -42,14 +49,16 @@ namespace BeerOverflow.Web.ApiControllers
                 return NotFound();
             }
         }
+
+
         [HttpPost]
         [Route("")]
-        public IActionResult Post([FromBody] BeerTypeViewModel model)
+        public async Task<IActionResult> CreateBeerType([FromBody] BeerTypeViewModel model)
         {
             try
             {
                 var beerTypeDto = new BeerTypeDTO(model.Type, model.Description);
-                var beerType = beerTypeServices.CreateBeerType(beerTypeDto);
+                var beerType = await this.beerTypeServices.CreateBeerTypeAsync(beerTypeDto);
                 return Created("Post", beerType);
             }
             catch (Exception)
@@ -57,24 +66,27 @@ namespace BeerOverflow.Web.ApiControllers
                 throw;
             }
         }
+
         [HttpPut]
         [Route("{id}")]
-        public IActionResult Put(int id, [FromBody] BeerTypeViewModel model)
+        public async Task<IActionResult> UpdateBeerType(int id, [FromBody] BeerTypeViewModel model)
         {
             var type = model.Type;
             var descr = model.Description;
-            beerTypeServices.UpdateBeerType(id, type, descr);
+            await this.beerTypeServices.UpdateBeerTypeAsync(id, type, descr);
             return Ok();
         }
+
+
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
 
             try
             {
-                beerTypeServices.DeleteBeerType(id);
-                return Ok(); //???
+                await this.beerTypeServices.DeleteBeerTypeAsync(id);
+                return Ok(); 
             }
             catch (Exception)
             {
