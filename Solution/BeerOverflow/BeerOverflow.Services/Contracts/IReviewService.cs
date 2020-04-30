@@ -2,11 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BeerOverflow.Services.Contracts
 {
     public interface IReviewService
     {
-        ReviewDTO AddReview(int userName, int beerName, int rating, string rMessage);
+        Task<ReviewDTO> AddReview(int userId, int beerId, int rating, string rMessage);
     }
 }

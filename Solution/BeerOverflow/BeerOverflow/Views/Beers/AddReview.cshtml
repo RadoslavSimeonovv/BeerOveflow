@@ -1,11 +1,11 @@
-﻿
+﻿@model  BeerOverflow.Data.Entities.Review
 
 @{
-    ViewData["Title"] = "BeerReview";
+    ViewData["Title"] = "AddReview";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+@*<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -45,11 +45,65 @@
             return false;
         }
     }
-</script>
+</script>*@
 
 <h1>BeerReview</h1>
 
-<form id="formCompose" action="@Url.Action("MyAction", "MyController")" method="post" onsubmit="return VerifyRating()">
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Add Review">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="RMessage" class="control-label"></label>
+                <input asp-for="RMessage" class="form-control" />
+                <span asp-validation-for="RMessage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Rating" class="control-label"></label>
+                <input asp-for="Rating" class="form-control" />
+                <span asp-validation-for="Rating" class="text-danger"></span>
+            </div>
+            @*<a class="btn btn-primary" asp-action="AddReview" asp-route-id="@Model.Id">
+                Add review
+            </a>*@
+            <div class="form-group">
+                <input type="submit" value="Add Review" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<form id="formCompose" action="@Url.Action("MyAction", "MyController")" method="post" onsubmit="return VerifyRating()">
     <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -83,5 +137,5 @@
             </div>
         </div>
     </div>
-</form>
+</form>*@
 

@@ -164,11 +164,9 @@ else
 <!-- Button trigger modal -->
 @if (User.IsInRole("Admin") || User.IsInRole("User"))
 {
-<button type="button" class="btn btn-primary" asp-action="AddReview" asp-route-id="@Model.Id" >
+<a class="btn btn-primary" asp-action="AddReview" asp-route-id="@Model.Id" >
     Add review
-</button>
-
-<input type='button' id="@Model.Id" value='Dummy Button' onclick='window.location = "@Url.Action("AddReview", "BeerReviewController")";' />
+</a>
 }
 
 

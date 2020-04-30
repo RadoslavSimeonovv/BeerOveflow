@@ -2,10 +2,12 @@
 using BeerOverflow.Data.Entities;
 using BeerOverflow.Services.Contracts;
 using BeerOverflow.Services.DTO_s;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BeerOverflow.Services
 {
@@ -65,17 +67,17 @@ namespace BeerOverflow.Services
         //    return userReviewDTO;
         //}
 
-        public ReviewDTO AddReview(int userId, int beerId, int rating, string rMessage)
+        public async Task<ReviewDTO> AddReview(int userId, int beerId, int rating, string rMessage)
         {
-            var user = _beerOverflowContext.Users.FirstOrDefault(u => u.Id == userId);
+            var user = await _beerOverflowContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
             {
                 throw new ArgumentNullException("User is null!");
             }
-            var beer = _beerOverflowContext.Beers
+            var beer = await  _beerOverflowContext.Beers
                 .Where(b => b.DateUnlisted == null)
-                .FirstOrDefault(b => b.Id == beerId);
+                .FirstOrDefaultAsync(b => b.Id == beerId);
 
             if (beer == null)
             {
@@ -99,8 +101,8 @@ namespace BeerOverflow.Services
             };
             try
             {
-                _beerOverflowContext.Reviews.Add(userReview);
-                _beerOverflowContext.SaveChanges();
+                await _beerOverflowContext.Reviews.AddAsync(userReview);
+                await _beerOverflowContext.SaveChangesAsync();
             }
             catch (Exception)
             {

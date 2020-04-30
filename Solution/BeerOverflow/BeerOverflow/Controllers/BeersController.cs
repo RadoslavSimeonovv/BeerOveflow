@@ -64,8 +64,8 @@ namespace BeerOverflow.Web.Controllers
             try
             {
                 var beerDTO = beerService.GetBeer(id);
-                var model = new BeerViewModel(beerDTO.Id, beerDTO.BeerName, beerDTO.AlcByVol, beerDTO.Description, 
-                    beerDTO.BeerType, beerDTO.BeerTypeId, beerDTO.Brewery, beerDTO.BreweryId,beerDTO.Reviews,beerDTO.AvgRating);
+                var model = new BeerViewModel(beerDTO.Id, beerDTO.BeerName, beerDTO.AlcByVol, beerDTO.Description,
+                    beerDTO.BeerType, beerDTO.BeerTypeId, beerDTO.Brewery, beerDTO.BreweryId, beerDTO.Reviews, beerDTO.AvgRating);
                 return View(model);
             }
             catch (Exception)
@@ -87,7 +87,7 @@ namespace BeerOverflow.Web.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("BeerName,AlcByVol,Description,BeerTypeId,BreweryId")] BeerViewModel model)
         {
@@ -128,7 +128,7 @@ namespace BeerOverflow.Web.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+       // [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,BeerName,AlcByVol,Description,DateUnlisted,CountryId,BeerTypeId,BreweryId")] BeerViewModel model)
         {
@@ -190,7 +190,7 @@ namespace BeerOverflow.Web.Controllers
 
         // POST: Beers/Delete/5
         [HttpPost, ActionName("Delete")]
-        [Authorize(Roles = "Admin")]
+       // [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -210,5 +210,44 @@ namespace BeerOverflow.Web.Controllers
         {
             return _context.Beers.Any(e => e.Id == id);
         }
+
+
+
+
+        // GET: Beers/AddReview
+        public IActionResult AddReview()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        [Authorize(Roles = "Admin, User")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddReview(int id, [Bind("RMessage, Rating, BeerId, UserId")] ReviewViewModel model)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                var newReview = await this.reviewService.AddReview(model.UserId, model.BeerId,
+                            model.Rating, model.RMessage);
+
+                //var newReviewModel = new ReviewViewModel(newReview.RMessage, newReview.Rating,
+                //    newReview.User, newReview.UserId, newReview.Beer,
+                //    newReview.BeerId, newReview.ReviewedOn);
+
+                //var review = await this.reviewService.AddReview(reviewDTO.UserId, reviewDTO.BeerId, reviewDTO.Rating, reviewDTO.RMessage);
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return NotFound();
+        }
+
+
     }
 }

@@ -7,6 +7,17 @@ namespace BeerOverflow.Services.DTO_s
 {
     public class ReviewDTO
     {
+        public ReviewDTO(string rMessage, int rating,
+           int userId, int beerId, DateTime? reviewedOn)
+        {
+            this.RMessage = rMessage;
+            this.Rating = rating;
+            this.UserId = userId;
+            this.BeerId = beerId;
+            this.ReviewedOn = reviewedOn;
+        }
+
+
         public ReviewDTO(int id, string rMessage, int rating, string user,
             int userId, string beer, int beerId, DateTime? reviewedOn)
         {
