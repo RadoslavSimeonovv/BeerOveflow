@@ -315,6 +315,21 @@ namespace BeerOverflow.Data.Seeder
 
             });
 
+            modelBuilder.Entity<Role>().HasData(
+            new Role
+                {
+                Id = 1,
+                    Name = "Admin",
+                    Description = "Admin role",
+                });
+
+            modelBuilder.Entity<Role>().HasData(
+            new Role
+                {
+                    Id = 2,
+                    Name = "User",
+                    Description = "User role",
+                });
 
             //    //  modelBuilder.Entity<User>().HasData(
             //    //new User
