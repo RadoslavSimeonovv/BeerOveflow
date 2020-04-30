@@ -7,7 +7,6 @@ namespace BeerOverflow.Services.Contracts
 {
     public interface IReviewService
     {
-        ReviewDTO AddReview(string userName, string beerName, int rating, string rMessage);
-
+        ReviewDTO AddReview(int userName, int beerName, int rating, string rMessage);
     }
 }

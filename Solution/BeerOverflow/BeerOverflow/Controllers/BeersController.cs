@@ -9,6 +9,7 @@ using BeerOverflow.Services.Contracts;
 using BeerOverflow.Web.Models;
 using BeerOverflow.Services.DTO_s;
 using X.PagedList;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BeerOverflow.Web.Controllers
 {
@@ -86,6 +87,7 @@ namespace BeerOverflow.Web.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("BeerName,AlcByVol,Description,BeerTypeId,BreweryId")] BeerViewModel model)
         {
@@ -126,6 +128,7 @@ namespace BeerOverflow.Web.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,BeerName,AlcByVol,Description,DateUnlisted,CountryId,BeerTypeId,BreweryId")] BeerViewModel model)
         {
@@ -187,6 +190,7 @@ namespace BeerOverflow.Web.Controllers
 
         // POST: Beers/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

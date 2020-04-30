@@ -27,20 +27,20 @@ namespace BeerOverflow.Web.ApiControllers
         {
             var beers = await this.beerService.GetAllBeersAsync();
             var beersVM = beers
-                .Select(b => new BeerViewModel(b.Id, b.BeerName, b.AlcByVol, 
-                b.Description, b.BeerType, b.BeerTypeId, 
-                b.Brewery, b.BreweryId,b.AvgRating)).ToList();
+                .Select(b => new BeerViewModel(b.Id, b.BeerName, b.AlcByVol,
+                b.Description, b.BeerType, b.BeerTypeId,
+                b.Brewery, b.BreweryId, b.AvgRating)).ToList();
 
             return Ok(beersVM);
         }
         [HttpGet]
         [Route("{id}")]
-        public async Task <IActionResult> Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
             try
             {
                 var beerDTO = await beerService.GetBeerAsync(id);
-                var model = new BeerViewModel(beerDTO.Id, beerDTO.BeerName, 
+                var model = new BeerViewModel(beerDTO.Id, beerDTO.BeerName,
                     beerDTO.AlcByVol, beerDTO.Description, beerDTO.BeerType,
                     beerDTO.BeerTypeId, beerDTO.Brewery, beerDTO.BreweryId);
 
@@ -57,7 +57,7 @@ namespace BeerOverflow.Web.ApiControllers
         {
             try
             {
-                var beerDto = new BeerDTO(model.BeerName, model.BeerTypeId, 
+                var beerDto = new BeerDTO(model.BeerName, model.BeerTypeId,
                     model.BreweryId, (double)model.AlcByVol, model.Description);
                 var beer = await this.beerService.CreateBeerAsync(beerDto);
 
@@ -103,33 +103,33 @@ namespace BeerOverflow.Web.ApiControllers
         {
             var beers = await this.beerService.FilterBeersAsync(type, orderby);
             var beersVM = beers.Select(b => new BeerViewModel(b.Id, b.BeerName, b.AlcByVol, b.Description,
-             b.BeerType, b.BeerTypeId, b.Brewery, b.BreweryId,b.AvgRating))
+             b.BeerType, b.BeerTypeId, b.Brewery, b.BreweryId, b.AvgRating))
              .ToList();
 
             return Ok(beers);
         }
 
 
-        [HttpPost]
-        [Route("reviews")]
-        public IActionResult PostReview([FromBody] ReviewViewModel model)
-        {
-            try
-            {
-                var newReview = reviewService.AddReview(model.UserName, model.BeerName, 
-                    model.Rating, model.RMessage);
+        //[HttpPost]
+        //[Route("reviews")]
+        //public IActionResult PostReview([FromBody] ReviewViewModel model)
+        //{
+        //    try
+        //    {
+        //        var newReview = reviewService.AddReview(model.UserName, model.BeerName,
+        //            model.Rating, model.RMessage);
 
-                var newReviewModel = new ReviewViewModel(newReview.RMessage, newReview.Rating,
-                    newReview.User, newReview.UserId, newReview.Beer, 
-                    newReview.BeerId, newReview.ReviewedOn);
+        //        var newReviewModel = new ReviewViewModel(newReview.RMessage, newReview.Rating,
+        //            newReview.User, newReview.UserId, newReview.Beer,
+        //            newReview.BeerId, newReview.ReviewedOn);
 
-                return Ok(newReviewModel);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+        //        return Ok(newReviewModel);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return BadRequest(e.Message);
+        //    }
 
-        }
+        //}
     }
 }
