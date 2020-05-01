@@ -321,6 +321,7 @@ namespace BeerOverflow.Data.Seeder
                 Id = 1,
                     Name = "Admin",
                     Description = "Admin role",
+                    NormalizedName = "Sysadmin",
                 });
 
             modelBuilder.Entity<Role>().HasData(
@@ -329,7 +330,8 @@ namespace BeerOverflow.Data.Seeder
                     Id = 2,
                     Name = "User",
                     Description = "User role",
-                });
+                    NormalizedName = "Sysuser",
+            });
 
             //    //  modelBuilder.Entity<User>().HasData(
             //    //new User

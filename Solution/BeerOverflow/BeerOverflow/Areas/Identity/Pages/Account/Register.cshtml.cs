@@ -92,7 +92,7 @@ namespace BeerOverflow.Web.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    var roleResult = await _userManager.AddToRoleAsync(user, "Sysadmin");
+                    var roleResult = await _userManager.AddToRoleAsync(user, "Sysuser");
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

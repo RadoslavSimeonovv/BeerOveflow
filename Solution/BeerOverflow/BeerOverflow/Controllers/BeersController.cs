@@ -10,6 +10,8 @@ using BeerOverflow.Web.Models;
 using BeerOverflow.Services.DTO_s;
 using X.PagedList;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using BeerOverflow.Data.Entities;
 
 namespace BeerOverflow.Web.Controllers
 {
@@ -19,12 +21,14 @@ namespace BeerOverflow.Web.Controllers
         private readonly IBeerService beerService;
         private readonly IReviewService reviewService;
         private readonly BeerOverflowContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public BeersController(BeerOverflowContext context, IBeerService beerService, IReviewService reviewService)
+        public BeersController(BeerOverflowContext context, IBeerService beerService, IReviewService reviewService, UserManager<User> userManager)
         {
             _context = context;
             this.beerService = beerService;
             this.reviewService = reviewService;
+            this._userManager = userManager;
         }
 
         // GET: Beers
@@ -48,9 +52,16 @@ namespace BeerOverflow.Web.Controllers
             }
 
             ViewBag.CurrentFilter = searchString;
-            var models = beerService.GetBeers(sortOrder, currentFilter, searchString)
+
+            var role = "otherRole";
+            if (User.IsInRole("Admin"))
+            {
+                role = "admin";
+            }
+
+            var models = beerService.GetBeers(sortOrder, currentFilter, searchString,role)
                 .Select(b => new BeerViewModel(b.Id, b.BeerName, b.AlcByVol, b.Description, 
-                b.BeerType, b.BeerTypeId, b.Brewery, b.BreweryId));
+                b.BeerType, b.BeerTypeId, b.Brewery, b.BreweryId, b.DateUnlisted, b.AvgRating));
 
             int pageSize = 5;
             int pageNumber = (page ?? 1);

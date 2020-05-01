@@ -22,7 +22,7 @@ namespace BeerOverflow.Services.Contracts
         bool DeleteBeer(int id);
         Task <bool> DeleteBeerAsync(int id);
 
-        IQueryable<BeerDTO> GetBeers(string sortOrder, string currentFilter, string searchString);
+        IQueryable<BeerDTO> GetBeers(string sortOrder, string currentFilter, string searchString, string role);
         Task<IQueryable<BeerDTO>> GetBeersAsync(string sortOrder, string currentFilter, string searchString);
     }
 }

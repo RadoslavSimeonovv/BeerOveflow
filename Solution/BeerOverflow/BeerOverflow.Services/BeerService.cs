@@ -89,7 +89,7 @@ namespace BeerOverflow.Services
         }
 
 
-        public IQueryable<BeerDTO> GetBeers(string sortOrder, string currentFilter, string searchString)
+        public IQueryable<BeerDTO> GetBeers(string sortOrder, string currentFilter, string searchString, string role)
         {
             var beersQry = (IQueryable<Beer>)_beerOverflowContext.Beers
                 .Include(b => b.BeerType)
@@ -100,6 +100,12 @@ namespace BeerOverflow.Services
             {
                 beersQry = beersQry.Where(b => b.BeerName.Contains(searchString));
             }
+
+            if (role !="admin")
+            {
+                beersQry = beersQry.Where(b => b.DateUnlisted == null);
+            }
+
             switch (sortOrder)
             {
                 case "name_desc":
@@ -132,9 +138,9 @@ namespace BeerOverflow.Services
             }
 
             var beerDTOs = beersQry.Select(b => new BeerDTO(b.Id, b.BeerName, b.BeerTypeId,
-                b.BeerType.Type, b.BreweryId, b.Brewery.Name,
-                b.AlcByVol, b.Description, 
-                b.Reviews.Count == 0 ? 0 : b.Reviews.Average(r => r.Rating)));
+                          b.BeerType.Type, b.BreweryId, b.Brewery.Name,
+                          b.AlcByVol, b.Description, b.DateUnlisted,
+                          b.Reviews.Count == 0 ? 0 : b.Reviews.Average(r => r.Rating)));
 
             return beerDTOs;
         }
