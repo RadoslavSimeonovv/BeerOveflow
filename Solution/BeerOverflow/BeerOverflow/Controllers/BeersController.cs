@@ -28,6 +28,7 @@ namespace BeerOverflow.Web.Controllers
         }
 
         // GET: Beers
+        
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
@@ -48,7 +49,9 @@ namespace BeerOverflow.Web.Controllers
 
             ViewBag.CurrentFilter = searchString;
             var models = beerService.GetBeers(sortOrder, currentFilter, searchString)
-                .Select(b => new BeerViewModel(b.Id, b.BeerName, b.AlcByVol, b.Description, b.BeerType, b.BeerTypeId, b.Brewery, b.BreweryId));
+                .Select(b => new BeerViewModel(b.Id, b.BeerName, b.AlcByVol, b.Description, 
+                b.BeerType, b.BeerTypeId, b.Brewery, b.BreweryId));
+
             int pageSize = 5;
             int pageNumber = (page ?? 1);
             return View(models.ToPagedList(pageNumber, pageSize));

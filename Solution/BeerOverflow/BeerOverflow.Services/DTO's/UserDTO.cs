@@ -13,6 +13,7 @@ namespace BeerOverflow.Services.DTO_s
             this.FirstName = firstName;
             this.LastName = lastName;
             this.Email = email;
+            this.IsBanned = false;
         }
 
         public UserDTO(int id, string username, string firstName, string lastName, string email, DateTime createdOn)
@@ -23,6 +24,7 @@ namespace BeerOverflow.Services.DTO_s
             this.LastName = lastName;
             this.Email = email;
             this.CreatedOn = createdOn;
+            this.IsBanned = false;
         }
 
         public int Id { get; set; }
@@ -30,6 +32,8 @@ namespace BeerOverflow.Services.DTO_s
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
+        public bool IsBanned { get; set; }
+        public string BanDescription { get; set; }
 
         public DateTime CreatedOn { get; set; }
 

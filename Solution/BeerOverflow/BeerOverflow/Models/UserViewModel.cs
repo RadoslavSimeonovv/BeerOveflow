@@ -35,7 +35,8 @@ namespace BeerOverflow.Web.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-
+        public bool IsBanned { get; set; }
+        public string BanDescription { get; set; }
         public DateTime CreatedOn { get; set; }
 
 
