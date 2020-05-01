@@ -25,7 +25,7 @@ namespace BeerOverflow.Web.Models
             this.BreweryId = breweryId;
         }
         public BeerViewModel(int id, string beerName, double abv, string description, string beerType,
-            int beerTypeId, string brewery, int breweryId, ICollection<Review> reviews, double avgRating)
+            int beerTypeId, string brewery, int breweryId, ICollection<Review> reviews, double avgRating, DateTime? dateUnlisted)
         {
             this.Id = id;
             this.BeerName = beerName;
@@ -37,6 +37,7 @@ namespace BeerOverflow.Web.Models
             this.BreweryId = breweryId;
             this.Reviews = reviews;
             this.AvgRating = avgRating;
+            this.DateUnlisted = dateUnlisted;
         }
         public BeerViewModel(int id, string beerName, double abv, string description, string beerType,
     int beerTypeId, string brewery, int breweryId, double avgRating)

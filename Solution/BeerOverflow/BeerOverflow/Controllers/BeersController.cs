@@ -79,7 +79,7 @@ namespace BeerOverflow.Web.Controllers
             {
                 var beerDTO = beerService.GetBeer(id);
                 var model = new BeerViewModel(beerDTO.Id, beerDTO.BeerName, beerDTO.AlcByVol, beerDTO.Description,
-                    beerDTO.BeerType, beerDTO.BeerTypeId, beerDTO.Brewery, beerDTO.BreweryId, beerDTO.Reviews, beerDTO.AvgRating);
+                    beerDTO.BeerType, beerDTO.BeerTypeId, beerDTO.Brewery, beerDTO.BreweryId, beerDTO.Reviews, beerDTO.AvgRating,beerDTO.DateUnlisted);
                 return View(model);
             }
             catch (Exception)

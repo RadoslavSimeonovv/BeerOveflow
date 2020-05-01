@@ -93,6 +93,19 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.AvgRating)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DateUnlisted)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.DateUnlisted == null)
+            {
+                @Html.DisplayText("Not unlisted")
+            }
+            else
+            {
+                @Html.DisplayFor(model => model.DateUnlisted)
+            }
+        </dd>
     </dl>
 
 </div>

@@ -21,23 +21,23 @@ namespace BeerOverflow.Web.Controllers
             this.beerService = beerService;
             this.reviewService = reviewService;
         }
-        public async Task<IActionResult> AddReview(int beerId)
-        {
-            if (beerId == null)
-            {
-                return NotFound();
-            }
-            try
-            {
-                var beerDTO = beerService.GetBeer(beerId);
-                var model = new BeerViewModel(beerDTO.Id, beerDTO.BeerName, beerDTO.AlcByVol, beerDTO.Description,
-                    beerDTO.BeerType, beerDTO.BeerTypeId, beerDTO.Brewery, beerDTO.BreweryId, beerDTO.Reviews, beerDTO.AvgRating);
-                return View(model);
-            }
-            catch (Exception)
-            {
-                return NotFound();
-            }
-        }
+        //public async Task<IActionResult> AddReview(int beerId)
+        //{
+        //    if (beerId == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    try
+        //    {
+        //        var beerDTO = beerService.GetBeer(beerId);
+        //        var model = new BeerViewModel(beerDTO.Id, beerDTO.BeerName, beerDTO.AlcByVol, beerDTO.Description,
+        //            beerDTO.BeerType, beerDTO.BeerTypeId, beerDTO.Brewery, beerDTO.BreweryId, beerDTO.Reviews, beerDTO.AvgRating);
+        //        return View(model);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return NotFound();
+        //    }
+        //}
     }
 }
