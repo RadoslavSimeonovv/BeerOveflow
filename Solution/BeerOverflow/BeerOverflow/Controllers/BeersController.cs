@@ -228,18 +228,29 @@ namespace BeerOverflow.Web.Controllers
 
 
 
-
-        // GET: Beers/AddReview
-        public IActionResult AddReview()
+        public IActionResult AddReview(int id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+            try
+            {
+                var beerDTO = beerService.GetBeer(id);
+                var model = new BeerReviewViewModel(beerDTO.Id, beerDTO.BeerName, beerDTO.AlcByVol, beerDTO.Description,
+                    beerDTO.BeerType, beerDTO.BeerTypeId, beerDTO.Brewery, beerDTO.BreweryId, beerDTO.AvgRating);
+                return View(model);
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
         }
-
 
         [HttpPost]
         [Authorize(Roles = "Admin, User")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddReview(int id, [Bind("RMessage, Rating, BeerId, UserId")] ReviewViewModel model)
+        public async Task<IActionResult> AddReview(int id, [Bind("RMessage, Rating, BeerId, UserId")] BeerReviewViewModel model)
         {
             if (id == null)
             {
@@ -248,8 +259,12 @@ namespace BeerOverflow.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                var newReview = await this.reviewService.AddReview(model.UserId, model.BeerId,
+
+                var user = await _userManager.GetUserAsync(User);
+
+                var newReview = await this.reviewService.AddReview(user.Id, id,
                             model.Rating, model.RMessage);
+
 
                 //var newReviewModel = new ReviewViewModel(newReview.RMessage, newReview.Rating,
                 //    newReview.User, newReview.UserId, newReview.Beer,
@@ -257,7 +272,7 @@ namespace BeerOverflow.Web.Controllers
 
                 //var review = await this.reviewService.AddReview(reviewDTO.UserId, reviewDTO.BeerId, reviewDTO.Rating, reviewDTO.RMessage);
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index)); // ????
             }
 
             return NotFound();

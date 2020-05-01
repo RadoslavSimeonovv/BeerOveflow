@@ -23,7 +23,8 @@ namespace BeerOverflow.Services
                 .Include(b => b.BeerType)
                 .Include(b => b.Brewery)
                 .Include(b => b.Reviews)
-                //.Where(b => b.DateUnlisted == null)
+                .ThenInclude(r => r.User)
+                .Where(b => b.DateUnlisted == null)
                 .FirstOrDefault(b => b.Id == id);
             if (beer == null)
             {
