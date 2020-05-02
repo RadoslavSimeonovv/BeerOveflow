@@ -7,6 +7,10 @@ namespace BeerOverflow.Web.Models
 {
     public class UserBeersViewModel
     {
+        public UserBeersViewModel()
+        {
+
+        }
         public UserBeersViewModel(string user, int userId, string beer, int beerId)
         {
             this.User = user;

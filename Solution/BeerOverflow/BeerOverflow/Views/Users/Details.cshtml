@@ -1,0 +1,80 @@
+﻿@model BeerOverflow.Data.Entities.User
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>User</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DateOfBirth)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateOfBirth)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreatedOn)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.isBanned)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.isBanned)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.banDescription)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.banDescription)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+
+</div>
+<br />
+@*<a class="btn btn-primary" asp-action="BanUser" asp-route-id="@Model.Id">
+        Ban
+    </a>*@
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="BanUser" asp-route-id="@Model.Id">
+            <div class="form-group">
+                <input type="submit" value="Ban" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

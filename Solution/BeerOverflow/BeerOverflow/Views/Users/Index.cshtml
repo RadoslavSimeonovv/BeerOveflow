@@ -1,0 +1,68 @@
+﻿@model IEnumerable<BeerOverflow.Data.Entities.User>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                First Name
+            </th>
+            <th>
+                Last Name
+            </th>
+            <th>
+                Date Created
+            </th>
+            <th>
+                Banned
+            </th>
+            <th>
+                Ban Description
+            </th>
+            <th>
+                Username
+            </th>
+            <th>
+                Email
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedOn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.isBanned)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.banDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

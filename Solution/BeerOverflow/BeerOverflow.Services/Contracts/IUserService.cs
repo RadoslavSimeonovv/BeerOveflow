@@ -17,6 +17,7 @@ namespace BeerOverflow.Services.Contracts
         Task<UserDTO> CreateUserAsync(UserDTO userDTO);
         Task<UserDTO> UpdateUserAsync(int id, string newUsername, string newFirstName, string newLastName, string newEmail);
         Task<bool> DeleteUserAsync(int id);
+        Task<bool> BanUser(int id);
 
     }
 }

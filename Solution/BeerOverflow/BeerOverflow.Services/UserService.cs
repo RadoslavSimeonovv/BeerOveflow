@@ -186,5 +186,24 @@ namespace BeerOverflow.Services
 
             return userDTO;
         }
+
+        public async Task<bool> BanUser(int id)
+        {
+            var user = await _beerOverflowContext.Users
+                    .FirstOrDefaultAsync(user => user.Id == id);
+
+            if (user == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            user.isBanned = true;
+
+            _beerOverflowContext.Users.Update(user);
+            await _beerOverflowContext.SaveChangesAsync();
+
+            return true;
+        }
+
     }
 }
