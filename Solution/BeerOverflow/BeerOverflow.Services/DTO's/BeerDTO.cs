@@ -46,6 +46,21 @@ namespace BeerOverflow.Services.DTO_s
             this.Reviews = reviews;
             this.AvgRating = avgRating;
         }
+        public BeerDTO(int id, string beerName, int beerTypeId, string beerType, int breweryId,
+    string breweryName, double abv, string description, ICollection<Review> reviews, double avgRating, DateTime ? dateUnlisted)
+        {
+            this.Id = id;
+            this.BeerName = beerName;
+            this.BeerTypeId = beerTypeId;
+            this.BeerType = beerType;
+            this.BreweryId = breweryId;
+            this.Brewery = breweryName;
+            this.AlcByVol = abv;
+            this.Description = description;
+            this.Reviews = reviews;
+            this.AvgRating = avgRating;
+            this.DateUnlisted = dateUnlisted;
+        }
         public BeerDTO(int id, string beerName, int beerTypeId, string beerType, int breweryId, 
             string breweryName, double abv, string description,double avgRating)
         {

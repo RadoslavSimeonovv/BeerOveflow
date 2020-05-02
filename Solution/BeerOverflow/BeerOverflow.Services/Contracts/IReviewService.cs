@@ -9,5 +9,6 @@ namespace BeerOverflow.Services.Contracts
     public interface IReviewService
     {
         Task<ReviewDTO> AddReview(int userId, int beerId, int rating, string rMessage);
+        //Task<ReviewDTO> GetReviewAsync(int ReviewId);
     }
 }

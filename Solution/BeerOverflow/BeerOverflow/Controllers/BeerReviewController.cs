@@ -39,5 +39,33 @@ namespace BeerOverflow.Web.Controllers
         //        return NotFound();
         //    }
         //}
+
+        //public ActionResult Edit()
+        //{
+
+        //}
+
+        //[HttpPost]
+        //[Authorize(Roles = "Admin, User")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit()
+        //{
+        //    if (beerId == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    try
+        //    {
+        //        var beerDTO = beerService.GetBeer(beerId);
+        //        var model = new BeerViewModel(beerDTO.Id, beerDTO.BeerName, beerDTO.AlcByVol, beerDTO.Description,
+        //            beerDTO.BeerType, beerDTO.BeerTypeId, beerDTO.Brewery, beerDTO.BreweryId, beerDTO.Reviews, beerDTO.AvgRating);
+        //        return View(model);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return NotFound();
+        //    }
+        //}
+
     }
 }

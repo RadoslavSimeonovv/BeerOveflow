@@ -36,12 +36,12 @@ namespace BeerOverflow.Web.Controllers
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
+            ViewBag.RatingSortParm = sortOrder == "rating" ? "rating_desc" : "rating";
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.AbvSortParm = sortOrder == "abv" ? "abv_desc" : "abv";
             ViewBag.BeerTypeSortParm = sortOrder == "beertype" ? "beertype_desc" : "beertype";
             ViewBag.CountrySortParm = sortOrder == "country" ? "country_desc" : "country";
             ViewBag.BrewerySortParm = sortOrder == "brewery" ? "brewery_desc" : "brewery";
-            ViewBag.RatingSortParm = sortOrder == "rating" ? "rating_desc" : "rating";
             if (searchString != null)
             {
                 page = 1;
@@ -65,7 +65,7 @@ namespace BeerOverflow.Web.Controllers
 
             int pageSize = 5;
             int pageNumber = (page ?? 1);
-            return View(models.ToPagedList(pageNumber, pageSize));
+            return View(await models.ToPagedListAsync(pageNumber, pageSize));
         }
 
         // GET: Beers/Details/5
@@ -264,13 +264,6 @@ namespace BeerOverflow.Web.Controllers
 
                 var newReview = await this.reviewService.AddReview(user.Id, id,
                             model.Rating, model.RMessage);
-
-
-                //var newReviewModel = new ReviewViewModel(newReview.RMessage, newReview.Rating,
-                //    newReview.User, newReview.UserId, newReview.Beer,
-                //    newReview.BeerId, newReview.ReviewedOn);
-
-                //var review = await this.reviewService.AddReview(reviewDTO.UserId, reviewDTO.BeerId, reviewDTO.Rating, reviewDTO.RMessage);
 
                 return RedirectToAction(nameof(Index)); // ????
             }

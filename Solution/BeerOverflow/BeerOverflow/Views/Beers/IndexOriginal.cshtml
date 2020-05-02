@@ -1,0 +1,99 @@
+﻿@model X.PagedList.IPagedList<BeerOverflow.Web.Models.BeerViewModel>;
+@using X.PagedList.Mvc.Core;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Beers</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+
+@using (Html.BeginForm("Index", "Beers", FormMethod.Get))
+{
+    <p>
+        Find by beer name: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.ActionLink("Rating", "Index", new { sortOrder = ViewBag.RatingSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Beer Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("AlcByVol", "Index", new { sortOrder = ViewBag.AbvSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Style", "Index", new { sortOrder = ViewBag.BeerTypeSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Brewery", "Index", new { sortOrder = ViewBag.BrewerySortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Description)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AvgRating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BeerName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AlcByVol)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BeerType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Brewery)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a><text> | </text>
+
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a><text> | </text>
+                    if (@item.DateUnlisted == null)
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                    else
+                    {
+                        <a href="#" class="text-muted">Deleted</a>
+                    }
+
+                }
+                else
+                {
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                }
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

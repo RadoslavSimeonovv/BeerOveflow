@@ -7,6 +7,24 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<head>
+    Font Awesome Icon Library
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .fa-star {
+            color: gainsboro
+        }
+
+        .checked {
+            color: orange;
+        }
+    </style>
+</head>
+
 <h1>Beers</h1>
 
 <p>
@@ -48,46 +66,61 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.AvgRating)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BeerName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AlcByVol)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BeerType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Brewery)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @if (User.IsInRole("Admin"))
-                {
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-                    if (@item.DateUnlisted == null)
+            <tr>
+                <td>
+                    @if (item.AvgRating == 0)
                     {
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <p class="text-secondary">Not rated</p>
                     }
                     else
                     {
-                        <label >Deleted</label>
+                        @for (int i = 0; i < item.AvgRating; i++)
+                        {
+                            <span class="fa fa-star checked"></span>
+                        }
+                        @for (int i = (int)item.AvgRating; i < 5; i++)
+                        {
+                            <span class="fa fa-star"></span>
+                        }
                     }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BeerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AlcByVol)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BeerType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Brewery)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a><text> | </text>
 
-                }
-                else
-                {
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-                }
-            </td>
-        </tr>
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a><text> | </text>
+                        if (@item.DateUnlisted == null)
+                        {
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        }
+                        else
+                        {
+                            <a href="#" class="text-muted">Deleted</a>
+                        }
+
+                    }
+                    else
+                    {
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    }
+                </td>
+            </tr>
         }
     </tbody>
 </table>

@@ -75,7 +75,19 @@ namespace BeerOverflow.Services
             {
                 throw new ArgumentNullException("User is null!");
             }
-            var beer = await  _beerOverflowContext.Beers
+
+            //TODO Check error with await
+            var existingReview = /*await*/ _beerOverflowContext.Reviews
+                .Where(r=>r.BeerId == beerId)
+                .Where(r => r.DeletedOn == null)
+                .FirstOrDefault(r => r.UserId == userId);
+
+            if (existingReview != null)
+            {
+                throw new InvalidOperationException("The user already reviewd this beer");
+            }
+
+            var beer = await _beerOverflowContext.Beers
                 .Where(b => b.DateUnlisted == null)
                 .FirstOrDefaultAsync(b => b.Id == beerId);
 
@@ -84,12 +96,10 @@ namespace BeerOverflow.Services
                 throw new ArgumentNullException("Beer is null!");
             }
 
-
             if (rating < 1 || rating > 5)
             {
                 throw new ArgumentOutOfRangeException("Rating is out of range!");
             }
-
 
             var userReview = new Review
             {
@@ -114,5 +124,19 @@ namespace BeerOverflow.Services
 
             return userReviewDTO;
         }
+
+
+        //public async Task<ReviewDTO> GetReviewAsync(int reviewId)
+        //{
+        //    var review = await _beerOverflowContext.Reviews
+        //         .FirstOrDefaultAsync(r => r.Id == reviewId);
+
+        //    if (review == null)
+        //    {
+        //        throw new ArgumentNullException("Missing review");
+        //    }
+
+        //    var reviewDto = new ReviewDTO()
+        //};
     }
 }
