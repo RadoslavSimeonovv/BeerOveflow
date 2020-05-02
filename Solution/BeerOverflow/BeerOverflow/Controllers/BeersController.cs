@@ -265,7 +265,7 @@ namespace BeerOverflow.Web.Controllers
                 var newReview = await this.reviewService.AddReview(user.Id, id,
                             model.Rating, model.RMessage);
 
-                return RedirectToAction(nameof(Index)); // ????
+                return RedirectToAction("Details", new { id }); // ????
             }
 
             return NotFound();
