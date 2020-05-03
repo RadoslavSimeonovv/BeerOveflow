@@ -12,13 +12,14 @@ namespace BeerOverflow.Web.Models
 
         }
 
-        public BeerReviewEditViewModel(int reviewId, string rMessage, string userName, string beerName, double abv, string description,
+        public BeerReviewEditViewModel(int reviewId, string rMessage, string userName, int beerId, string beerName, double abv, string description,
                         string beerType, string brewery, double avgRating,
                         DateTime? reviewedOn, DateTime? deletedOn)
         {
             this.Id = reviewId;
             this.RMessage = rMessage;
             this.UserName = userName;
+            this.BeerId = beerId;
             this.BeerName = beerName;
             this.AlcByVol = abv;
             this.Description = description;
@@ -27,6 +28,7 @@ namespace BeerOverflow.Web.Models
             this.AvgRating = avgRating;
             this.ReviewedOn = reviewedOn;
             this.DeletedOn = deletedOn;
+            this.IsDeleted = deletedOn != null;
         }
         public int Id { get; set; }
         public int BeerId { get; set; }
