@@ -8,9 +8,23 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
+    <style>
+        body {
+            background-image: url("/Images/Background/hazemaster-gray-gradient-ui-background.jpg");
+            min-height: 100%;
+            min-width: 100%;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            overflow-y: hidden;
+            overflow-x: hidden;
+            font-family: "Lucida Console", Courier, monospace;
+            font-size: larger
+        }
+    </style>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
+                <img src="~/Images/simple.jpg" height="50" width="70" />
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BeerOverflow</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -34,6 +48,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+    
                     </ul>
                 </div>
             </div>
@@ -44,6 +59,7 @@
             @RenderBody()
         </main>
     </div>
+   
 
     <footer class="border-top footer text-muted">
         <div class="container">

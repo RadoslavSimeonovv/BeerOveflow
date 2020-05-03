@@ -110,26 +110,26 @@ namespace BeerOverflow.Web.ApiControllers
         }
 
 
-        //[HttpPost]
-        //[Route("reviews")]
-        //public IActionResult PostReview([FromBody] ReviewViewModel model)
-        //{
-        //    try
-        //    {
-        //        var newReview = reviewService.AddReview(model.UserName, model.BeerName,
-        //            model.Rating, model.RMessage);
+        [HttpPost]
+        [Route("reviews")]
+        public async Task<IActionResult> PostReview([FromBody] ReviewViewModel model)
+        {
+            try
+            {
+                var newReview = await  reviewService.AddReviewAsync(model.UserName, model.BeerName,
+                    model.Rating, model.RMessage);
 
-        //        var newReviewModel = new ReviewViewModel(newReview.RMessage, newReview.Rating,
-        //            newReview.User, newReview.UserId, newReview.Beer,
-        //            newReview.BeerId, newReview.ReviewedOn);
+                var newReviewModel = new ReviewViewModel(newReview.RMessage, newReview.Rating,
+                    newReview.User, newReview.UserId, newReview.Beer,
+                    newReview.BeerId, newReview.ReviewedOn);
 
-        //        return Ok(newReviewModel);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return BadRequest(e.Message);
-        //    }
+                return Ok(newReviewModel);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
 
-        //}
+        }
     }
 }

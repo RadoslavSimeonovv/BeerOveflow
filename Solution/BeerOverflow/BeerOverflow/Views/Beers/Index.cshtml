@@ -12,7 +12,6 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <head>
-    Font Awesome Icon Library
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         .fa-star {
@@ -31,6 +30,13 @@
     <a asp-action="Create">Create New</a>
 </p>
 
+<style>
+    body {
+        font-family: "Lucida Console", Courier, monospace;
+        font-size:larger
+            
+    }
+</style>
 
 @using (Html.BeginForm("Index", "Beers", FormMethod.Get))
 {
@@ -40,7 +46,8 @@
     </p>
 }
 
-<table class="table">
+
+<table class="table table-striped" border="1" style="font-size:larger">
     <thead>
         <tr>
             <th>
@@ -70,7 +77,7 @@
                 <td>
                     @if (item.AvgRating == 0)
                     {
-                    <p class="text-secondary">Not rated</p>
+                        <p class="text-secondary">Not rated</p>
                     }
                     else
                     {
