@@ -104,7 +104,7 @@
                     {
                         <a asp-action="Edit" asp-route-id="@item.Id">Edit</a><text> | </text>
 
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a><text> | </text>
+                        <a asp-controller="Beers" asp-action="Details" asp-route-id="@item.Id">Details</a><text> | </text>
                         if (@item.DateUnlisted == null)
                         {
                             <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>

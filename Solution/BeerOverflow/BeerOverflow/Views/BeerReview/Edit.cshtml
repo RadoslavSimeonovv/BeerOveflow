@@ -1,7 +1,6 @@
-﻿@model BeerOverflow.Web.Models.BeerReviewViewModel
-
+﻿@model BeerOverflow.Web.Models.BeerReviewEditViewModel
 @{
-    ViewData["Title"] = "AddReview";
+    ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -10,7 +9,6 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <head>
-    Font Awesome Icon Library
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         .fa-star {
@@ -65,7 +63,7 @@
         <dd class="col-sm-10">
             @if (Model.AvgRating == 0)
             {
-            <p class="text-secondary">Not rated</p>
+                <p class="text-secondary">Not rated</p>
             }
             else
             {
@@ -79,28 +77,60 @@
                 }
             }
         </dd>
+        <br></br>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ReviewedOn)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ReviewedOn)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DeletedOn)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DeletedOn)
+        </dd>
     </dl>
 
 </div>
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Beers" asp-action="Details" asp-route-id="@Model.BeerId">Back to List</a>
 </div>
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="AddReview">
+        <form asp-controller="BeerReview" asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="@Model.IsDeleted" id="defaultCheck1">
+                <label class="form-check-label" for="defaultCheck1">
+                    Delete review
+                </label>
+            </div>
             <div class="form-group">
                 <label asp-for="RMessage" class="control-label"></label>
-                <textarea asp-for="RMessage" class="form-control" ></textarea>
+                <textarea asp-for="RMessage" class="form-control"></textarea>
                 <span asp-validation-for="RMessage" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Rating" class="control-label"></label>
-                <select asp-for="Rating" class="form-control" asp-items="@new SelectList(new List<int>() { 1, 2, 3, 4, 5 });"></select>
+                @for (int i = 0; i < @Model.AvgRating; i++)
+                {
+                    <span class="fa fa-star checked"></span>
+                }
+                @for (int i = (int)@Model.AvgRating; i < 5; i++)
+                {
+                    <span class="fa fa-star"></span>
+                }
             </div>
             <div class="form-group">
-                <input type="submit" value="Add Review" class="btn btn-primary" />
+                <input type="submit" value="Save changes" class="btn btn-primary" />
             </div>
         </form>
     </div>

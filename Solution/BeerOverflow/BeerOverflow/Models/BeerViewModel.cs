@@ -1,6 +1,7 @@
 ﻿using BeerOverflow.Data.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -68,6 +69,8 @@ int beerTypeId, string brewery, int breweryId, DateTime? dateUnlisted, double av
             this.AvgRating = avgRating;
         }
         public int Id { get; set; }
+
+        [DisplayName("Beer name")]
         public string BeerName { get; set; }
         public double? AlcByVol { get; set; }
         public string Description { get; set; }

@@ -118,25 +118,62 @@ namespace BeerOverflow.Services
             {
                 throw new InvalidOperationException("Cannot add into database!");
             }
+            //TODO Where this dto is used
             var userReviewDTO = new ReviewDTO(userReview.Id, userReview.RMessage, userReview.Rating,
-                userReview.User.UserName, userReview.UserId, userReview.Beer.BeerName,
-                userReview.BeerId, userReview.ReviewedOn);
+            userReview.User.UserName, userReview.UserId, userReview.Beer.BeerName,
+            userReview.BeerId, userReview.ReviewedOn);
 
             return userReviewDTO;
+
         }
 
 
-        //public async Task<ReviewDTO> GetReviewAsync(int reviewId)
-        //{
-        //    var review = await _beerOverflowContext.Reviews
-        //         .FirstOrDefaultAsync(r => r.Id == reviewId);
+        public async Task<ReviewDTO> GetReviewAsync(int reviewId)
+        {
+            var review = await _beerOverflowContext.Reviews
+                .Include(r=>r.User)
+                .Include(r => r.Beer)
+                .FirstOrDefaultAsync(r => r.Id == reviewId);
 
-        //    if (review == null)
-        //    {
-        //        throw new ArgumentNullException("Missing review");
-        //    }
 
-        //    var reviewDto = new ReviewDTO()
-        //};
+            if (review == null)
+            {
+                throw new ArgumentNullException("Missing review");
+            }
+
+            var reviewDTO = new ReviewDTO(review.Id,review.RMessage, review.Rating,review.User.Email, review.User.Id,
+                review.Beer.BeerName, review.Beer.Id,review.ReviewedOn,review.DeletedOn);
+
+            return reviewDTO;
+        }
+        public async Task<bool> ModifyReviewAsync(int reviewId,string rMessage,bool isDeleted)
+        {
+            var review = /*await */_beerOverflowContext.Reviews
+                .FirstOrDefault(r => r.Id == reviewId);
+            if (review==null)
+            {
+                throw new ArgumentNullException("Missing review");
+            }
+
+            if (!review.RMessage.Equals(rMessage))
+                review.RMessage = rMessage;
+
+            if (review.DeletedOn==null || isDeleted == true)
+            {
+                review.DeletedOn = DateTime.UtcNow;
+            }
+
+            try
+            {
+                await _beerOverflowContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                throw new InvalidOperationException("Cannot save changes!");
+            }
+
+        }
     }
 }
+

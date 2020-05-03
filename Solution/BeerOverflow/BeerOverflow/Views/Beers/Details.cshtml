@@ -178,7 +178,7 @@ else
                     <td>
                         @if (User.IsInRole("Admin"))
                         {
-                            <a class="btn btn-primary" asp-action="ModifyReview" asp-route-id="@review.Id">
+                            <a class="btn btn-primary" asp-controller="BeerReview" asp-action="Edit" asp-route-id="@review.Id">
                                 Modify review
                             </a>
                         }
