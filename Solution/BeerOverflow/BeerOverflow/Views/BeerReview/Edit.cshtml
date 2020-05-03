@@ -77,7 +77,6 @@
                 }
             }
         </dd>
-        <br></br>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.UserName)
         </dt>
@@ -105,10 +104,11 @@
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-controller="BeerReview" asp-action="Edit">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="BeerId" />
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="@Model.IsDeleted" id="defaultCheck1">
+                <input class="form-check-input" type="checkbox" asp-for="IsDeleted" id="defaultCheck1">
                 <label class="form-check-label" for="defaultCheck1">
                     Delete review
                 </label>

@@ -1,4 +1,5 @@
 ﻿using BeerOverflow.Data.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -317,370 +318,281 @@ namespace BeerOverflow.Data.Seeder
 
             modelBuilder.Entity<Role>().HasData(
             new Role
-                {
+            {
                 Id = 1,
-                    Name = "Admin",
-                    Description = "Admin role",
-                    NormalizedName = "Sysadmin",
-                });
+                Name = "Admin",
+                Description = "Admin role",
+                NormalizedName = "Sysadmin",
+            });
+
 
             modelBuilder.Entity<Role>().HasData(
             new Role
-                {
-                    Id = 2,
-                    Name = "User",
-                    Description = "User role",
-                    NormalizedName = "Sysuser",
+            {
+                Id = 2,
+                Name = "User",
+                Description = "User role",
+                NormalizedName = "Sysuser",
             });
 
-            //    //  modelBuilder.Entity<User>().HasData(
-            //    //new User
-            //    //{
-            //    //    Id = 1,
-            //    //    UserName = "Boyanski",
-            //    //    FirstName = "Boyan",
-            //    //    LastName = "Vuchev",
-            //    //    Email = "bvuchev@abv.bg",
-            //    //    CreatedOn = DateTime.UtcNow
 
-            //    //});
+            var hasher = new PasswordHasher<User>();
+          
 
-            //    //  modelBuilder.Entity<User>().HasData(
-            //    //new User
-            //    //{
-            //    //    Id = 2,
-            //    //    UserName = "RSimeonov",
-            //    //    FirstName = "Radoslav",
-            //    //    LastName = "Simeonov",
-            //    //    Email = "rsimeonovv@abv.bg",
-            //    //    CreatedOn = DateTime.UtcNow
-            //    //});
+            User admin = new User
+            {
+                Id = 1,
+                UserName = "bvuchev@abv.bg",
+                NormalizedUserName = "BVUCHEV@ABV.BG",
+                FirstName = "Boyan",
+                LastName = "Vuchev",
+                Email = "bvuchev@abv.bg",
+                NormalizedEmail = "BVUCHEV@ABV.BG",
+                LockoutEnabled = true,
+                SecurityStamp = "DC6E275DD1E24957A7781D42BB68293B",
+                CreatedOn = DateTime.UtcNow
+            };
 
 
-            //    //  modelBuilder.Entity<User>().HasData(
-            //    //new User
-            //    //{
-            //    //    Id = 3,
-            //    //    UserName = "PeturPetrof",
-            //    //    FirstName = "Petur",
-            //    //    LastName = "Petrov",
-            //    //    Email = "peshop@gmail.com",
-            //    //    CreatedOn = DateTime.UtcNow
-            //    //});
+            admin.PasswordHash = hasher.HashPassword(admin, "123456");
 
-            //    //  modelBuilder.Entity<User>().HasData(
-            //    //new User
-            //    //{
-            //    //    Id = 4,
-            //    //    UserName = "VankataV",
-            //    //    FirstName = "Ivan",
-            //    //    LastName = "Stoyanov",
-            //    //    Email = "vankatas@gmail.com",
-            //    //    CreatedOn = DateTime.UtcNow
-            //    //});
+            modelBuilder.Entity<User>().HasData(admin);
 
+            User member1 = new User
+            {
+                Id = 2,
+                UserName = "rsimeonov@abv.bg",
+                NormalizedUserName = "RSIMEONOV@ABV.BG",
+                FirstName = "Radoslav",
+                LastName = "Simeonov",
+                Email = "RSIMEONOV@aABV.BG",
+                NormalizedEmail = "RSIMEONOV@ABV.BG",
+                LockoutEnabled = true,
+                SecurityStamp = "HNWQ7GQFUMWKGOAWSJNC5XV2VFYQRWHC",
+                CreatedOn = DateTime.UtcNow
+            };
 
-            //    //  modelBuilder.Entity<User>().HasData(
-            //    //new User
-            //    //{
-            //    //    Id = 5,
-            //    //    UserName = "GeritoIv",
-            //    //    FirstName = "Gergana",
-            //    //    LastName = "Ivanova",
-            //    //    Email = "geriflow@gmail.com",
-            //    //    CreatedOn = DateTime.UtcNow
+            member1.PasswordHash = hasher.HashPassword(member1, "654321");
 
-            //    //});
-
-            //    //  modelBuilder.Entity<User>().HasData(
-            //    //new User
-            //    //{
-            //    //    Id = 6,
-            //    //    UserName = "MimiG",
-            //    //    FirstName = "Mariya",
-            //    //    LastName = "Angelova",
-            //    //    Email = "mimiang@gmail.com",
-            //    //    CreatedOn = DateTime.UtcNow
-
-            //    //});
+            modelBuilder.Entity<User>().HasData(member1);
 
 
+            User member2 = new User
+            {
+                Id = 3,
+                UserName = "ivan@abv.bg",
+                NormalizedUserName = "IVAN@ABV.BG",
+                FirstName = "Ivan",
+                LastName = "Ivanov",
+                Email = "IVAN@ABV.BG",
+                NormalizedEmail = "IVAN@ABV.BG",
+                SecurityStamp = "CYHXVA33BAZ6B5DDG6AKUABAP3K7ONVY",
+                LockoutEnabled = true,
+               
+                CreatedOn = DateTime.UtcNow
+            };
+
+            member2.PasswordHash = hasher.HashPassword(member2, "654321");
+
+            modelBuilder.Entity<User>().HasData(member2);
+
+            modelBuilder.Entity<IdentityUserRole<int>>().HasData(
+           new IdentityUserRole<int>
+           {
+              RoleId = 1,
+              UserId = 1
+           });
+
+            modelBuilder.Entity<IdentityUserRole<int>>().HasData(
+          new IdentityUserRole<int>
+          {
+              RoleId = 2,
+              UserId = 2
+          });
+
+            modelBuilder.Entity<IdentityUserRole<int>>().HasData(
+          new IdentityUserRole<int>
+          {
+              RoleId = 2,
+              UserId = 3
+          });
 
 
-            //    //     modelBuilder.Entity<Review>().HasData(
-            //    //    new Review
-            //    //    {
-            //    //        Id = 1,
-            //    //        RMessage = "Cool beer!",
-            //    //        Rating = 5,
-            //    //        UserId = 4,
-            //    //        BeerId = 1,
-            //    //        ReviewedOn = DateTime.UtcNow
+            modelBuilder.Entity<UserBeers>().HasData(
+            new UserBeers
+            {
+                UserId = 1,
+                BeerId = 2
+            });
 
-            //    //    });
+                modelBuilder.Entity<UserBeers>().HasData(
+             new UserBeers
+             {
+                 UserId = 3,
+                 BeerId = 7,
+                 DrankOn = DateTime.UtcNow
+             });
 
-            //    //     modelBuilder.Entity<Review>().HasData(
-            //    //   new Review
-            //    //   {
-            //    //       Id = 2,
-            //    //       RMessage = "Very fresh, would buy again!",
-            //    //       Rating = 4,
-            //    //       UserId = 3,
-            //    //       BeerId = 7,
-            //    //       ReviewedOn = DateTime.UtcNow
+                modelBuilder.Entity<UserBeers>().HasData(
+             new UserBeers
+             {
+                 UserId = 3,
+                 BeerId = 5,
+             });
 
-            //    //   });
-
-            //    //     modelBuilder.Entity<Review>().HasData(
-            //    //     new Review
-            //    //     {
-            //    //         Id = 3,
-            //    //         RMessage = "I don't recommend it!",
-            //    //         Rating = 1,
-            //    //         UserId = 6,
-            //    //         BeerId = 8,
-            //    //         ReviewedOn = DateTime.UtcNow
-
-            //    //     });
-
-            //    //     modelBuilder.Entity<Review>().HasData(
-            //    //  new Review
-            //    //  {
-            //    //      Id = 4,
-            //    //      RMessage = "Top class!",
-            //    //      Rating = 5,
-            //    //      UserId = 5,
-            //    //      BeerId = 8,
-            //    //      ReviewedOn = DateTime.UtcNow
-
-            //    //  });
-
-            //    //     modelBuilder.Entity<Review>().HasData(
-            //    //     new Review
-            //    //     {
-            //    //         Id = 5,
-            //    //         RMessage = "Not great, not terrible.",
-            //    //         Rating = 3,
-            //    //         UserId = 1,
-            //    //         BeerId = 2,
-            //    //         ReviewedOn = DateTime.UtcNow
-
-            //    //     });
-
-            //    //     modelBuilder.Entity<Review>().HasData(
-            //    //    new Review
-            //    //    {
-            //    //        Id = 6,
-            //    //        RMessage = "Not my taste.",
-            //    //        Rating = 2,
-            //    //        UserId = 4,
-            //    //        BeerId = 5,
-            //    //        ReviewedOn = DateTime.UtcNow
-
-            //    //    });
-
-            //    //     modelBuilder.Entity<Review>().HasData(
-            //    //    new Review
-            //    //    {
-            //    //        Id = 7,
-            //    //        RMessage = "Rip off!",
-            //    //        Rating = 1,
-            //    //        UserId = 4,
-            //    //        BeerId = 2,
-            //    //        ReviewedOn = DateTime.UtcNow
-
-            //    //    });
-
-            //    //     modelBuilder.Entity<Review>().HasData(
-            //    //      new Review
-            //    //      {
-            //    //          Id = 8,
-            //    //          RMessage = "I already bought another 10 of those!",
-            //    //          Rating = 5,
-            //    //          UserId = 6,
-            //    //          BeerId = 4,
-            //    //          ReviewedOn = DateTime.UtcNow
-
-            //    //      });
-
-            //    //     modelBuilder.Entity<Review>().HasData(
-            //    //         new Review
-            //    //         {
-            //    //             Id = 9,
-            //    //             RMessage = "Decent taste and price!",
-            //    //             Rating = 4,
-            //    //             UserId = 1,
-            //    //             BeerId = 3,
-            //    //             ReviewedOn = DateTime.UtcNow
-
-            //    //         });
+            modelBuilder.Entity<UserBeers>().HasData(
+          new UserBeers
+          {
+              UserId = 2,
+              BeerId = 10,
+          });
 
 
-            //    //     modelBuilder.Entity<Review>().HasData(
-            //    //     new Review
-            //    //     {
-            //    //         Id = 10,
-            //    //         RMessage = "My friend lied to me, its not that good.",
-            //    //         Rating = 3,
-            //    //         UserId = 3,
-            //    //         BeerId = 10,
-            //    //         ReviewedOn = DateTime.UtcNow
+            modelBuilder.Entity<UserBeers>().HasData(
+         new UserBeers
+         {
+             UserId = 1,
+             BeerId = 3,
+             DrankOn = DateTime.UtcNow
+         });
 
-            //    //     });
+            modelBuilder.Entity<UserBeers>().HasData(
+         new UserBeers
+         {
+             UserId = 2 ,
+             BeerId = 2,
+             DrankOn = DateTime.UtcNow
+         });
 
-            //    //     modelBuilder.Entity<Review>().HasData(
-            //    //     new Review
-            //    //     {
-            //    //         Id = 11,
-            //    //         RMessage = "Excellent!",
-            //    //         Rating = 5,
-            //    //         UserId = 2,
-            //    //         BeerId = 7,
-            //    //         ReviewedOn = DateTime.UtcNow
+            modelBuilder.Entity<UserBeers>().HasData(
+            new UserBeers
+            {
+                UserId = 1,
+                BeerId = 4,
+                DrankOn = DateTime.UtcNow
+            });
 
-            //    //     });
+            modelBuilder.Entity<UserBeers>().HasData(
+          new UserBeers
+          {
+              UserId = 2,
+              BeerId = 5,
+              DrankOn = DateTime.UtcNow
+          });
+
+            modelBuilder.Entity<UserBeers>().HasData(
+         new UserBeers
+         {
+             UserId = 3,
+             BeerId = 6,
+         });
+
+            modelBuilder.Entity<UserBeers>().HasData(
+           new UserBeers
+           {
+               UserId = 2,
+               BeerId = 9,
+               DrankOn = DateTime.UtcNow
+           });
+
+
+                modelBuilder.Entity<UserBeers>().HasData(
+          new UserBeers
+          {
+              UserId = 1,
+              BeerId = 9,
+              DrankOn = DateTime.UtcNow
+          });
 
 
 
 
-            //    //     modelBuilder.Entity<UserBeers>().HasData(
-            //    //     new UserBeers
-            //    //     {
-            //    //         UserId = 2,
-            //    //         BeerId = 7,
-            //    //         DrankOn = DateTime.UtcNow
-            //    //     });
+            modelBuilder.Entity<Review>().HasData(
+           new Review
+           {
+               Id = 1,
+               RMessage = "Cool beer!",
+               Rating = 5,
+               UserId = 1,
+               BeerId = 9,
+               ReviewedOn = DateTime.UtcNow
 
-            //    //     modelBuilder.Entity<UserBeers>().HasData(
-            //    //  new UserBeers
-            //    //  {
-            //    //      UserId = 3,
-            //    //      BeerId = 7,
-            //    //      DrankOn = DateTime.UtcNow
-            //    //  });
+           });
 
-            //    //     modelBuilder.Entity<UserBeers>().HasData(
-            //    //  new UserBeers
-            //    //  {
-            //    //      UserId = 3,
-            //    //      BeerId = 5,
-            //    //  });
+            modelBuilder.Entity<Review>().HasData(
+          new Review
+          {
+              Id = 2,
+              RMessage = "Very fresh, would buy again!",
+              Rating = 4,
+              UserId = 2,
+              BeerId = 9,
+              ReviewedOn = DateTime.UtcNow
 
-            //    //     modelBuilder.Entity<UserBeers>().HasData(
-            //    //   new UserBeers
-            //    //   {
-            //    //       UserId = 3,
-            //    //       BeerId = 10,
-            //    //   });
+          });
 
+            modelBuilder.Entity<Review>().HasData(
+            new Review
+            {
+                Id = 3,
+                RMessage = "I don't recommend it!",
+                Rating = 1,
+                UserId = 3,
+                BeerId = 6,
+                ReviewedOn = DateTime.UtcNow
 
-            //    //     modelBuilder.Entity<UserBeers>().HasData(
-            //    //  new UserBeers
-            //    //  {
-            //    //      UserId = 1,
-            //    //      BeerId = 3,
-            //    //      DrankOn = DateTime.UtcNow
-            //    //  });
+            });
 
-            //    //     modelBuilder.Entity<UserBeers>().HasData(
-            //    //  new UserBeers
-            //    //  {
-            //    //      UserId = 4,
-            //    //      BeerId = 2,
-            //    //      DrankOn = DateTime.UtcNow
-            //    //  });
+            modelBuilder.Entity<Review>().HasData(
+         new Review
+         {
+             Id = 4,
+             RMessage = "Top class!",
+             Rating = 5,
+             UserId = 1,
+             BeerId = 4,
+             ReviewedOn = DateTime.UtcNow
 
-            //    //     modelBuilder.Entity<UserBeers>().HasData(
-            //    //     new UserBeers
-            //    //     {
-            //    //         UserId = 4,
-            //    //         BeerId = 1,
-            //    //         DrankOn = DateTime.UtcNow
-            //    //     });
-
-            //    //     modelBuilder.Entity<UserBeers>().HasData(
-            //    //   new UserBeers
-            //    //   {
-            //    //       UserId = 4,
-            //    //       BeerId = 5,
-            //    //       DrankOn = DateTime.UtcNow
-            //    //   });
-
-            //    //     modelBuilder.Entity<UserBeers>().HasData(
-            //    //  new UserBeers
-            //    //  {
-            //    //      UserId = 6,
-            //    //      BeerId = 1,
-            //    //  });
-
-            //    //     modelBuilder.Entity<UserBeers>().HasData(
-            //    //    new UserBeers
-            //    //    {
-            //    //        UserId = 6,
-            //    //        BeerId = 3,
-            //    //    });
-
-            //    //     modelBuilder.Entity<UserBeers>().HasData(
-            //    // new UserBeers
-            //    // {
-            //    //     UserId = 6,
-            //    //     BeerId = 4,
-            //    // });
-            //    //     modelBuilder.Entity<UserBeers>().HasData(
-            //    //  new UserBeers
-            //    //  {
-            //    //      UserId = 2,
-            //    //      BeerId = 1,
-            //    //  });
-
-            //    //     modelBuilder.Entity<UserBeers>().HasData(
-            //    //new UserBeers
-            //    //{
-            //    //    UserId = 2,
-            //    //    BeerId = 4,
-            //    //});
-            //    //     modelBuilder.Entity<UserBeers>().HasData(
-            //    //  new UserBeers
-            //    //  {
-            //    //      UserId = 3,
-            //    //      BeerId = 3,
-            //    //  });
-
-            //    //     modelBuilder.Entity<UserBeers>().HasData(
-            //    //  new UserBeers
-            //    //  {
-            //    //      UserId = 4,
-            //    //      BeerId = 7,
-            //    //  });
-
-            //    //     modelBuilder.Entity<UserBeers>().HasData(
-            //    //  new UserBeers
-            //    //  {
-            //    //      UserId = 5,
-            //    //      BeerId = 8,
-            //    //      DrankOn = DateTime.UtcNow
-            //    //  });
-
-            //    //     modelBuilder.Entity<UserBeers>().HasData(
-            //    //   new UserBeers
-            //    //   {
-            //    //       UserId = 6,
-            //    //       BeerId = 8,
-            //    //       DrankOn = DateTime.UtcNow
-            //    //   });
-
-            //    //     modelBuilder.Entity<UserBeers>().HasData(
-            //    //  new UserBeers
-            //    //  {
-            //    //      UserId = 1,
-            //    //      BeerId = 2,
-            //    //      DrankOn = DateTime.UtcNow
-            //    //  });
+         });
 
 
+            modelBuilder.Entity<Review>().HasData(
+            new Review
+            {
+                Id = 5,
+                RMessage = "Not great, not terrible.",
+                Rating = 3,
+                UserId = 2,
+                BeerId = 2,
+                ReviewedOn = DateTime.UtcNow
 
+            });
 
-            //    // }
+            modelBuilder.Entity<Review>().HasData(
+           new Review
+           {
+               Id = 6,
+               RMessage = "Not my taste.",
+               Rating = 2,
+               UserId = 1,
+               BeerId = 3,
+               ReviewedOn = DateTime.UtcNow
+
+           });
+
+            modelBuilder.Entity<Review>().HasData(
+           new Review
+           {
+               Id = 7,
+               RMessage = "Rip off!",
+               Rating = 1,
+               UserId = 3,
+               BeerId = 7,
+               ReviewedOn = DateTime.UtcNow
+
+           });
+
+        
         }
     }
 }

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using BeerOverflow.Data;
 using BeerOverflow.Services.Contracts;
@@ -22,31 +20,9 @@ namespace BeerOverflow.Web.Controllers
             this.beerService = beerService;
             this.reviewService = reviewService;
         }
-        //public async Task<IActionResult> AddReview(int beerId)
-        //{
-        //    if (beerId == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    try
-        //    {
-        //        var beerDTO = beerService.GetBeer(beerId);
-        //        var model = new BeerViewModel(beerDTO.Id, beerDTO.BeerName, beerDTO.AlcByVol, beerDTO.Description,
-        //            beerDTO.BeerType, beerDTO.BeerTypeId, beerDTO.Brewery, beerDTO.BreweryId, beerDTO.Reviews, beerDTO.AvgRating);
-        //        return View(model);
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return NotFound();
-        //    }
-        //}
 
-        //public ActionResult Edit()
-        //{
-
-        //}
         [HttpGet]
-        [Route("{id}")]
+        //[Route("{id}")]
         public async Task<IActionResult> Edit(int id)
         {
             if (id == 0)
@@ -57,7 +33,7 @@ namespace BeerOverflow.Web.Controllers
             {
                 var brDTO = await reviewService.GetReviewAsync(id);
                 var bDTO = await beerService.GetBeerAsync(brDTO.BeerId);
-                var model = new BeerReviewEditViewModel(brDTO.Id, brDTO.RMessage, brDTO.User, bDTO.BeerName, bDTO.AlcByVol, bDTO.Description,
+                var model = new BeerReviewEditViewModel(brDTO.Id, brDTO.RMessage, brDTO.User, bDTO.Id, bDTO.BeerName, bDTO.AlcByVol, bDTO.Description,
                                 bDTO.BeerType, bDTO.Brewery, bDTO.AvgRating, brDTO.ReviewedOn, brDTO.DeletedOn);
 
                 return View(model);
@@ -71,13 +47,13 @@ namespace BeerOverflow.Web.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,[Bind("Id, RMessage, IsDeleted")] BeerReviewEditViewModel model)
+        public async Task<IActionResult> Edit([Bind("Id, RMessage, IsDeleted, BeerId")] BeerReviewEditViewModel model)
         {
             try
             {
-
                 await this.reviewService.ModifyReviewAsync(model.Id, model.RMessage, model.IsDeleted);
-                return RedirectToAction("Index","Beers");
+                var Id = model.BeerId;
+                return RedirectToAction("Details","Beers", new { Id });
             }
             catch (Exception)
             {

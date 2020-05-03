@@ -19,17 +19,17 @@ namespace BeerOverflow.Services
             this._beerOverflowContext = beerOverflowContext;
         }
 
-        public ReviewDTO AddReview(string userName, string beerName, int rating, string rMessage)
+        public async Task<ReviewDTO> AddReviewAsync(string userName, string beerName, int rating, string rMessage)
         {
-            var user = _beerOverflowContext.Users.FirstOrDefault(u => u.UserName == userName);
+            var user = await  _beerOverflowContext.Users.FirstOrDefaultAsync(u => u.UserName == userName);
 
             if (user == null)
             {
                 throw new ArgumentNullException("User is null!");
             }
-            var beer = _beerOverflowContext.Beers
+            var beer = await _beerOverflowContext.Beers
                 .Where(b => b.DateUnlisted == null)
-                .FirstOrDefault(b => b.BeerName == beerName);
+                .FirstOrDefaultAsync(b => b.BeerName == beerName);
 
             if (beer == null)
             {
@@ -53,8 +53,8 @@ namespace BeerOverflow.Services
             };
             try
             {
-                _beerOverflowContext.Reviews.Add(userReview);
-                _beerOverflowContext.SaveChanges();
+                await  _beerOverflowContext.Reviews.AddAsync(userReview);
+                await _beerOverflowContext.SaveChangesAsync();
             }
             catch (Exception)
             {
@@ -76,11 +76,10 @@ namespace BeerOverflow.Services
                 throw new ArgumentNullException("User is null!");
             }
 
-            //TODO Check error with await
-            var existingReview = /*await*/ _beerOverflowContext.Reviews
+            var existingReview = await _beerOverflowContext.Reviews
                 .Where(r=>r.BeerId == beerId)
                 .Where(r => r.DeletedOn == null)
-                .FirstOrDefault(r => r.UserId == userId);
+                .FirstOrDefaultAsync(r => r.UserId == userId);
 
             if (existingReview != null)
             {
@@ -148,8 +147,8 @@ namespace BeerOverflow.Services
         }
         public async Task<bool> ModifyReviewAsync(int reviewId,string rMessage,bool isDeleted)
         {
-            var review = /*await */_beerOverflowContext.Reviews
-                .FirstOrDefault(r => r.Id == reviewId);
+            var review = await _beerOverflowContext.Reviews
+                .FirstOrDefaultAsync(r => r.Id == reviewId);
             if (review==null)
             {
                 throw new ArgumentNullException("Missing review");
@@ -161,6 +160,10 @@ namespace BeerOverflow.Services
             if (review.DeletedOn==null || isDeleted == true)
             {
                 review.DeletedOn = DateTime.UtcNow;
+            }
+            else if(review.DeletedOn != null || isDeleted == false)
+            {
+                review.DeletedOn = null;
             }
 
             try
