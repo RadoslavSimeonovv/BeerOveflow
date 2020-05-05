@@ -91,6 +91,7 @@ namespace BeerOverflow.Web.Controllers
         }
 
         // GET: Beers/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             ViewData["BeerTypeId"] = new SelectList(_context.BeerTypes, "Id", "Type");
@@ -123,6 +124,7 @@ namespace BeerOverflow.Web.Controllers
         }
 
         // GET: Beers/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
