@@ -9,6 +9,7 @@ using BeerOverflow.Services.Contracts;
 using BeerOverflow.Services.Providers;
 using BeerOverflow.Services.Providers.Contracts;
 using BeerOverflow.Web.Helpers;
+using BeerOverflow.Web.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -49,7 +50,7 @@ namespace BeerOverflow
                 .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<BeerOverflowContext>();
 
-
+            
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddScoped<IDateTimeProvider, DateTimeProvider>();
             services.AddScoped<ICountryService, CountryService>();
@@ -61,6 +62,7 @@ namespace BeerOverflow
             services.AddScoped<IReviewService, ReviewService>();
 
             services.AddTransient<IEmailSender, EmailSender>();
+
     
         }
 
@@ -82,6 +84,7 @@ namespace BeerOverflow
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseMiddleware<NotFoundMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

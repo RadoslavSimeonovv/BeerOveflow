@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -65,8 +67,16 @@ namespace BeerOverflow.Web.Models
         public string Brewery { get; set; }
         public int BreweryId { get; set; }
         public double AvgRating { get; set; }
+
+        [Required]
+        [DisplayName("Review Rating")]
         public int Rating { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        [DisplayName("Review Message")]
         public string RMessage { get; set; }
+
         public DateTime? ReviewedOn { get; set; }
         public DateTime? DeletedOn { get; set; }
     }

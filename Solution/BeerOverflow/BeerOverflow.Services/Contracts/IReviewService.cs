@@ -10,6 +10,7 @@ namespace BeerOverflow.Services.Contracts
     {
         Task<ReviewDTO> AddReviewAsync(string userName, string beerName, int rating, string rMessage);
         Task<ReviewDTO> AddReview(int userId, int beerId, int rating, string rMessage);
+
         Task<ReviewDTO> GetReviewAsync(int ReviewId);
 
         Task<bool> ModifyReviewAsync(int reviewId, string rMessage, bool isDeleted);

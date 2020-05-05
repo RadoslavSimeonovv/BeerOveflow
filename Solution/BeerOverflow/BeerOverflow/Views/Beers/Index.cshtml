@@ -26,9 +26,13 @@
 
 <h1>Beers</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if (User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Create a new beer</a>
+    </p>
+}
+
 
 
 @using (Html.BeginForm("Index", "Beers", FormMethod.Get))

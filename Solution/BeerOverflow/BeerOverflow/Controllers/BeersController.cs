@@ -24,7 +24,8 @@ namespace BeerOverflow.Web.Controllers
         private readonly BeerOverflowContext _context;
         private readonly UserManager<User> _userManager;
 
-        public BeersController(BeerOverflowContext context, IBeerService beerService, IReviewService reviewService, UserManager<User> userManager)
+        public BeersController(BeerOverflowContext context, IBeerService beerService, 
+            IReviewService reviewService, UserManager<User> userManager)
         {
             _context = context;
             this.beerService = beerService;
@@ -79,9 +80,11 @@ namespace BeerOverflow.Web.Controllers
             }
             try
             {
-                var beerDTO = beerService.GetBeer(id);
+                var beerDTO = await beerService.GetBeerAsync(id);
                 var model = new BeerViewModel(beerDTO.Id, beerDTO.BeerName, beerDTO.AlcByVol, beerDTO.Description,
-                    beerDTO.BeerType, beerDTO.BeerTypeId, beerDTO.Brewery, beerDTO.BreweryId, beerDTO.Reviews, beerDTO.AvgRating,beerDTO.DateUnlisted);
+                    beerDTO.BeerType, beerDTO.BeerTypeId, beerDTO.Brewery, beerDTO.BreweryId,
+                    beerDTO.Reviews, beerDTO.AvgRating,beerDTO.DateUnlisted);
+
                 return View(model);
             }
             catch (Exception)
@@ -188,6 +191,8 @@ namespace BeerOverflow.Web.Controllers
         }
 
         // GET: Beers/Delete/5
+
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -232,6 +237,7 @@ namespace BeerOverflow.Web.Controllers
 
 
 
+        [Authorize(Roles = "Admin, User")]
         public IActionResult AddReview(int id)
         {
             if (id == null)
@@ -263,16 +269,30 @@ namespace BeerOverflow.Web.Controllers
 
             if (ModelState.IsValid)
             {
+                try
+                {
+                    var user = await _userManager.GetUserAsync(User);
 
-                var user = await _userManager.GetUserAsync(User);
+                    var newReview = await this.reviewService.AddReview(user.Id, id,
+                                model.Rating, model.RMessage);
 
-                var newReview = await this.reviewService.AddReview(user.Id, id,
-                            model.Rating, model.RMessage);
+                    return RedirectToAction("Details", new { id });
+                }
+                catch (InvalidOperationException)
+                {
+                    ViewBag.Message = "You have already reviewed this beer!";
 
-                return RedirectToAction("Details", new { id }); // ????
+   
+
+                }
             }
 
-            return NotFound();
+            var beerDTO  = await beerService.GetBeerAsync(id);
+
+            var beerModel = new BeerReviewViewModel(beerDTO.Id, beerDTO.BeerName, beerDTO.AlcByVol, beerDTO.Description,
+                    beerDTO.BeerType, beerDTO.BeerTypeId, beerDTO.Brewery, beerDTO.BreweryId, beerDTO.AvgRating);
+
+            return  View(beerModel);
         }
 
 

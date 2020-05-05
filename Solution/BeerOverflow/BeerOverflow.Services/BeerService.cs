@@ -42,10 +42,12 @@ namespace BeerOverflow.Services
 
         public async Task<BeerDTO> GetBeerAsync(int id)
         {
+
             var beer = await  _beerOverflowContext.Beers
                 .Include(b => b.BeerType)
                 .Include(b => b.Brewery)
                 .Include(b => b.Reviews)
+                .ThenInclude(r => r.User)
                 .Where(b => b.DateUnlisted == null)
                 .FirstOrDefaultAsync(b => b.Id == id);
             if (beer == null)

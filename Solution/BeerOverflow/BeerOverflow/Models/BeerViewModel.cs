@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -70,16 +71,38 @@ int beerTypeId, string brewery, int breweryId, DateTime? dateUnlisted, double av
         }
         public int Id { get; set; }
 
+        [Required]
+        [StringLength(50)]
         [DisplayName("Beer name")]
         public string BeerName { get; set; }
+
+        [Required]
+        [DisplayName("Alcohol by volume")]
         public double? AlcByVol { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        [DisplayName("Beer Description")]
         public string Description { get; set; }
         //public DateTime? DateUnlisted { get; set; }
+
+
+        [DisplayName("Beer Style")]
         public String BeerType { get; set; }
+
+        [Required]
         public int BeerTypeId { get; set; }
+
+        [DisplayName("Brewery")]
         public String Brewery { get; set; }
+
+        [Required]
         public int BreweryId { get; set; }
+
+        [DisplayName("Unlisted date")]
         public DateTime? DateUnlisted { get; set; }
+
+        [DisplayName("Average rating")]
         public double AvgRating { get; set; }
         public ICollection<Review> Reviews { get; set; }
     }

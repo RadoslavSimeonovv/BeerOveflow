@@ -102,6 +102,7 @@
     <a asp-controller="Beers" asp-action="Details" asp-route-id="@Model.BeerId">Back to List</a>
 </div>
 
+<br />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
@@ -113,6 +114,7 @@
                     Delete review
                 </label>
             </div>
+            <br />
             <div class="form-group">
                 <label asp-for="RMessage" class="control-label"></label>
                 <textarea asp-for="RMessage" class="form-control"></textarea>

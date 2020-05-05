@@ -83,7 +83,7 @@ namespace BeerOverflow.Services
 
             if (existingReview != null)
             {
-                throw new InvalidOperationException("The user already reviewd this beer");
+                throw new InvalidOperationException("The user already reviewed this beer");
             }
 
             var beer = await _beerOverflowContext.Beers

@@ -96,7 +96,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="Rating" class="control-label"></label>
-                <select asp-for="Rating" class="form-control" asp-items="@new SelectList(new List<int>() { 1, 2, 3, 4, 5 });"></select>
+                <select asp-for="Rating" class="form-control" asp-items="@new SelectList(new List<int>() { 1, 2, 3, 4, 5 });">@*</select>*@
+                <option value=""> Select Rating </option></select>
+                <span asp-validation-for="Rating" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Add Review" class="btn btn-primary" />
@@ -104,6 +106,16 @@
         </form>
     </div>
 </div>
+
+@if(ViewBag.Message != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@ViewBag.Message");
+
+        };
+    </script>
+}
 
 
 

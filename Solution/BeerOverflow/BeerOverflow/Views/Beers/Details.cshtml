@@ -133,38 +133,67 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var review in Model.Reviews)
+            @if (User.IsInRole("Admin"))
             {
-                <tr>
-                    <td>
-                        @for (int i = 0; i < @review.Rating; i++)
-                        {
-                            <span class="fa fa-star checked"></span>
-                        }
-                        @for (int i = @review.Rating; i < 5; i++)
-                        {
-                            <span class="fa fa-star"></span>
-                        }
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => review.RMessage)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => review.User.UserName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => review.ReviewedOn)
-                    </td>
-                    <td>
-                        @if (User.IsInRole("Admin"))
-                        {
+                @foreach (var review in Model.Reviews)
+                {
+                    <tr>
+                        <td>
+                            @for (int i = 0; i < @review.Rating; i++)
+                            {
+                                <span class="fa fa-star checked"></span>
+                            }
+                            @for (int i = @review.Rating; i < 5; i++)
+                            {
+                                <span class="fa fa-star"></span>
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => review.RMessage)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => review.User.UserName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => review.ReviewedOn)
+                        </td>
+                        <td>
                             <a class="btn btn-primary" asp-controller="BeerReview" asp-action="Edit" asp-route-id="@review.Id">
                                 Modify review
                             </a>
-                        }
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
+                }
             }
+            else
+            {
+                @foreach (var review in Model.Reviews.Where(r => r.DeletedOn == null))
+                {
+                    <tr>
+                        <td>
+                            @for (int i = 0; i < @review.Rating; i++)
+                            {
+                                <span class="fa fa-star checked"></span>
+                            }
+                            @for (int i = @review.Rating; i < 5; i++)
+                            {
+                                <span class="fa fa-star"></span>
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => review.RMessage)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => review.User.UserName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => review.ReviewedOn)
+                        </td>
+                      
+                    </tr>
+                }
+            }
+
         </tbody>
     </table>
 }
