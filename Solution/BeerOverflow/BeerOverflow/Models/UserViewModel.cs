@@ -32,6 +32,7 @@ namespace BeerOverflow.Web.Models
         }
 
         public int Id { get; set; }
+
         [DisplayName("User name")]
         public string Username { get; set; }
         [DisplayName("First name")]

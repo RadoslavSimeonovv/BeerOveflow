@@ -86,7 +86,7 @@ namespace BeerOverflow.Web.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = Input.Email, Email = Input.Email, FirstName = Input.FirstName, LastName = Input.LastName, isBanned = false };
+                var user = new User { UserName = Input.Email, Email = Input.Email, FirstName = Input.FirstName, LastName = Input.LastName, isBanned = false, CreatedOn = DateTime.UtcNow };
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 

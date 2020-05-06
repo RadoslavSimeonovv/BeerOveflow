@@ -1,6 +1,7 @@
 ﻿using BeerOverflow.Data.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,6 +24,7 @@ namespace BeerOverflow.Web.Models
             this.BeerId = beerId;
             this.ReviewedOn = reviewedOn;
         }
+
         public string RMessage { get; set; }
         public int Rating { get; set; }
         public DateTime? ReviewedOn { get; set; }

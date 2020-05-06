@@ -101,7 +101,7 @@ namespace BeerOverflow.Web.Controllers
                     page = 1;
                     getBeers = getBeers.Where(b => b.Brewery == searchString);
                 }
-                if (selectedValue == "BeerType")
+                if (selectedValue == "Style")
                 {
                     page = 1;
                     getBeers = getBeers.Where(b => b.BeerType == searchString);

@@ -49,12 +49,12 @@
         <input type="submit" value="Search" />
     </p>
     <p>
-    Search by:@Html.DropDownList("DropDownList", new List<SelectListItem>
+    Search by:  @Html.DropDownList("DropDownList", new List<SelectListItem>
     {
     new SelectListItem{ Text="Name"},
     new SelectListItem{ Text="Brewery" },
     new SelectListItem{ Text="BeerType" }
-    }, "Select")
+    })
     </p>
 
 }
