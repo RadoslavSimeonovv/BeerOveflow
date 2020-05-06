@@ -13,6 +13,7 @@ using X.PagedList;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using BeerOverflow.Data.Entities;
+using System.Collections.Generic;
 
 namespace BeerOverflow.Web.Controllers
 {
@@ -33,8 +34,7 @@ namespace BeerOverflow.Web.Controllers
             this._userManager = userManager;
         }
 
-        // GET: Beers
-        
+        // GET: Beers      
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
@@ -44,8 +44,9 @@ namespace BeerOverflow.Web.Controllers
             ViewBag.BeerTypeSortParm = sortOrder == "beertype" ? "beertype_desc" : "beertype";
             ViewBag.CountrySortParm = sortOrder == "country" ? "country_desc" : "country";
             ViewBag.BrewerySortParm = sortOrder == "brewery" ? "brewery_desc" : "brewery";
+        
             if (searchString != null)
-            {
+            {         
                 page = 1;
             }
             else
@@ -69,6 +70,62 @@ namespace BeerOverflow.Web.Controllers
             int pageNumber = (page ?? 1);
             return View(await models.ToPagedListAsync(pageNumber, pageSize));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> IndexB(string sortOrder, string currentFilter, string searchString, int? page)
+        {
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.RatingSortParm = sortOrder == "rating" ? "rating_desc" : "rating";
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.AbvSortParm = sortOrder == "abv" ? "abv_desc" : "abv";
+            ViewBag.BeerTypeSortParm = sortOrder == "beertype" ? "beertype_desc" : "beertype";
+            ViewBag.CountrySortParm = sortOrder == "country" ? "country_desc" : "country";
+            ViewBag.BrewerySortParm = sortOrder == "brewery" ? "brewery_desc" : "brewery";
+
+            var selectedValue = Request.Form["DropDownList"].ToString();
+
+            var getBeers = beerService.GetAllBeers();
+            if (searchString != null)
+            {
+                if(selectedValue == "Name")
+                {
+                    page = 1;
+                    getBeers = getBeers.Where(b => b.BeerName == searchString);         
+                }
+                if (selectedValue == "Brewery")
+                {
+                    page = 1;
+                    getBeers = getBeers.Where(b => b.Brewery == searchString);
+                }
+                if (selectedValue == "BeerType")
+                {
+                    page = 1;
+                    getBeers = getBeers.Where(b => b.BeerType == searchString);
+                }
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+
+            var role = "otherRole";
+            if (User.IsInRole("Admin"))
+            {
+                role = "admin";
+            }
+
+            var models = getBeers
+             .Select(b => new BeerViewModel(b.Id, b.BeerName, b.AlcByVol, b.Description,
+             b.BeerType, b.BeerTypeId, b.Brewery, b.BreweryId, b.DateUnlisted, b.AvgRating));
+
+            int pageSize = 5;
+            int pageNumber = (page ?? 1);
+            return View(await models.ToPagedListAsync(pageNumber, pageSize));
+
+        }
+
 
         // GET: Beers/Details/5
         //[Route("{id}")]
@@ -281,9 +338,6 @@ namespace BeerOverflow.Web.Controllers
                 catch (InvalidOperationException)
                 {
                     ViewBag.Message = "You have already reviewed this beer!";
-
-   
-
                 }
             }
 

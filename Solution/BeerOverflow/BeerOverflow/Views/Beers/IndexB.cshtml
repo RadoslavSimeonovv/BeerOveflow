@@ -36,25 +36,27 @@
 
 
 @*@using (Html.BeginForm("Index", "Beers", FormMethod.Get))
-{
-    <p>
-        Find by beer name: @Html.TextBox("SearchString")
-        <input type="submit" value="Search" />
-    </p>
-}*@
+    {
+        <p>
+            Find by beer name: @Html.TextBox("SearchString")
+            <input type="submit" value="Search" />
+        </p>
+    }*@
 @using (Html.BeginForm("IndexB", "Beers", FormMethod.Post))
 {
     <p>
         Find by beer name: @Html.TextBox("SearchString")
         <input type="submit" value="Search" />
     </p>
-    <p>Search by: </p> @Html.DropDownList("DropDownList", new List<SelectListItem>
+    <p>
+    Search by:@Html.DropDownList("DropDownList", new List<SelectListItem>
     {
-      new SelectListItem{ Text="Name"},
-      new SelectListItem{ Text="Brewery" },
-      new SelectListItem{ Text="BeerType" }
+    new SelectListItem{ Text="Name"},
+    new SelectListItem{ Text="Brewery" },
+    new SelectListItem{ Text="BeerType" }
     }, "Select")
-   
+    </p>
+
 }
 
 

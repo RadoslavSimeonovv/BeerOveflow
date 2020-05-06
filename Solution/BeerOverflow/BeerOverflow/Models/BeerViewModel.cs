@@ -105,5 +105,7 @@ int beerTypeId, string brewery, int breweryId, DateTime? dateUnlisted, double av
         [DisplayName("Average rating")]
         public double AvgRating { get; set; }
         public ICollection<Review> Reviews { get; set; }
+
+        public SearchListEnums SearchListEnums { get; set; }
     }
 }
