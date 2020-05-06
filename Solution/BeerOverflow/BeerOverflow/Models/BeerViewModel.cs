@@ -106,6 +106,6 @@ int beerTypeId, string brewery, int breweryId, DateTime? dateUnlisted, double av
         public double AvgRating { get; set; }
         public ICollection<Review> Reviews { get; set; }
 
-        public SearchListEnums SearchListEnums { get; set; }
+        //public SearchListEnums SearchListEnums { get; set; }
     }
 }
