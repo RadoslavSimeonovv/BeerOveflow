@@ -58,7 +58,8 @@ namespace BeerOverflow.Services
             var beerDto = new BeerDTO(beer.Id, beer.BeerName, beer.BeerTypeId,
                 beer.BeerType.Type, beer.BreweryId, beer.Brewery.Name,
                 beer.AlcByVol, beer.Description, beer.Reviews,
-                beer.Reviews.Count == 0 ? 0 : beer.Reviews.Average(r => r.Rating));
+                beer.Reviews.Count == 0 ? 0 : beer.Reviews.Average(r => r.Rating),
+                beer.imgPath);
 
             return beerDto;
         }

@@ -29,7 +29,7 @@ namespace BeerOverflow.Data.Entities
 
         public Brewery Brewery { get; set; }
         public int BreweryId { get; set; }
-
+        public string imgPath { get; set; }
         public ICollection<Review> Reviews { get; set; }
 
     }

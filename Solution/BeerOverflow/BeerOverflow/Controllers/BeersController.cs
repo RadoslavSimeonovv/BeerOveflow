@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using BeerOverflow.Data.Entities;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Hosting;
+
 
 namespace BeerOverflow.Web.Controllers
 {
@@ -24,14 +26,16 @@ namespace BeerOverflow.Web.Controllers
         private readonly IReviewService reviewService;
         private readonly BeerOverflowContext _context;
         private readonly UserManager<User> _userManager;
+        private IHostingEnvironment _env;
 
         public BeersController(BeerOverflowContext context, IBeerService beerService, 
-            IReviewService reviewService, UserManager<User> userManager)
+            IReviewService reviewService, UserManager<User> userManager, IHostingEnvironment env)
         {
             _context = context;
             this.beerService = beerService;
             this.reviewService = reviewService;
             this._userManager = userManager;
+            _env = env;
         }
 
         // GET: Beers      
@@ -141,6 +145,15 @@ namespace BeerOverflow.Web.Controllers
                 var model = new BeerViewModel(beerDTO.Id, beerDTO.BeerName, beerDTO.AlcByVol, beerDTO.Description,
                     beerDTO.BeerType, beerDTO.BeerTypeId, beerDTO.Brewery, beerDTO.BreweryId,
                     beerDTO.Reviews, beerDTO.AvgRating,beerDTO.DateUnlisted);
+
+                var imgPath = beerDTO.ImgPath;
+                var absPath = _env.WebRootPath + imgPath;
+                if (!System.IO.File.Exists(absPath))
+                {
+                    imgPath = @"\Images\Beer\PlaceHolder.png";
+                }
+
+                ViewBag.Imagepath = imgPath;
 
                 return View(model);
             }

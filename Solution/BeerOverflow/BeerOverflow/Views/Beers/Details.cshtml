@@ -11,13 +11,13 @@
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
-        .fa-star{
-            color:gainsboro
+        .fa-star {
+            color: gainsboro
         }
+
         .checked {
             color: orange;
         }
-        
     </style>
 </head>
 <h1>Details</h1>
@@ -25,76 +25,93 @@
 <div>
     <h4>Beer</h4>
     <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.BeerName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.BeerName)
-
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AlcByVol)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AlcByVol)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.BeerType)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.BeerType)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Brewery)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Brewery)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AvgRating)
-        </dt>
-        <dd class="col-sm-10">
-            @if (Model.AvgRating == 0)
-            {
-                <text>Not rated yet</text>
-            }
-            else
-            {
-                @for (int i = 0; i < (int)@Model.AvgRating; i++)
+    <div class="row">
+        <dl class="col-sm-8">
+            <div class="row">
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.BeerName)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.BeerName)
+                </dd>
+            </div>
+            <div class="row">
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.AlcByVol)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.AlcByVol)
+                </dd>
+            </div>
+            <div class="row">
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+            </div>
+            <div class="row">
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.BeerType)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.BeerType)
+                </dd>
+            </div>
+            <div class="row">
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Brewery)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Brewery)
+                </dd>
+            </div>
+            <div class="row">
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.AvgRating)
+                </dt>
+                <dd class="col-sm-8">
+                    @if (Model.AvgRating == 0)
+                    {
+                        <text>Not rated yet</text>
+                    }
+                    else
+                    {
+                        @for (int i = 0; i < (int)@Model.AvgRating; i++)
+                        {
+                            <span class="fa fa-star checked"></span>
+                        }
+                        @for (int i = (int)@Model.AvgRating; i < 5; i++)
+                        {
+                            <span class="fa fa-star"></span>
+                        }
+                    }
+                </dd>
+            </div>
+            <div class="row">
+                @if (User.IsInRole("Admin"))
                 {
-                    <span class="fa fa-star checked"></span>
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.DateUnlisted)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @if (Model.DateUnlisted == null)
+                        {
+                            <p class="text-secondary">Not unlisted</p>
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(model => model.DateUnlisted)
+                        }
+                    </dd>
                 }
-                @for (int i = (int)@Model.AvgRating; i < 5; i++)
-                {
-                    <span class="fa fa-star"></span>
-                }
-            }
-        </dd>
-        @if (User.IsInRole("Admin"))
-        {
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.DateUnlisted)
-            </dt>
-            <dd class="col-sm-10">
-                @if (Model.DateUnlisted == null)
-                {
-                    <p class="text-secondary">Not unlisted</p>
-                }
-                else
-                {
-                    @Html.DisplayFor(model => model.DateUnlisted)
-                }
-            </dd>
-        }
-    </dl>
-
+            </div>
+        </dl>
+        <div class="col-sm-4">
+            <img src=@ViewBag.Imagepath alt="There's no beer" class="rounded float-right rounded" />
+        </div>
+    </div>
 </div>
 <div>
     @if (User.IsInRole("Admin"))
@@ -189,7 +206,7 @@ else
                         <td>
                             @Html.DisplayFor(model => review.ReviewedOn)
                         </td>
-                      
+
                     </tr>
                 }
             }
@@ -205,5 +222,4 @@ else
         Add review
     </a>
 }
-
 
