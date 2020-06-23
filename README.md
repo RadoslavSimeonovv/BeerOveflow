@@ -1,1 +1,2 @@
+Web application with an API part that manages a beer database for the biggest beer fans. The application can hold two types of users - admin and a regular registered user. The main purpose of the application is to display the  information about the beers in details, where you can find them - breweries around the world, and an opportunity to add them into the user's wish/drank list as well as add ratings and reviews for those beers.
 [Trello board](https://trello.com/invite/b/aeqkJLEg/c3f3cd9da320de1c0852e3708785426c/beeroverflow)
